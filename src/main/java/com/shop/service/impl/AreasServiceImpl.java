@@ -1,0 +1,126 @@
+package com.shop.service.impl;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.shop.dao.AreasMapper;
+import com.shop.pojo.PageResult;
+import com.shop.pojo.Areas;
+import com.shop.service.AreasService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class AreasServiceImpl implements AreasService {
+
+    @Autowired
+    private AreasMapper areasMapper;
+
+    /**
+     * 返回全部记录
+     * @return
+     */
+    public List<Areas> findAll() {
+        return areasMapper.selectAll();
+    }
+
+    /**
+     * 分页查询
+     * @param page 页码
+     * @param size 每页记录数
+     * @return 分页结果
+     */
+    public PageResult<Areas> findPage(int page, int size) {
+        PageHelper.startPage(page,size);
+        Page<Areas> areass = (Page<Areas>) areasMapper.selectAll();
+        return new PageResult<Areas>(areass.getTotal(),areass.getResult());
+    }
+
+    /**
+     * 条件查询
+     * @param searchMap 查询条件
+     * @return
+     */
+    public List<Areas> findList(Map<String, Object> searchMap) {
+        Example example = createExample(searchMap);
+        return areasMapper.selectByExample(example);
+    }
+
+    /**
+     * 分页+条件查询
+     * @param searchMap
+     * @param page
+     * @param size
+     * @return
+     */
+    public PageResult<Areas> findPage(Map<String, Object> searchMap, int page, int size) {
+        PageHelper.startPage(page,size);
+        Example example = createExample(searchMap);
+        Page<Areas> areass = (Page<Areas>) areasMapper.selectByExample(example);
+        return new PageResult<Areas>(areass.getTotal(),areass.getResult());
+    }
+
+    /**
+     * 根据Id查询
+     * @param area_id
+     * @return
+     */
+    public Areas findById(String areaId) {
+        return areasMapper.selectByPrimaryKey(areaId);
+    }
+
+    /**
+     * 新增
+     * @param areas
+     */
+    public void add(Areas areas) {
+        areasMapper.insert(areas);
+    }
+
+    /**
+     * 修改
+     * @param areas
+     */
+    public void update(Areas areas) {
+        areasMapper.updateByPrimaryKeySelective(areas);
+    }
+
+    /**
+     *  删除
+     * @param area_id
+     */
+    public void delete(String areaId) {
+        areasMapper.deleteByPrimaryKey(areaId);
+    }
+
+    /**
+     * 构建查询条件
+     * @param searchMap
+     * @return
+     */
+    private Example createExample(Map<String, Object> searchMap){
+        Example example=new Example(Areas.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(searchMap!=null){
+            // 区域ID
+            if(searchMap.get("areaId")!=null && !"".equals(searchMap.get("areaId"))){
+                criteria.andLike("areaId","%"+searchMap.get("areaId")+"%");
+            }
+            // 区域名称
+            if(searchMap.get("area")!=null && !"".equals(searchMap.get("area"))){
+                criteria.andLike("area","%"+searchMap.get("area")+"%");
+            }
+            // 城市ID
+            if(searchMap.get("cityId")!=null && !"".equals(searchMap.get("cityId"))){
+                criteria.andLike("cityId","%"+searchMap.get("cityId")+"%");
+            }
+
+
+        }
+        return example;
+    }
+
+}

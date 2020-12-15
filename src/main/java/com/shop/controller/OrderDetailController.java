@@ -1,0 +1,64 @@
+package com.shop.controller;
+
+
+import com.shop.pojo.PageResult;
+import com.shop.pojo.Result;
+import com.shop.pojo.OrderDetail;
+import com.shop.service.OrderDetailService;
+import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+
+@RestController
+@RequestMapping("/orderDetail")
+public class OrderDetailController {
+
+    @Reference
+    private OrderDetailService orderDetailService;
+
+    @GetMapping("/findAll")
+    public List<OrderDetail> findAll(){
+        return orderDetailService.findAll();
+    }
+
+    @GetMapping("/findPage")
+    public PageResult<OrderDetail> findPage(int page, int size){
+        return orderDetailService.findPage(page, size);
+    }
+
+    @PostMapping("/findList")
+    public List<OrderDetail> findList(@RequestBody Map<String,Object> searchMap){
+        return orderDetailService.findList(searchMap);
+    }
+
+    @PostMapping("/findPage")
+    public PageResult<OrderDetail> findPage(@RequestBody Map<String,Object> searchMap,int page, int size){
+        return  orderDetailService.findPage(searchMap,page,size);
+    }
+
+    @GetMapping("/findById")
+    public OrderDetail findById(String id){
+        return orderDetailService.findById(id);
+    }
+
+
+    @PostMapping("/add")
+    public Result add(@RequestBody OrderDetail orderDetail){
+        orderDetailService.add(orderDetail);
+        return new Result();
+    }
+
+    @PostMapping("/update")
+    public Result update(@RequestBody OrderDetail orderDetail){
+        orderDetailService.update(orderDetail);
+        return new Result();
+    }
+
+    @GetMapping("/delete")
+    public Result delete(String id){
+        orderDetailService.delete(id);
+        return new Result();
+    }
+
+}

@@ -1,12 +1,11 @@
 package com.shop.service.impl;
 
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.shop.dao.UserMapper;
+import com.shop.dao.StoreMapper;
 import com.shop.pojo.PageResult;
-import com.shop.pojo.User;
-import com.shop.service.UserService;
+import com.shop.pojo.Store;
+import com.shop.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -15,17 +14,17 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class StoreServiceImpl implements StoreService {
 
     @Autowired
-    private UserMapper userMapper;
+    private StoreMapper storeMapper;
 
     /**
      * 返回全部记录
      * @return
      */
-    public List<User> findAll() {
-        return userMapper.selectAll();
+    public List<Store> findAll() {
+        return storeMapper.selectAll();
     }
 
     /**
@@ -34,10 +33,10 @@ public class UserServiceImpl implements UserService {
      * @param size 每页记录数
      * @return 分页结果
      */
-    public PageResult<User> findPage(int page, int size) {
+    public PageResult<Store> findPage(int page, int size) {
         PageHelper.startPage(page,size);
-        Page<User> users = (Page<User>) userMapper.selectAll();
-        return new PageResult<User>(users.getTotal(),users.getResult());
+        Page<Store> stores = (Page<Store>) storeMapper.selectAll();
+        return new PageResult<Store>(stores.getTotal(),stores.getResult());
     }
 
     /**
@@ -45,9 +44,9 @@ public class UserServiceImpl implements UserService {
      * @param searchMap 查询条件
      * @return
      */
-    public List<User> findList(Map<String, Object> searchMap) {
+    public List<Store> findList(Map<String, Object> searchMap) {
         Example example = createExample(searchMap);
-        return userMapper.selectByExample(example);
+        return storeMapper.selectByExample(example);
     }
 
     /**
@@ -57,11 +56,11 @@ public class UserServiceImpl implements UserService {
      * @param size
      * @return
      */
-    public PageResult<User> findPage(Map<String, Object> searchMap, int page, int size) {
+    public PageResult<Store> findPage(Map<String, Object> searchMap, int page, int size) {
         PageHelper.startPage(page,size);
         Example example = createExample(searchMap);
-        Page<User> users = (Page<User>) userMapper.selectByExample(example);
-        return new PageResult<User>(users.getTotal(),users.getResult());
+        Page<Store> stores = (Page<Store>) storeMapper.selectByExample(example);
+        return new PageResult<Store>(stores.getTotal(),stores.getResult());
     }
 
     /**
@@ -69,24 +68,24 @@ public class UserServiceImpl implements UserService {
      * @param id
      * @return
      */
-    public User findById(String id) {
-        return userMapper.selectByPrimaryKey(id);
+    public Store findById(String id) {
+        return storeMapper.selectByPrimaryKey(id);
     }
 
     /**
      * 新增
-     * @param user
+     * @param store
      */
-    public void add(User user) {
-        userMapper.insert(user);
+    public void add(Store store) {
+        storeMapper.insert(store);
     }
 
     /**
      * 修改
-     * @param user
+     * @param store
      */
-    public void update(User user) {
-        userMapper.updateByPrimaryKeySelective(user);
+    public void update(Store store) {
+        storeMapper.updateByPrimaryKeySelective(store);
     }
 
     /**
@@ -94,7 +93,7 @@ public class UserServiceImpl implements UserService {
      * @param id
      */
     public void delete(String id) {
-        userMapper.deleteByPrimaryKey(id);
+        storeMapper.deleteByPrimaryKey(id);
     }
 
     /**
@@ -103,48 +102,44 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     private Example createExample(Map<String, Object> searchMap){
-        Example example=new Example(User.class);
+        Example example=new Example(Store.class);
         Example.Criteria criteria = example.createCriteria();
         if(searchMap!=null){
             // id
             if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
                 criteria.andLike("id","%"+searchMap.get("id")+"%");
             }
-            // 用户名
+            // username
             if(searchMap.get("username")!=null && !"".equals(searchMap.get("username"))){
                 criteria.andLike("username","%"+searchMap.get("username")+"%");
             }
-            // 密码，加密存储
+            // password
             if(searchMap.get("password")!=null && !"".equals(searchMap.get("password"))){
                 criteria.andLike("password","%"+searchMap.get("password")+"%");
             }
-            // 注册手机号
-            if(searchMap.get("phone")!=null && !"".equals(searchMap.get("phone"))){
-                criteria.andLike("phone","%"+searchMap.get("phone")+"%");
-            }
-            // 注册邮箱
-            if(searchMap.get("email")!=null && !"".equals(searchMap.get("email"))){
-                criteria.andLike("email","%"+searchMap.get("email")+"%");
-            }
-            // 昵称
-            if(searchMap.get("nickName")!=null && !"".equals(searchMap.get("nickName"))){
-                criteria.andLike("nickName","%"+searchMap.get("nickName")+"%");
-            }
-            // 真实姓名
+            // 店名
             if(searchMap.get("name")!=null && !"".equals(searchMap.get("name"))){
                 criteria.andLike("name","%"+searchMap.get("name")+"%");
             }
-            // 使用状态（1正常 0非正常）
-            if(searchMap.get("status")!=null && !"".equals(searchMap.get("status"))){
-                criteria.andLike("status","%"+searchMap.get("status")+"%");
+            // 电话
+            if(searchMap.get("phone")!=null && !"".equals(searchMap.get("phone"))){
+                criteria.andLike("phone","%"+searchMap.get("phone")+"%");
             }
-            // 头像地址
+            // 地址
+            if(searchMap.get("address")!=null && !"".equals(searchMap.get("address"))){
+                criteria.andLike("address","%"+searchMap.get("address")+"%");
+            }
+            // 店铺照片
             if(searchMap.get("headPic")!=null && !"".equals(searchMap.get("headPic"))){
                 criteria.andLike("headPic","%"+searchMap.get("headPic")+"%");
             }
-            // 性别，1男，0女
-            if(searchMap.get("sex")!=null && !"".equals(searchMap.get("sex"))){
-                criteria.andLike("sex","%"+searchMap.get("sex")+"%");
+            // 状态
+            if(searchMap.get("status")!=null && !"".equals(searchMap.get("status"))){
+                criteria.andLike("status","%"+searchMap.get("status")+"%");
+            }
+            // 外键，关联运营商
+            if(searchMap.get("operatorsUsername")!=null && !"".equals(searchMap.get("operatorsUsername"))){
+                criteria.andLike("operatorsUsername","%"+searchMap.get("operatorsUsername")+"%");
             }
 
 
