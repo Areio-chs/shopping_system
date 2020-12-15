@@ -4,7 +4,7 @@ import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.Category;
 import com.shop.service.CategoryService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -13,7 +13,7 @@ import java.util.*;
 @RequestMapping("/category")
 public class CategoryController {
 
-    @Reference
+    @Autowired
     private CategoryService categoryService;
 
     @GetMapping("/findAll")

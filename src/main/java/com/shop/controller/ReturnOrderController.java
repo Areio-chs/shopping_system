@@ -5,7 +5,7 @@ import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.ReturnOrder;
 import com.shop.service.ReturnOrderService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.*;
 @RequestMapping("/returnOrder")
 public class ReturnOrderController {
 
-    @Reference
+    @Autowired
     private ReturnOrderService returnOrderService;
 
     @GetMapping("/findAll")
