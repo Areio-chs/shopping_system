@@ -4,16 +4,15 @@ import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.User;
 import com.shop.service.UserService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    @Reference
+    @Autowired
     private UserService userService;
 
     @GetMapping("/findAll")
@@ -44,6 +43,8 @@ public class UserController {
 
     @PostMapping("/add")
     public Result add(@RequestBody User user){
+        user.setId("0001");
+        System.out.println(user.toString());
         userService.add(user);
         return new Result();
     }

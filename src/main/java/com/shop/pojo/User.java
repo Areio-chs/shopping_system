@@ -13,9 +13,6 @@ public class User implements Serializable{
 	@Id
 	private String id;//id
 
-
-	
-
 	private String username;//用户名
 
 	private String password;//密码，加密存储
@@ -141,6 +138,23 @@ public class User implements Serializable{
 		this.lastLoginTime = lastLoginTime;
 	}
 
-
-	
+	@Override
+	public String toString() {
+		return "User{" +
+				"id='" + id + '\'' +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				", phone='" + phone + '\'' +
+				", email='" + email + '\'' +
+				", created=" + created +
+				", updated=" + updated +
+				", nickName='" + nickName + '\'' +
+				", name='" + name + '\'' +
+				", status='" + status + '\'' +
+				", headPic='" + headPic + '\'' +
+				", sex='" + sex + '\'' +
+				", birthday=" + birthday +
+				", lastLoginTime=" + lastLoginTime +
+				'}';
+	}
 }
