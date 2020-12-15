@@ -5,7 +5,7 @@ import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.Cart;
 import com.shop.service.CartService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.*;
 @RequestMapping("/cart")
 public class CartController {
 
-    @Reference
+    @Autowired
     private CartService cartService;
 
     @GetMapping("/findAll")

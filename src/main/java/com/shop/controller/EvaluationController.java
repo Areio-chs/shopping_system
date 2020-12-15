@@ -5,7 +5,7 @@ import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.Evaluation;
 import com.shop.service.EvaluationService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.*;
 @RequestMapping("/evaluation")
 public class EvaluationController {
 
-    @Reference
+    @Autowired
     private EvaluationService evaluationService;
 
     @GetMapping("/findAll")

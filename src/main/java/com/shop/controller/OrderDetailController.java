@@ -5,7 +5,7 @@ import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.OrderDetail;
 import com.shop.service.OrderDetailService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.*;
 @RequestMapping("/orderDetail")
 public class OrderDetailController {
 
-    @Reference
+    @Autowired
     private OrderDetailService orderDetailService;
 
     @GetMapping("/findAll")

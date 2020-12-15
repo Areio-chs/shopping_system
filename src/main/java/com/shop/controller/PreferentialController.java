@@ -4,7 +4,7 @@ import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.Preferential;
 import com.shop.service.PreferentialService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -13,7 +13,7 @@ import java.util.*;
 @RequestMapping("/preferential")
 public class PreferentialController {
 
-    @Reference
+    @Autowired
     private PreferentialService preferentialService;
 
     @GetMapping("/findAll")
