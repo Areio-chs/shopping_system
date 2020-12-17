@@ -26,7 +26,7 @@ public interface GoodsService {
 
     public Goods findById(String id);
 
-    public void add(Goods goods);
+    public void add(Goods goods,String spec);
 
 
     public void update(Goods goods);

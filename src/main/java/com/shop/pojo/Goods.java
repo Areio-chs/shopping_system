@@ -1,6 +1,10 @@
 package com.shop.pojo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 /**
  * goods实体类
@@ -12,9 +16,6 @@ public class Goods implements Serializable{
 
 	@Id
 	private String id;//id
-
-
-	
 
 	private String name;//名称
 
@@ -29,6 +30,7 @@ public class Goods implements Serializable{
 	private Integer stock;//库存
 
 	private Integer sales;//销量
+
 
 	private java.util.Date created;//创建时间
 
@@ -96,7 +98,8 @@ public class Goods implements Serializable{
 	public void setSales(Integer sales) {
 		this.sales = sales;
 	}
-
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyy-MM-dd ",timezone = "GMT+8")
 	public java.util.Date getCreated() {
 		return created;
 	}
@@ -104,6 +107,8 @@ public class Goods implements Serializable{
 		this.created = created;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "yyyy-MM-dd ",timezone = "GMT+8")
 	public java.util.Date getUpdated() {
 		return updated;
 	}

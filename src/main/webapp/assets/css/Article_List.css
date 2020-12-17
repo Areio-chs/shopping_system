@@ -1,0 +1,19 @@
+.tab_list{
+    table-layout:fixed;
+}
+.tab_list .atitle{
+    white-space:nowrap;
+    overflow:hidden;
+    word-break:keep-all;
+    text-overflow:ellipsis;
+}
+.tab_list .icon{
+    cursor: pointer;
+}
+.tab_list .edit_a{
+    background-color: #fff;
+    color: #3bb4f2!important;
+}
+.tab_list .del_a{
+    background-color: #fff;
+}

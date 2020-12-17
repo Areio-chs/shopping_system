@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/elementui.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+         .el-table{
+             font-size: 14px !important;
+             margin-bottom: 10px;
+         }
+        [v-cloak] {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="app" style="margin:0px 15px 0px;" v-cloak>
+    <el-card>
+        <!-- 搜索与添加区域 -->
+        <el-form :inline="true" ref="form"  size="mini" label-width="70px">
+            <el-form-item>
+                <el-input placeholder="请输入商品名称" v-model="searchMap.name" clearable>
+                    <el-button slot="append" icon="el-icon-search"  @click="getGoodsList()"></el-button>
+                </el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" icon="el-icon-plus" @click="addDialogVisible = true;selectAllCategory();selectAllSpec()">添加</el-button>
+            </el-form-item>
+        </el-form>
+
+        <el-table
+                ref="multipleTable"
+                :data="goodsList"
+                tooltip-effect="dark"
+                style="width: 100%"
+                size="mini"
+                @cell-click="cellClick"
+                :default-sort = "{prop: 'date', order: 'descending'}">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    type="index"
+                    label="#">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="商品名称"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    label="图片"
+                    width="120"
+            >
+<!--            <template slot-scope="scope">-->
+<!--                <img :src="scope.row.img">-->
+<!--            </template>-->
+                <template slot-scope="scope">
+                    <el-tooltip effect="dark" content="图片详情" placement="top" :enterable="false">
+                        <el-button type="primary" icon="el-icon-picture-outline" size="mini" @click="showGoodsDialog(scope.row.img)"></el-button>
+                    </el-tooltip>
+                </template>
+
+            </el-table-column>
+            <el-table-column
+                    prop="introduction"
+                    label="简介"
+                    width="120"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="price"
+                    label="价格"
+                    sortable>
+            </el-table-column>
+            <el-table-column
+                    prop="freight"
+                    label="运费"
+                    width="120"
+                    sortable>
+            </el-table-column>
+            <el-table-column
+                    prop="categoryName"
+                    label="分类"
+                    width="120"
+                    sortable>
+            </el-table-column>
+            <el-table-column
+                    prop="stock"
+                    label="库存"
+                    width="120"
+                    sortable>
+            </el-table-column>
+<!--            <el-table-column-->
+<!--                    prop="spec"-->
+<!--                    label="规格"-->
+<!--                    width="120"-->
+<!--                    sortable-->
+<!--                    show-overflow-tooltip-->
+<!--            >-->
+            </el-table-column>
+            <el-table-column
+                    prop="sales"
+                    label="销量"
+                    width="120"
+                    sortable>
+            </el-table-column>
+            <el-table-column
+                    prop="statusName"
+                    label="状态"
+                    width="120"
+                    >
+            </el-table-column>
+            <el-table-column
+                    prop="created"
+                    label="创建时间"
+                    width="120"
+                    sortable>
+            </el-table-column>
+            <el-table-column
+                    prop="updated"
+                    label="修改时间"
+                    width="120"
+                    sortable>
+            </el-table-column>
+            <el-table-column label="操作" width="180px">
+                <template slot-scope="scope">
+                    <!-- 编辑 -->
+                    <el-tooltip effect="dark" content="编辑信息" placement="top" :enterable="false">
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.id)"></el-button>
+                    </el-tooltip>
+                    <!-- 删除按钮 -->
+                    <el-tooltip effect="dark" content="删除信息" placement="top" :enterable="false">
+                        <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeGeneralById(scope.row.id)"></el-button>
+                    </el-tooltip>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <!-- 分页区域 -->
+        <el-pagination @size-change="getGoodsList"
+                       @current-change="getGoodsList"
+                       :current-page.sync="currentPage"
+                       :page-sizes="[1, 4, 8, 10]"
+                       :page-size="size"
+                       layout="total, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
+
+        <!-- 添加商品的对话框 -->
+        <el-dialog title="添加商品" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+            <!-- 内容主体区域 -->
+            <el-form :rules="addFormRules" ref="addFormRef" label-width="70px">
+                <el-form-item label="商品名称" >
+                    <el-input v-model="addForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="图片" >
+                    <el-input v-model="addForm.img"></el-input>
+                </el-form-item>
+                <el-form-item label="简介" >
+                    <el-input v-model="addForm.introduction"></el-input>
+                </el-form-item>
+
+                <el-form-item label="价格" >
+                    <el-input v-model="addForm.price"></el-input>
+                </el-form-item>
+                <el-form-item label="运费" >
+                    <el-input v-model="addForm.freight"></el-input>
+                </el-form-item>
+                <el-form-item label="分类" >
+                    <el-select v-model="addForm.categoryId" placeholder="请选择">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="规格" >
+                    <el-select v-model="specOptionValues" multiple placeholder="请选择">
+                        <el-option
+                                v-for="item in specOptions"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="库存" >
+                    <el-input v-model="addForm.stock"></el-input>
+                </el-form-item>
+            </el-form>
+            <!-- 底部区域 -->
+            <span slot="footer" class="dialog-footer">
+        					<el-button @click="addDialogVisible = false">取 消</el-button>
+        					<el-button type="primary" @click="saveGoods">确 定</el-button>
+      					</span>
+        </el-dialog>
+
+        <!-- 修改信息的对话框 -->
+        <el-dialog title="修改党总支信息" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
+            <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
+                <el-form-item label="名字">
+                    <el-input v-model="editForm.generalName"></el-input>
+                </el-form-item>
+                <el-form-item label="电话" prop="generalPhone">
+                    <el-input v-model="editForm.generalPhone"></el-input>
+                </el-form-item>
+                <el-form-item label="地址" prop="generalAddress">
+                    <el-input v-model="editForm.generalAddress"></el-input>
+                </el-form-item>
+                <el-form-item label="备注" prop="generalNote">
+                    <el-input
+                            type="textarea"
+                            :rows="2"
+                            placeholder="请输入内容"
+                            v-model="editForm.generalNote">
+                    </el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+        					<el-button @click="editDialogVisible = false">取 消</el-button>
+        					<el-button type="primary" @click="editGeneralInfo">确 定</el-button>
+      					</span>
+        </el-dialog>
+        <!-- 查看信息的对话框 -->
+        <el-dialog title="商品图片" :visible.sync="showDialogVisible" width="50%" @close="showDialogClosed">
+            <img :src="images">
+            <span slot="footer" class="dialog-footer">
+
+        					<el-button @click="showDialogVisible = false">关闭</el-button>
+      					</span>
+        </el-dialog>
+    </el-card>
+
+</div>
+</body>
+
+<!-- 引入组件库 -->
+<script src="js/vue.js"></script><!-- vue -->
+
+<script src="js/elementui.js"></script>
+
+<script src="js/axios.js"></script>
+
+<script type="text/javascript" src="plugins/layui/layui.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        // router,
+        data() {
+            // 验证手机号的规则
+            var checkMobile = (rule, value, cb) => {
+                // 验证手机号的正则表达式
+                const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+
+                if (regMobile.test(value)) {
+                    return cb()
+                }
+
+                cb(new Error('请输入合法的手机号'))
+            }
+            return {
+
+                // 获取党总支列表的参数对象
+                searchMap: {},
+                currentPage:1,
+                //每页大小
+                size:10,
+                //总数
+                total: 10,
+                options: [],//下拉选择内容
+                categoryOptionValue:'',
+                specOptions: [],
+                specOptionValues:[],
+                goodsList: [],
+
+                // 控制修改党总支对话框的显示与隐藏
+                editDialogVisible: false,
+                // 查询到的党总支信息对象
+                editForm: {},
+                // 修改表单的验证规则对象
+                editFormRules: {
+                    generalPhone: [
+                        { required: true, message: '请输入手机号码', trigger: 'blur' },
+                        { validator: checkMobile, trigger: 'blur' }
+                    ]
+                },
+                // 控制添加党总支对话框的显示与隐藏
+                addDialogVisible: false,
+                showDialogVisible:false,
+                // 添加商品的表单数据
+                addForm: {},
+                images:'https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/4612/28/6223/298257/5ba22d66Ef665222f/d97ed0b25cbe8c6e.jpg!q70.jpg.webp',
+                // 添加表单的验证规则对象
+                addFormRules: {
+                    generalPhone: [
+                        { required: true, message: '请输入手机号', trigger: 'blur' },
+                        { validator: checkMobile, trigger: 'blur' }
+                    ]
+                }
+            }
+        },
+        created() {
+            this.getGoodsList();
+            // this.selectAllSpec();
+        },
+        methods: {
+            showGoodsDialog(img){
+                this.images = img;
+                this.showDialogVisible = true
+            },
+            saveGoods(){
+                let spec = this.specOptionValues.toString();
+                axios.post(`/goods/${this.addForm.id==null?'add':'update'}.do?spec=${spec}`,this.addForm).then(response=>{
+                    this.addDialogVisible=false;
+                    this.getGoodsList();
+                })
+            },
+            selectAllCategory(){
+                axios.get('/category/findAll.do').then(response=>{
+                    this.options = response.data;
+                });
+            },
+            selectAllSpec(){
+                axios.get('/spec/findAll.do').then(response=>{
+                    this.specOptions = response.data;
+                });
+            },
+            getGoodsList() {
+                axios.post(`/goods/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
+                    this.goodsList = response.data.rows;
+                    this.total = response.data.total;
+                })
+            }
+            //     //向后台获取党总支列表
+            //     this.goodsList = [{
+            //         name: '苹果11',
+            //         price: '1500',
+            //         img: 'aa',
+            //         introduction:'苹果手机描述',
+            //         stock: '10',
+            //         spec: '红色，8GB+128GB',
+            //         sales: '2',
+            //         created: '2020/10/10',
+            //         updated: '2020/10/15',
+            //         statusName: '上架',
+            //         categoryName: '手机通讯类',
+            //         freight: '0'
+            //     }, {
+            //         name: '苹果13',
+            //         price: '1500',
+            //         img: 'aa',
+            //         introduction:'苹果手机描述',
+            //         stock: '10',
+            //         sales: '2',
+            //         created: '2020/10/10',
+            //         updated: '2020/10/15',
+            //         statusName: '上架',
+            //         categoryName: '手机通讯类',
+            //         freight: '0'
+            //     }, {
+            //         name: '苹果10',
+            //         price: '12200',
+            //         img: 'https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/4612/28/6223/298257/5ba22d66Ef665222f/d97ed0b25cbe8c6e.jpg!q70.jpg.webp',
+            //         introduction:'苹果手机描述',
+            //         stock: '10',
+            //         sales: '2',
+            //         created: '2020/10/10',
+            //         updated: '2020/10/15',
+            //         statusName: '上架',
+            //         categoryName: '手机通讯类',
+            //         freight: '0'
+            //     }, {
+            //         name: '苹果11',
+            //         price: '1500',
+            //         img: 'https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/4612/28/6223/298257/5ba22d66Ef665222f/d97ed0b25cbe8c6e.jpg!q70.jpg.webp',
+            //         introduction:'苹果手机描述',
+            //         stock: '10',
+            //         sales: '2',
+            //         created: '2020/10/10',
+            //         updated: '2020/10/15',
+            //         statusName: '上架',
+            //         categoryName: '手机通讯类',
+            //         freight: '0'
+            //     }, {
+            //         name: '苹果11',
+            //         price: '1500',
+            //         img: 'aa',
+            //         introduction:'苹果手机描述',
+            //         stock: '10',
+            //         sales: '2',
+            //         created: '2020/10/10',
+            //         updated: '2020/10/15',
+            //         statusName: '上架',
+            //         categoryName: '手机通讯类',
+            //         freight: '0'
+            //     }, {
+            //         name: '苹果11',
+            //         price: '1500',
+            //         img: 'aa',
+            //         introduction:'苹果手机描述',
+            //         stock: '10',
+            //         sales: '2',
+            //         created: '2020/10/10',
+            //         updated: '2020/10/15',
+            //         statusName: '上架',
+            //         categoryName: '手机通讯类',
+            //         freight: '0'
+            //     }]
+            // },
+                ,
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            },
+            // 监听修改党总支对话框的关闭事件
+            editDialogClosed() {
+                this.$refs.editFormRef.resetFields()
+            },
+            // 点击按钮，添加新党总支
+            addGeneral() {
+                this.$refs.addFormRef.validate(async valid => {
+                    if (!valid) return
+                    // 可以发起添加党总支的网络请求
+
+                    this.$message.success('添加党总支成功！')
+                    // 隐藏添加党总支的对话框
+                    this.addDialogVisible = false
+                    // 重新获取党总支列表数据
+                    this.getGoodsList()
+                })
+            },
+            // 监听添加党总支对话框的关闭事件
+            addDialogClosed() {
+                this.$refs.addFormRef.resetFields()
+            },
+            // 监听查看信息对话框的关闭事件
+            showDialogClosed() {
+                //this.$refs.addFormRef.resetFields()
+            },
+            // 展示编辑党总支的对话框
+            showEditDialog(id) {
+                // console.log(id)
+                this.editForm = {
+                    id: '1',
+                    generalName: '廖盛浪',
+                    generalPhone: '13710007291',
+                    generalAddress: '仲恺农业工程学院',
+                    generalNote: '啊啊啊啊啊啊啊啊啊啊啊'
+                }
+                this.editDialogVisible = true
+            },
+            // 修改党总支信息并提交
+            editGeneralInfo() {
+                this.$refs.editFormRef.validate(async valid => {
+                    if (!valid) return
+                    // 发起修改党总支信息的数据请求
+
+                    // 关闭对话框
+                    this.editDialogVisible = false
+                    // 刷新数据列表
+                    this.getGoodsList()
+                    // 提示修改成功
+                    this.$message.success('更新党总支信息成功！')
+                })
+            },
+            // 根据Id删除对应的党总支信息
+            async removeGeneralById(id) {
+                // 弹框询问党总支是否删除数据
+                const confirmResult = await this.$confirm(
+                    '此操作将永久删除该党总支, 是否继续?',
+                    '提示',
+                    {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }
+                ).catch(err => err)
+
+                // 如果党总支确认删除，则返回值为字符串 confirm
+                // 如果党总支取消了删除，则返回值为字符串 cancel
+                // console.log(confirmResult)
+                if (confirmResult !== 'confirm') {
+                    return this.$message.info('已取消删除')
+                }
+
+                //此处向后台发请求进行删除
+
+                this.$message.success('删除党总支成功！')
+                this.getGoodsList()
+            },
+            //单元格被点击
+            cellClick(row, column, cell, event) {
+                if (column.label != '操作'){
+                    parent.tab.tabAdd({
+                        href: 'general-party.html?'+row.id, //传党总支id过去
+                        icon: 'fa-address-book',
+                        title: '党总支详情'
+                    });
+
+                }else {
+                    return
+                }
+            }
+        }
+    })
+</script>
+
+
+</html>

@@ -1,10 +1,12 @@
 package com.shop.controller;
 
 
+import com.shop.pojo.GoodsSpec;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.Goods;
 import com.shop.service.GoodsService;
+import com.shop.service.GoodsSpecService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +18,6 @@ public class GoodsController {
 
     @Autowired
     private GoodsService goodsService;
-
     @GetMapping("/findAll")
     public List<Goods> findAll(){
         return goodsService.findAll();
@@ -44,8 +45,9 @@ public class GoodsController {
 
 
     @PostMapping("/add")
-    public Result add(@RequestBody Goods goods){
-        goodsService.add(goods);
+    public Result add(@RequestBody Goods goods,String spec){
+
+        goodsService.add(goods, spec);
         return new Result();
     }
 

@@ -1,0 +1,19 @@
+.bg{
+    background: #d7d7d7;
+}
+.fr{
+    float: right;
+}
+.fr a{
+    color: #505458;
+}
+.Tab{
+    width: 750px;
+    table-layout:fixed;
+}
+.Tab .extitle{
+    white-space:nowrap;
+    overflow:hidden;
+    word-break:keep-all;
+    text-overflow:ellipsis;
+}

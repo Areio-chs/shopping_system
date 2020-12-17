@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class Spec implements Serializable{
 
 	@Id
-	private Integer id;//ID
+	private String id;//ID
 
 
 	
@@ -24,11 +24,12 @@ public class Spec implements Serializable{
 
 	private Integer categoryId;//类别ID
 
-	
-	public Integer getId() {
+
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+
+	public void setId(String id) {
 		this.id = id;
 	}
 

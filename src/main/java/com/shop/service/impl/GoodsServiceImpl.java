@@ -3,6 +3,8 @@ package com.shop.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.shop.dao.GoodsMapper;
+import com.shop.dao.GoodsSpecMapper;
+import com.shop.pojo.GoodsSpec;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Goods;
 import com.shop.service.GoodsService;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +21,8 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
     private GoodsMapper goodsMapper;
+    @Autowired
+    private GoodsSpecMapper goodsSpecMapper;
 
     /**
      * 返回全部记录
@@ -76,8 +81,23 @@ public class GoodsServiceImpl implements GoodsService {
      * 新增
      * @param goods
      */
-    public void add(Goods goods) {
+    public void add(Goods goods,String spec) {
+        String[] atrArray = spec.split(",");
+
+        goods.setId("09");
+        goods.setCreated(new Date());
+        goods.setSales(0);
+        goods.setStatus("1");
+        System.out.println(goods.toString());
+        System.out.println(spec);
         goodsMapper.insert(goods);
+        //规格数组，在规格与数组中间表插上
+        GoodsSpec goodsSpec = new GoodsSpec();
+        for (int i=0;i<atrArray.length;i++){
+            goodsSpec.setGoodId(goods.getId());
+            goodsSpec.setSpecId(atrArray[i]);
+            goodsSpecMapper.insert(goodsSpec);
+        }
     }
 
     /**
@@ -105,44 +125,10 @@ public class GoodsServiceImpl implements GoodsService {
         Example example=new Example(Goods.class);
         Example.Criteria criteria = example.createCriteria();
         if(searchMap!=null){
-            // id
-            if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
-                criteria.andLike("id","%"+searchMap.get("id")+"%");
-            }
             // 名称
             if(searchMap.get("name")!=null && !"".equals(searchMap.get("name"))){
                 criteria.andLike("name","%"+searchMap.get("name")+"%");
             }
-            // 图片
-            if(searchMap.get("img")!=null && !"".equals(searchMap.get("img"))){
-                criteria.andLike("img","%"+searchMap.get("img")+"%");
-            }
-            // 简介
-            if(searchMap.get("introduction")!=null && !"".equals(searchMap.get("introduction"))){
-                criteria.andLike("introduction","%"+searchMap.get("introduction")+"%");
-            }
-            // 规格，由规格表拼接而成
-            if(searchMap.get("spec")!=null && !"".equals(searchMap.get("spec"))){
-                criteria.andLike("spec","%"+searchMap.get("spec")+"%");
-            }
-            // 状态
-            if(searchMap.get("status")!=null && !"".equals(searchMap.get("status"))){
-                criteria.andLike("status","%"+searchMap.get("status")+"%");
-            }
-            // 分类
-            if(searchMap.get("categoryId")!=null && !"".equals(searchMap.get("categoryId"))){
-                criteria.andLike("categoryId","%"+searchMap.get("categoryId")+"%");
-            }
-
-            // 库存
-            if(searchMap.get("stock")!=null ){
-                criteria.andEqualTo("stock",searchMap.get("stock"));
-            }
-            // 销量
-            if(searchMap.get("sales")!=null ){
-                criteria.andEqualTo("sales",searchMap.get("sales"));
-            }
-
         }
         return example;
     }

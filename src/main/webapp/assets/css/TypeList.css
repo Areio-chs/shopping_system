@@ -1,0 +1,43 @@
+.newType{
+    height: 100px;
+    line-height: 100px;
+}
+.newType label{
+    margin-right: 5px;
+}
+.newType input{
+    padding-left: 5px;
+    height: 50px;
+}
+.editType{
+    margin: 15px auto;
+}
+.editType input{
+    margin-left: 10px;
+}
+.typeListTable{
+    margin-top: 10px;
+    text-align: center;
+}
+.typeListTable th,td{
+    text-align: center;
+}
+.typeListTable .table_id{
+    width: 5%;
+}
+.typeListTable .table_op{
+    width: 20%;
+    text-align: left;
+    padding-left: 20px;
+}
+.typeListTable .operation{
+    /*margin-left: 50px;*/
+
+}
+.typeListTable .edit_a{
+    background-color: #fff;
+    color: #3bb4f2;
+}
+.typeListTable .del_a{
+    background-color: #fff;
+}

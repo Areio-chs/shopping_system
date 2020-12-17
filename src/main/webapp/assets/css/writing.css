@@ -1,0 +1,54 @@
+.cover img{
+    width: 200px;
+    height: 200px;
+    margin-left: 30px;
+    text-align: center;
+}
+.abstract{
+    height: 200px;
+}
+.abstract textarea{
+    resize: none;
+    height: 200px;
+}
+.TypeForm li{
+    margin-top: 10px;
+}
+
+.TypeForm li .type{
+    margin-right: 5px;
+}
+.type{
+    height: 50px;
+    line-height: 50px;
+    text-align: left;
+}
+.type .type_span{
+    margin-right: 5px;
+    font-size: 16px;
+}
+.u-box{
+    height: 37px;
+    line-height: 37px;
+}
+.box_span{
+    float: left;
+    width: 80px;
+    margin-right: 9px;
+    text-align: right;
+}
+.u-box input{
+    float: left;
+    width: 100px!important;
+    height: 37px;
+}
+.time-box{
+    height: 37px;
+    margin-top: 10px;
+    line-height: 37px;
+}
+.time-box input{
+    float: left;
+    width: 100px!important;
+    height: 37px;
+}
