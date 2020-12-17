@@ -37,7 +37,7 @@ public class SpecController {
     }
 
     @GetMapping("/findById")
-    public Spec findById(Integer id){
+    public Spec findById(String id){
         return specService.findById(id);
     }
 
@@ -55,7 +55,7 @@ public class SpecController {
     }
 
     @GetMapping("/delete")
-    public Result delete(Integer id){
+    public Result delete(String id){
         specService.delete(id);
         return new Result();
     }

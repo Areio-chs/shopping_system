@@ -24,11 +24,10 @@ public class Spec implements Serializable{
 
 	private Integer categoryId;//类别ID
 
-
+	
 	public String getId() {
 		return id;
 	}
-
 	public void setId(String id) {
 		this.id = id;
 	}

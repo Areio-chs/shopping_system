@@ -8,6 +8,7 @@ import com.shop.pojo.Goods;
 import com.shop.service.GoodsService;
 import com.shop.service.GoodsSpecService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -29,13 +30,12 @@ public class GoodsController {
     }
 
     @PostMapping("/findList")
-    public List<Goods> findList(@RequestBody Map<String,Object> searchMap){
-        return goodsService.findList(searchMap);
-    }
+    public List<Goods> findList(@RequestBody Map<String,Object> searchMap){ return goodsService.findList(searchMap); }
 
     @PostMapping("/findPage")
     public PageResult<Goods> findPage(@RequestBody Map<String,Object> searchMap,int page, int size){
-        return  goodsService.findPage(searchMap,page,size);
+        System.out.println(searchMap.get("name"));
+        return goodsService.findPage(searchMap,page,size);
     }
 
     @GetMapping("/findById")

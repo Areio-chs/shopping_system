@@ -33,5 +33,4 @@ public interface GoodsService {
 
 
     public void delete(String id);
-
 }

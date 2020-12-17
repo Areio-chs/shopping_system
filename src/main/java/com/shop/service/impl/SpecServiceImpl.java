@@ -68,7 +68,7 @@ public class SpecServiceImpl implements SpecService {
      * @param id
      * @return
      */
-    public Spec findById(Integer id) {
+    public Spec findById(String id) {
         return specMapper.selectByPrimaryKey(id);
     }
 
@@ -92,7 +92,7 @@ public class SpecServiceImpl implements SpecService {
      *  删除
      * @param id
      */
-    public void delete(Integer id) {
+    public void delete(String id) {
         specMapper.deleteByPrimaryKey(id);
     }
 

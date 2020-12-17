@@ -24,7 +24,7 @@ public interface SpecService {
     public PageResult<Spec> findPage(Map<String, Object> searchMap, int page, int size);
 
 
-    public Spec findById(Integer id);
+    public Spec findById(String id);
 
     public void add(Spec spec);
 
@@ -32,6 +32,6 @@ public interface SpecService {
     public void update(Spec spec);
 
 
-    public void delete(Integer id);
+    public void delete(String id);
 
 }

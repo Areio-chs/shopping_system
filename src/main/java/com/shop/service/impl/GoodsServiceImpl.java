@@ -2,8 +2,10 @@ package com.shop.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.shop.dao.CategoryMapper;
 import com.shop.dao.GoodsMapper;
 import com.shop.dao.GoodsSpecMapper;
+import com.shop.pojo.Category;
 import com.shop.pojo.GoodsSpec;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Goods;
@@ -23,6 +25,8 @@ public class GoodsServiceImpl implements GoodsService {
     private GoodsMapper goodsMapper;
     @Autowired
     private GoodsSpecMapper goodsSpecMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     /**
      * 返回全部记录
@@ -64,8 +68,15 @@ public class GoodsServiceImpl implements GoodsService {
     public PageResult<Goods> findPage(Map<String, Object> searchMap, int page, int size) {
         PageHelper.startPage(page,size);
         Example example = createExample(searchMap);
-        Page<Goods> goodss = (Page<Goods>) goodsMapper.selectByExample(example);
-        return new PageResult<Goods>(goodss.getTotal(),goodss.getResult());
+        List<Goods> goodsList = goodsMapper.selectByExample(example);
+        for (Goods goods : goodsList) {
+            if (!(goods.getCategoryId()==null)){
+                Category category = categoryMapper.selectByPrimaryKey(goods.getCategoryId());
+                goods.setCategoryName(category.getName());
+            }
+        }
+        Page<Goods> goods = (Page<Goods>) goodsList;
+        return new PageResult<Goods>(goods.getTotal(),goods.getResult());
     }
 
     /**

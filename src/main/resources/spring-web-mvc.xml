@@ -16,7 +16,7 @@
 	<!-- 配置视图解析器 -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/"/>
-		<property name="suffix" value=".jsp"/>
+		<property name="suffix" value=".html"/>
 	</bean>
     <!-- 配置文件上传解析器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -25,5 +25,12 @@
             <value>5242880</value>
         </property>
     </bean>
+	<!-- 设置静态资源不过滤 -->
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/img/" mapping="/images/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
+
+	<!-- 配置静态文件放行 -->
+	<mvc:default-servlet-handler />
 
 </beans>

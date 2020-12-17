@@ -1,10 +1,7 @@
 package com.shop.pojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.io.Serializable;
 /**
  * goods实体类
@@ -39,6 +36,18 @@ public class Goods implements Serializable{
 	private String status;//状态
 
 	private String categoryId;//分类
+
+	//处理不在数据库的字段
+	@Transient
+	private String categoryName;//党支部名
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
 
 	private Double freight;//运费
 
