@@ -71,7 +71,7 @@
 	<div class="login-box">
 
 		<!--loginArea-->
-		<div class="loginArea">
+		<div class="loginArea" id="app">
 			<div class="py-container login">
 				<div class="loginform">
 					<ul class="sui-nav nav-tabs tab-wraped">
@@ -145,6 +145,25 @@
 	</div>
 
 <script type="text/javascript">
+	new Vue({
+		el: '#app',
+		data(){
+			return {
+
+			}
+		},
+		created(){
+			this.fetchData();
+		},
+		methods:{
+			fetchData (){
+				axios.post(`/sku/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
+					this.tableData = response.data.rows;
+					this.total = response.data.total;
+				});
+			}
+		}
+	})
 	function switchSuiForm() {
 		document.getElementById('index').className = "tab-pane";
 		document.getElementById('profile').className = "tab-pane active";

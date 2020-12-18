@@ -28,8 +28,9 @@ public interface GoodsService {
 
     public void add(Goods goods,String spec);
 
+    List<String> findSpecList(String id);
 
-    public void update(Goods goods);
+    public void update(Goods goods,String spec);
 
 
     public void delete(String id);

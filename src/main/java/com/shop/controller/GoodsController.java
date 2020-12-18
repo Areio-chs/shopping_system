@@ -43,6 +43,11 @@ public class GoodsController {
         return goodsService.findById(id);
     }
 
+    @GetMapping("/findSpec")
+    public List<String> findSpec(String id){
+        return goodsService.findSpecList(id);
+    }
+
 
     @PostMapping("/add")
     public Result add(@RequestBody Goods goods,String spec){
@@ -52,13 +57,15 @@ public class GoodsController {
     }
 
     @PostMapping("/update")
-    public Result update(@RequestBody Goods goods){
-        goodsService.update(goods);
+    public Result update(@RequestBody Goods goods,String spec){
+//        System.out.println(spec+"!!!!!!");
+        goodsService.update(goods,spec);
         return new Result();
     }
 
     @GetMapping("/delete")
     public Result delete(String id){
+        //除了删除商品的东西，还要删除商品的规格
         goodsService.delete(id);
         return new Result();
     }

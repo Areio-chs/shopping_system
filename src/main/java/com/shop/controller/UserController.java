@@ -15,6 +15,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("/add")
+    public Result add(@RequestBody User user){
+        user.setId("0001");
+        System.out.println(user.toString());
+        userService.add(user);
+        return new Result();
+    }
+
     @GetMapping("/findAll")
     public List<User> findAll(){
         return userService.findAll();
@@ -40,14 +48,14 @@ public class UserController {
         return userService.findById(id);
     }
 
+    @PostMapping("/login")
+    public Result loginUser(String username,String password){
 
-    @PostMapping("/add")
-    public Result add(@RequestBody User user){
-        user.setId("0001");
-        System.out.println(user.toString());
-        userService.add(user);
-        return new Result();
+        return null;
     }
+
+
+
 
     @PostMapping("/update")
     public Result update(@RequestBody User user){

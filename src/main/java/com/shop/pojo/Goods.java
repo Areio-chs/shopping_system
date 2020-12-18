@@ -28,18 +28,37 @@ public class Goods implements Serializable{
 
 	private Integer sales;//销量
 
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date created;//创建时间
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date updated;//更新时间
 
 	private String status;//状态
 
 	private String categoryId;//分类
 
+	private String storeId;
 	//处理不在数据库的字段
 	@Transient
-	private String categoryName;//党支部名
+	private String categoryName;//分类名
+	@Transient
+	private String statusName;//状态名
+
+	public String getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(String storeId) {
+		this.storeId = storeId;
+	}
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
 
 	public String getCategoryName() {
 		return categoryName;
@@ -107,8 +126,7 @@ public class Goods implements Serializable{
 	public void setSales(Integer sales) {
 		this.sales = sales;
 	}
-	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern = "yyyy-MM-dd ",timezone = "GMT+8")
+
 	public java.util.Date getCreated() {
 		return created;
 	}
@@ -116,8 +134,7 @@ public class Goods implements Serializable{
 		this.created = created;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern = "yyyy-MM-dd ",timezone = "GMT+8")
+
 	public java.util.Date getUpdated() {
 		return updated;
 	}
@@ -147,5 +164,25 @@ public class Goods implements Serializable{
 	}
 
 
-	
+	@Override
+	public String toString() {
+		return "Goods{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", price=" + price +
+				", img='" + img + '\'' +
+				", introduction='" + introduction + '\'' +
+				", spec='" + spec + '\'' +
+				", stock=" + stock +
+				", sales=" + sales +
+				", created=" + created +
+				", updated=" + updated +
+				", status='" + status + '\'' +
+				", categoryId='" + categoryId + '\'' +
+				", storeId='" + storeId + '\'' +
+				", categoryName='" + categoryName + '\'' +
+				", statusName='" + statusName + '\'' +
+				", freight=" + freight +
+				'}';
+	}
 }
