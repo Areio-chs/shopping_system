@@ -10,6 +10,12 @@
 
     <link rel="stylesheet" type="text/css" href="./css/all.css" />
     <link rel="stylesheet" type="text/css" href="./css/pages-login.css" />
+	<style>
+		.message{
+			font-size: 13px;
+			color: red;
+		}
+	</style>
 </head>
 
 <body>
@@ -71,7 +77,7 @@
 	<div class="login-box">
 
 		<!--loginArea-->
-		<div class="loginArea">
+		<div id="app" class="loginArea">
 			<div class="py-container login">
 				<div class="loginform">
 					<ul class="sui-nav nav-tabs tab-wraped">
@@ -94,10 +100,18 @@
 						<div id="profile" class="tab-pane active">
 							<form class="sui-form">
 								<div class="input-prepend"><span class="add-on loginname"></span>
-									<input id="inputName" type="text" placeholder="用户名/手机号" class="span2 input-xfat">
+									<input id="inputName" name="username" type="text" v-model="pojo.username" ref="nameInput" @blur="checkName()" placeholder="请输入用户名" class="span2 input-xfat">
+
+								</div>
+								<div>
+									<span class="message">{{nameMessage}}</span>
 								</div>
 								<div class="input-prepend"><span class="add-on loginpwd"></span>
-									<input id="inputPassword" type="password" placeholder="请输入密码" class="span2 input-xfat">
+									<input id="inputPassword" name="password" type="password" v-model="pojo.password" ref="pwInput" @blur="checkPassword()" placeholder="请输入密码" class="span2 input-xfat">
+
+								</div>
+								<div>
+									<span class="message">{{pwMessage}}</span>
 								</div>
 								<div class="setting">
 									<label class="checkbox inline">
@@ -144,7 +158,72 @@
 		</div>
 	</div>
 
+	<script src="js/vue.js"></script>
+	<script src="js/axios.js"></script>
+
 <script type="text/javascript">
+	new Vue({
+		el:"#app",
+		data(){
+			return {
+				// 自定义的属性
+				pojo:{} ,//表单上绑定的实体，页面填写后自动绑定到vue的pojo里
+				password:'',//表单上的确认密码
+				nameMessage:'',
+				pwMessage:'',
+				usLength:'',
+				pwLength:''
+			}
+		},
+		methods:{
+			/* 注册
+			save(){
+
+				// this.checkPhone();
+				// if(this.password!=this.pojo.password){
+				// alert("两次输入的密码不一致");
+				// return ;//不再往下执行
+				// }
+				axios.post(`/user/add.do`,this.pojo).then( response=>{
+					//清空变量
+					this.pojo={};
+					this.password="";
+				})
+
+
+			}
+			*/
+			checkName(){
+				let userName = this.$refs.nameInput.value;
+				//alert(userName);
+				if (userName==""){
+					this.nameMessage="用户名不能为空";
+					return;
+				}
+				var usLength = userName.length;
+				if(4>usLength||usLength>16){
+					this.nameMessage="请输入正确的用户名长度(4~16位长度)"
+					return;
+				}
+				this.nameMessage="";
+			},
+			checkPassword(){
+				let password = this.$refs.pwInput.value;
+				if (password==""){
+					this.pwMessage="登录密码不能为空";
+					return;
+				}
+				var pwLength = password.length;
+				if(4>pwLength||pwLength>16){
+					this.pwMessage="请输入正确的密码长度(4~16位长度)"
+					return;
+				}
+				this.pwMessage="";
+			}
+		}
+	});
+
+
 	function switchSuiForm() {
 		document.getElementById('index').className = "tab-pane";
 		document.getElementById('profile').className = "tab-pane active";
