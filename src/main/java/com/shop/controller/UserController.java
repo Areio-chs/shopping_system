@@ -16,13 +16,10 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/add")
-    public Result add(@RequestBody User user){
-        user.setId("0001");
-        System.out.println(user.toString());
-        userService.add(user);
-        return new Result();
-    }
+    public int add(@RequestBody User user){
+       return userService.add(user);
 
+    }
     @GetMapping("/findAll")
     public List<User> findAll(){
         return userService.findAll();

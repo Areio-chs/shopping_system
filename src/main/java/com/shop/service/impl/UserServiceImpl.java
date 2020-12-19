@@ -7,11 +7,13 @@ import com.shop.dao.UserMapper;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.User;
 import com.shop.service.UserService;
+import com.shop.utils.RandomIdUtils;
 import com.shop.utils.commUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -78,9 +80,27 @@ public class UserServiceImpl implements UserService {
      * 新增
      * @param user
      */
-    public void add(User user) {
-        userMapper.insert(user);
+    public int add(User user) {
+        int result = findUserByName(user.getUsername());
+        if (result==1){
+        user.setId(RandomIdUtils.getUUID());
+        user.setCreated(new Date());
+        user.setStatus("1");
+        userMapper.insert(user);}
+        return result;
     }
+
+    public int findUserByName(String username){
+        int result=1;
+        User user = new User();
+        user.setUsername(username);
+        List<User> userList = userMapper.select(user);
+        if (commUtils.collectionEffective(userList)){
+            result = 0;//代表该用户名已存在
+        }
+        return result;
+    }
+
 
     /**
      * 修改

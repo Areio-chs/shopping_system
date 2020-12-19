@@ -14,6 +14,12 @@ public class RandomIdUtils {
         return resu;
     }
 
+    public static  String getUUID(){//生成32位id
+        UUID uuid = UUID.randomUUID();
+        String str = uuid.toString();
+        String uuidStr =str.replace("-","");
+        return uuidStr;
+    }
     public static void main(String[] args) {
         System.out.println(getId());
     }

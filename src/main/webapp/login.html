@@ -184,60 +184,48 @@
 		methods:{
 
 			login(){
-				axios.post(`/user/login.do`,this.pojo).then( response=>{
-					this.user=response.data;
-					this.username = response.data.username;
-					if (this.username==null){
-						this.errorMessage="用户名不存在，或密码有误";
-					}else {
-						sessionStorage.setItem("userInfo",JSON.stringify(this.user));
-						window.location.href="index.html"
-					}
-				})
+				if (this.checkName()&&this.checkPassword()) {
+					axios.post(`/user/login.do`, this.pojo).then(response => {
+						this.user = response.data;
+						this.username = response.data.username;
+						if (this.username == null) {
+							this.errorMessage = "用户名不存在，或密码有误";
+						} else {
+							sessionStorage.setItem("userInfo", JSON.stringify(this.user));
+							window.location.href = "index.html"
+						}
+					})
+				}
 			},
-			/* 注册
-			save(){
 
-				// this.checkPhone();
-				// if(this.password!=this.pojo.password){
-				// alert("两次输入的密码不一致");
-				// return ;//不再往下执行
-				// }
-				axios.post(`/user/add.do`,this.pojo).then( response=>{
-					//清空变量
-					this.pojo={};
-					this.password="";
-				})
-
-
-			}
-			*/
 			checkName(){
 				let userName = this.$refs.nameInput.value;
 				//alert(userName);
 				if (userName==""){
 					this.nameMessage="用户名不能为空";
-					return;
+					return false;
 				}
 				var usLength = userName.length;
 				if(4>usLength||usLength>16){
 					this.nameMessage="请输入正确的用户名长度(4~16位长度)"
-					return;
+					return false;
 				}
 				this.nameMessage="";
+				return true;
 			},
 			checkPassword(){
 				let password = this.$refs.pwInput.value;
 				if (password==""){
 					this.pwMessage="登录密码不能为空";
-					return;
+					return false;
 				}
 				var pwLength = password.length;
 				if(4>pwLength||pwLength>16){
 					this.pwMessage="请输入正确的密码长度(4~16位长度)"
-					return;
+					return false;
 				}
 				this.pwMessage="";
+				return true;
 			}
 		}
 	});

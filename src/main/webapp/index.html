@@ -1390,7 +1390,6 @@
             fetchData() {
                 axios.get(`/category/findAll.do`).then(response => {
                     this.categoryList = response.data;
-                    // alert(this.loginUserName);
                 });
             },
             submitForm() {

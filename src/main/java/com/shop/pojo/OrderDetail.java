@@ -1,6 +1,7 @@
 package com.shop.pojo;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 /**
  * orderDetail实体类
@@ -23,6 +24,8 @@ public class OrderDetail implements Serializable{
 	private String goodsName;//商品名
 
 	private String isReturn;//是否退货
+	@Transient
+	private String isReturnName;
 
 	private String image;//图片地址
 
@@ -37,7 +40,8 @@ public class OrderDetail implements Serializable{
 	private Double payMoney;//实付金额
 
 	private String buyerRate;//是否评价
-
+	@Transient
+	private String commentContent;
 	
 	public String getId() {
 		return id;
@@ -123,6 +127,19 @@ public class OrderDetail implements Serializable{
 		this.buyerRate = buyerRate;
 	}
 
+	public String getIsReturnName() {
+		return isReturnName;
+	}
 
-	
+	public void setIsReturnName(String isReturnName) {
+		this.isReturnName = isReturnName;
+	}
+
+	public String getCommentContent() {
+		return commentContent;
+	}
+
+	public void setCommentContent(String commentContent) {
+		this.commentContent = commentContent;
+	}
 }

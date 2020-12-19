@@ -1,6 +1,7 @@
 package com.shop.pojo;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 /**
  * order实体类
@@ -21,6 +22,8 @@ public class Order implements Serializable{
 	private String userName;//用户昵称
 
 	private String status;//状态(1未付款/2已付款/3已发货/4已完成)
+	@Transient
+	private String statusName;
 
 	private Double freight;//订单总运费
 
@@ -38,6 +41,9 @@ public class Order implements Serializable{
 
 	private String paymentype;//支付类型，1、在线支付，2、货到付款
 
+	@Transient
+	private String paymentypeName;
+
 	private java.util.Date created;//创建时间
 
 	private java.util.Date updated;//更新时间
@@ -52,7 +58,7 @@ public class Order implements Serializable{
 
 	private String message;//买家留言
 
-	private String orderId;//订单号
+	private String orderNum;//订单号
 
 	private String receiverContact;//收货人
 
@@ -198,11 +204,12 @@ public class Order implements Serializable{
 		this.message = message;
 	}
 
-	public String getOrderId() {
-		return orderId;
+	public String getOrderNum() {
+		return orderNum;
 	}
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
+
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
 	}
 
 	public String getReceiverContact() {
@@ -240,6 +247,19 @@ public class Order implements Serializable{
 		this.storeId = storeId;
 	}
 
+	public String getStatusName() {
+		return statusName;
+	}
 
-	
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+	public String getPaymentypeName() {
+		return paymentypeName;
+	}
+
+	public void setPaymentypeName(String paymentypeName) {
+		this.paymentypeName = paymentypeName;
+	}
 }

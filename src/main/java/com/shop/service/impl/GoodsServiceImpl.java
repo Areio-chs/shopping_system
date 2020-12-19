@@ -119,7 +119,7 @@ public class GoodsServiceImpl implements GoodsService {
         String[] atrArray = spec.split(",");
         //暂时设置都是商家1在新增商品
         goods.setStoreId("1");
-        goods.setId(RandomIdUtils.getId());
+        goods.setId(RandomIdUtils.getUUID());
 //        goods.setId("15");
         goods.setCreated(new Date());
         goods.setSales(0);

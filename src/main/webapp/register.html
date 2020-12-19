@@ -83,6 +83,7 @@
 			<h3>注册新用户<span class="go">我有账号，去<a href="login.html" target="_blank">登录</a></span></h3>
 			<div class="info">
 				<form class="sui-form form-horizontal" >
+					<span class="message " style="text-align: center">{{errorMessage}}</span>
 					<!--					<div id="message" v-if="this.message!=null||this.message!=''"></div>-->
 					<div class="control-group">
 						<label for="userName" class="control-label">会员名：</label>
@@ -166,66 +167,74 @@
 				pwcMessage:'',
 				usLength:'',
 				pwLength:'',
-				pwcLength:''
+				pwcLength:'',
+				errorMessage:''
 			}
 		},
 		methods:{
 			// 注册
 			save(){
-
-				// this.checkPhone();
-				// if(this.password!=this.pojo.password){
-				// alert("两次输入的密码不一致");
-				// return ;//不再往下执行
-				// }
-				axios.post(`/user/add.do`,this.pojo).then( response=>{
-					//清空变量
-					this.pojo={};
-					this.password="";
-				})
-
-
+				if (this.checkName()&&this.checkPhone()&&this.checkPassword()&&this.checkPassword2()){
+					// alert("校验成功")
+					axios.post(`/user/add.do`,this.pojo).then( response=>{
+						let result = response.data;
+						if (result==1){
+							window.location.href="login.html";
+						}else {
+							this.errorMessage="该用户已经存在";
+						}
+						//清空变量
+						this.pojo={};
+						this.password="";
+					})
+				}
 			},
 			checkPhone(){
+
 				let phone = this.$refs.phoneInput.value;
 				//alert(phone);
 				if (phone==""){
 					this.phoneMessage="手机不可为空";
-					return;//不再继续往下执行
+					return false;//不再继续往下执行
 				}
 				var regPhone = /(^[0-9]{3,4}\-[0-9]{3,8}$)|(^[0-9]{3,8}$)|(^[0−9]3,4[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$)/;//以1为开头,第二位可为3,4,5,6,7,8,9中的任意一位,最后以0-9的9个整数结尾
 				if (!regPhone.test(phone)){
 					this.phoneMessage="请输入合法的手机号"
-					return;//不再继续往下执行
+					return false;//不再继续往下执行
 				}
 				this.phoneMessage="";
+				return true;
+
 			},
 			checkName(){
+				this.errorMessage="";
 				let userName = this.$refs.nameInput.value;
 				//alert(userName);
 				if (userName==""){
 					this.nameMessage="用户名不能为空";
-					return;
+					return false;
 				}
 				var usLength = userName.length;
 				if(4>usLength||usLength>16){
 					this.nameMessage="请输入正确的用户名长度(4~16位长度)"
-					return;
+					return false;
 				}
 				this.nameMessage="";
+				return true;
 			},
 			checkPassword(){
 				let password = this.$refs.pwInput.value;
 				if (password==""){
 					this.pwMessage="登录密码不能为空";
-					return;
+					return false;
 				}
 				var pwLength = password.length;
 				if(4>pwLength||pwLength>16){
 					this.pwMessage="请输入正确的密码长度(4~16位长度)"
-					return;
+					return false;
 				}
 				this.pwMessage="";
+				return true;
 			},
 			checkPassword2(){
 				let password = this.$refs.pwInput.value;
@@ -233,18 +242,19 @@
 
 				if (passwordC==""){
 					this.pwcMessage="重复密码不能为空";
-					return;
+					return false;
 				}
 				if (password!=passwordC){
 					this.pwcMessage="两次密码输入不一致"
-					return;
+					return false;
 				}
 				var pwcLength = passwordC.length;
 				if(4>pwcLength||pwcLength>16){
 					this.pwcMessage="请输入正确的密码长度(4~16位长度)"
-					return;
+					return false;
 				}
 				this.pwcMessage="";
+				return true;
 			}
 		}
 	});

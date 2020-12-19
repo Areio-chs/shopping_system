@@ -24,7 +24,7 @@ public interface UserService {
 
     public User findById(String id);
 
-    public void add(User user);
+    public int add(User user);
 
 
     public void update(User user);
