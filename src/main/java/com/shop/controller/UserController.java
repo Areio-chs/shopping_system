@@ -49,13 +49,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result loginUser(String username,String password){
-
-        return null;
+    public User loginUser(@RequestBody User user){
+       return userService.doLogin(user);
+       //如果返回的用户是空的，那么就说明登录失败，返回的用户非空，说明登录成功
     }
-
-
-
 
     @PostMapping("/update")
     public Result update(@RequestBody User user){

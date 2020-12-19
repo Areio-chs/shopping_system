@@ -7,6 +7,7 @@ import com.shop.dao.UserMapper;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.User;
 import com.shop.service.UserService;
+import com.shop.utils.commUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -95,6 +96,20 @@ public class UserServiceImpl implements UserService {
      */
     public void delete(String id) {
         userMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public User doLogin(User user) {
+        User user1 = new User();
+        user1.setUsername(user.getUsername());
+        user1.setPassword(user.getPassword());
+        List<User> userList = userMapper.select(user1);
+        User user2 = new User();
+        if (commUtils.collectionEffective(userList)){
+            //判断这个集合是否为空再取，
+            user2 = userList.get(0);
+        }
+        return user2;
     }
 
     /**

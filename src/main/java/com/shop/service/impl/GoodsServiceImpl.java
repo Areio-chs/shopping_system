@@ -8,6 +8,7 @@ import com.shop.dao.GoodsSpecMapper;
 import com.shop.dao.SpecMapper;
 import com.shop.pojo.*;
 import com.shop.service.GoodsService;
+import com.shop.utils.RandomIdUtils;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -116,9 +117,10 @@ public class GoodsServiceImpl implements GoodsService {
      */
     public void add(Goods goods,String spec) {
         String[] atrArray = spec.split(",");
-
+        //暂时设置都是商家1在新增商品
         goods.setStoreId("1");
-        goods.setId("15");
+        goods.setId(RandomIdUtils.getId());
+//        goods.setId("15");
         goods.setCreated(new Date());
         goods.setSales(0);
         goods.setStatus("1");

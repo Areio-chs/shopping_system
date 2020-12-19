@@ -3,8 +3,641 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/elementui.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+        .el-table{
+            font-size: 14px !important;
+            margin-bottom: 10px;
+        }
+        [v-cloak] {
+            display: none;
+        }
+
+    </style>
 </head>
 <body>
-订单管理页面
+
+<div id="app" style="margin:0px 15px 0px;" v-cloak>
+    <el-card>
+        <!-- 搜索与添加区域 -->
+        <el-form :inline="true" ref="form"  size="mini" label-width="70px">
+            <el-form-item>
+                <el-input placeholder="请输入商品名称" v-model="searchMap.name" clearable>
+                    <el-button slot="append" icon="el-icon-search"  @click="getGoodsList()"></el-button>
+                </el-input>
+            </el-form-item>
+
+        </el-form>
+
+        <el-table
+                ref="multipleTable"
+                :data="GeneralList"
+                tooltip-effect="dark"
+                style="width: 100%"
+                size="mini"
+                @cell-click="cellClick"
+                :default-sort = "{prop: 'date', order: 'descending'}">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    type="index"
+                    label="#">
+            </el-table-column>
+            <el-table-column
+                    prop="orderId"
+                    label="订单编号"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="userName"
+                    label="用户名"
+                    width="120"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="statusName"
+                    label="订单状态"
+                    width="120"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="message"
+                    label="买家留言"
+                    width="120"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="freight"
+                    label="总运费"
+                    width="120"
+                    sortable>
+            </el-table-column>
+            <el-table-column
+                    prop="trackingName"
+                    label="快递公司"
+                    width="120"
+                   >
+            </el-table-column>
+            <el-table-column
+                    prop="trackingNum"
+                    label="快递单号"
+                    width="120"
+                    sortable>
+            </el-table-column>
+
+            <el-table-column
+                    prop="totalNum"
+                    label="数量合计"
+                    width="120"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="totalMoney"
+                    label="订单总价"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="payMoney"
+                    label="实付金额"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="receiverContact"
+                    label="收货人"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="receiverMobile"
+                    label="联系方式"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="receiverAddress"
+                    label="收货地址"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="buyerRateName"
+                    label="评价状态"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="paymentypeName"
+                    label="支付类型"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="created"
+                    label="创建时间"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="updated"
+                    label="更新时间"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="paymenttime"
+                    label="付款时间"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="sendtime"
+                    label="发货时间"
+                    width="120"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+                prop="endtime"
+                label="交易完成时间"
+                width="130"
+                sortable
+                show-overflow-tooltip
+        >
+        </el-table-column>
+            <el-table-column
+                    prop="closetime"
+                    label="交易关闭时间"
+                    width="130"
+                    sortable
+                    show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column label="操作" width="180px">
+                <template slot-scope="scope">
+
+                    <!-- 编辑 -->
+                    <el-tooltip effect="dark" content="发货" placement="top" :enterable="false">
+                        <el-button type="primary"  size="mini" @click="showEditDialog(scope.row.id);selectAllCategory();selectAllSpec();">发货</el-button>
+                    </el-tooltip>
+                    <!-- 删除按钮 -->
+                    <el-tooltip effect="dark" content="订单详情" placement="top" :enterable="false">
+                        <el-button type="danger"  size="mini" @click="showOrderDetail(scope.row.id);">订单详情</el-button>
+                    </el-tooltip>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <!-- 分页区域 -->
+        <el-pagination @size-change="getGoodsList"
+                       @current-change="getGoodsList"
+                       :current-page.sync="currentPage"
+                       :page-sizes="[1, 4, 8, 10]"
+                       :page-size="size"
+                       layout="total, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
+
+
+
+        <!-- 订单详情对话框 -->
+        <el-dialog title="订单详情" :visible.sync="OrderDetaiDialogVisible" width="80%" @close="editDialogClosed">
+            <el-table
+                    ref="multipleTable"
+                    :data="OrderDetailList"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    size="mini"
+                    @cell-click="cellClick"
+                    :default-sort = "{prop: 'date', order: 'descending'}">
+                <el-table-column
+                        type="selection"
+                        width="55">
+                </el-table-column>
+                <el-table-column
+                        type="index"
+                        label="#">
+                </el-table-column>
+                <el-table-column
+                        prop="goodsName"
+                        label="商品名称"
+                        width="120"
+                        sortable
+                        show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="isReturnName"
+                        label="退货状态"
+                        width="120"
+                        show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                        prop="goodsQuantity"
+                        label="商品数量"
+                        width="120"
+                        show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                        prop="goodsPrice"
+                        label="商品单价"
+                        width="120"
+                        show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                        prop="freight"
+                        label="运费"
+                        width="120"
+                        sortable>
+                </el-table-column>
+                <el-table-column
+                        prop="totalMoney"
+                        label="总金额"
+                        width="120"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="payMoney"
+                        label="实付金额"
+                        width="120"
+                        sortable>
+                </el-table-column>
+
+                <el-table-column
+                        prop="commentContent"
+                        label="评价内容"
+                        width="120"
+                        show-overflow-tooltip
+                >
+                </el-table-column>
+                <el-table-column label="操作" width="180px">
+                    <template slot-scope="scope">
+
+                        <!-- 编辑 -->
+                        <el-tooltip effect="dark" content="确认退货" placement="top" :enterable="false">
+                            <el-button type="primary"  size="mini" @click="showEditDialog(scope.row.id);selectAllCategory();selectAllSpec();">确认退货</el-button>
+                        </el-tooltip>
+
+                    </template>
+                </el-table-column>
+            </el-table>
+            <!-- 底部区域 -->
+            <span slot="footer" class="dialog-footer">
+        					<el-button @click="OrderDetaiDialogVisible = false">关闭</el-button>
+      					</span>
+        </el-dialog>
+
+        <!-- 查看信息的对话框 -->
+        <el-dialog title="商品图片" :visible.sync="showDialogVisible" width="50%" @close="showDialogClosed">
+            <img :src="imageUrl">
+            <span slot="footer" class="dialog-footer">
+
+        					<el-button @click="showDialogVisible = false">关闭</el-button>
+      					</span>
+        </el-dialog>
+    </el-card>
+
+</div>
 </body>
+
+<!-- 引入组件库 -->
+<script src="js/vue.js"></script><!-- vue -->
+
+<script src="js/elementui.js"></script>
+
+<script src="js/axios.js"></script>
+
+<script type="text/javascript" src="plugins/layui/layui.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        // router,
+        data() {
+
+            return {
+
+                // 获取党总支列表的参数对象
+                searchMap: {},
+                currentPage:1,
+                //每页大小
+                size:10,
+                //总数
+                total: 10,
+                options: [],//下拉选择内容
+                categoryOptionValue:'',
+                specOptions: [],
+                specOptionValues:[],
+                editFormspecOptionValues:[],
+                goodsList: [],
+                GeneralList: [],
+                OrderDetailList: [],
+
+                // 控制修改党总支对话框的显示与隐藏
+                editDialogVisible: false,
+                OrderDetaiDialogVisible: false,
+                // 查询到的党总支信息对象
+                editForm: {},
+                // 控制添加党总支对话框的显示与隐藏
+                id2:"",
+                addDialogVisible: false,
+                showDialogVisible:false,
+                // 添加商品的表单数据
+                addForm: {},
+                imageUrl:''
+                //图片地址与实体没有关系，他是单独上传
+
+            }
+        },
+        created() {
+            this.getGeneralList();
+            this.getOrderDatailList();
+            // this.getGoodsList();
+        },
+        methods: {
+            getGeneralList() {
+                //向后台获取党总支列表
+                this.GeneralList = [{
+                    orderId: '1234648501202970800',
+                    userName: 'name1',
+                    statusName: '已付款',
+                    message:'我要发圆通快递',
+                    freight: '0',
+                    trackingName: '圆通快递',
+                    trackingNum: '557036121458674',
+                    created: '2020/10/10',
+                    updated: '2020/10/15',
+                    totalNum: '3',
+                    totalMoney: '15597',
+                    payMoney:'15597',
+                    receiverContact: '陈惠珊',
+                    buyerRateName:'未评价',
+                    receiverMobile: '13643049892',
+                    receiverAddress:'广东省汕头市潮阳区西胪镇',
+                    paymentypeName:'在线支付',
+                    paymenttime: '2020/10/10',
+                    sendtime: '2020/10/15',
+                    endtime:'2020/10/18',
+                    closetime:'2020/10/12',
+                }, {
+                    orderId: '1234648501202970800',
+                    userName: 'name1',
+                    statusName: '已付款',
+                    message:'我要发圆通快递',
+                    freight: '0',
+                    trackingName: '圆通快递',
+                    trackingNum: '557036121458674',
+                    created: '2020/10/10',
+                    updated: '2020/10/15',
+                    totalNum: '3',
+                    totalMoney: '15597',
+                    payMoney:'15597',
+                    receiverContact: '陈惠珊',
+                    receiverMobile: '13643049892',
+                    receiverAddress:'广东省汕头市潮阳区西胪镇',
+                    paymentypeName:'在线支付',
+                    paymenttime: '2020/10/10',
+                    sendtime: '2020/10/15',
+                    endtime:'2020/10/18',
+                    closetime:'2020/10/12',
+                }, {
+                    orderId: '1234648501202970800',
+                    userName: 'name1',
+                    statusName: '已付款',
+                    message:'我要发圆通快递',
+                    freight: '0',
+                    trackingName: '圆通快递',
+                    trackingNum: '557036121458674',
+                    created: '2020/10/10',
+                    updated: '2020/10/15',
+                    totalNum: '3',
+                    totalMoney: '15597',
+                    payMoney:'15597',
+                    receiverContact: '陈惠珊',
+                    receiverMobile: '13643049892',
+                    receiverAddress:'广东省汕头市潮阳区西胪镇',
+                    paymentypeName:'在线支付',
+                    paymenttime: '2020/10/10',
+                    sendtime: '2020/10/15',
+                    endtime:'2020/10/18',
+                    closetime:'2020/10/12',
+                }, {
+                    orderId: '1234648501202970800',
+                    userName: 'name1',
+                    statusName: '已付款',
+                    message:'我要发圆通快递',
+                    freight: '0',
+                    trackingName: '圆通快递',
+                    trackingNum: '557036121458674',
+                    created: '2020/10/10',
+                    updated: '2020/10/15',
+                    totalNum: '3',
+                    totalMoney: '15597',
+                    payMoney:'15597',
+                    receiverContact: '陈惠珊',
+                    receiverMobile: '13643049892',
+                    receiverAddress:'广东省汕头市潮阳区西胪镇',
+                    paymentypeName:'在线支付',
+                    paymenttime: '2020/10/10',
+                    sendtime: '2020/10/15',
+                    endtime:'2020/10/18',
+                    closetime:'2020/10/12',
+                }]
+            },
+            getOrderDatailList() {
+                //向后台获取党总支列表
+                this.OrderDetailList = [{
+                    goodsName: 'Apple/苹果iPhone 12 mini5G手机正品官方旗舰iPhone12新品官网苹果12 5',
+                    isReturnName: '未退货',
+                    goodsQuantity: '2',
+                    goodsPrice:'6049',
+                    freight: '0',
+                    totalMoney: '12098',
+                    payMoney: '12098',
+                    commentContent: '东西很不错'
+                }, {
+                    goodsName: 'Apple/苹果iPhone 12 mini5G手机正品官方旗舰iPhone12新品官网苹果12 5',
+                    isReturnName: '未退货',
+                    goodsQuantity: '2',
+                    goodsPrice:'6049',
+                    freight: '0',
+                    totalMoney: '12098',
+                    payMoney: '12098',
+                    commentContent: '东西很不错'
+                }]
+            },
+            showGoodsDialog(img){
+                this.imageUrl = img;
+                this.showDialogVisible = true
+            },
+
+            // 展示编辑党总支的对话框
+            selectSpec(id){
+                axios.get(`/goods/findSpec.do?id=${id}`).then(response=>{
+                    // alert(JSON.stringify(response))
+                    this.editFormspecOptionValues = response.data;
+                });
+            },
+            showOrderDetail(id) {
+                this.id2 = id;
+                this.OrderDetaiDialogVisible = true;
+                axios.get(`/goods/findById.do?id=${id}`).then(response=>{
+                    this.editForm = response.data;
+                    this.imageUrl=this.editForm.img;
+                })
+                this.selectSpec(this.id2);
+            },
+            showEditDialog(id) {
+                this.id2 = id;
+                this.editDialogVisible = true;
+                axios.get(`/goods/findById.do?id=${id}`).then(response=>{
+                    this.editForm = response.data;
+                    this.imageUrl=this.editForm.img;
+                })
+                this.selectSpec(this.id2);
+            },
+            selectAllCategory(){
+                axios.get('/category/findAll.do').then(response=>{
+                    this.options = response.data;
+                });
+            },
+            selectAllSpec(){
+                axios.get('/spec/findAll.do').then(response=>{
+                    this.specOptions = response.data;
+                });
+            },
+            getGoodsList() {
+                axios.post(`/goods/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
+                    this.goodsList = response.data.rows;
+                    this.total = response.data.total;
+                })
+            }
+            ,
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            },
+            // 监听修改党总支对话框的关闭事件
+            editDialogClosed() {
+                this.$refs.editFormRef.resetFields()
+            },
+            // 监听添加党总支对话框的关闭事件
+            addDialogClosed() {
+                this.$refs.addFormRef.resetFields()
+            },
+            // 修改党总支信息并提交
+            editGeneralInfo() {
+                this.$refs.editFormRef.validate(async valid => {
+                    if (!valid) return
+                    // 发起修改党总支信息的数据请求
+
+                    // 关闭对话框
+                    this.editDialogVisible = false
+                    // 刷新数据列表
+                    this.getGoodsList()
+                    // 提示修改成功
+                    this.$message.success('更新商品信息成功！')
+                })
+            },
+            // 根据Id删除对应的商品信息
+            async removeGeneralById(id) {
+                // 弹框询问党总支是否删除数据
+                const confirmResult = await this.$confirm(
+                    '此操作将永久删除该商品, 是否继续?',
+                    '提示',
+                    {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }
+                ).catch(err => err)
+                if (confirmResult !== 'confirm') {
+                    return this.$message.info('已取消删除')
+                }
+
+                //此处向后台发请求进行删除
+                axios.get(`/goods/delete.do?id=${id}`).then(response=>{
+                    this.addDialogVisible=false;
+                    this.getGoodsList();
+                })
+                this.$message.success('删除商品成功！')
+                this.getGoodsList()
+            },
+            //单元格被点击
+            cellClick(row, column, cell, event) {
+                if (column.label != '操作'){
+                    parent.tab.tabAdd({
+                        href: 'general-party.html?'+row.id, //传党总支id过去
+                        icon: 'fa-address-book',
+                        title: '党总支详情'
+                    });
+
+                }else {
+                    return
+                }
+            }
+        }
+    })
+</script>
+
+
 </html>

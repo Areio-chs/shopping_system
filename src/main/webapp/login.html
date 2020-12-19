@@ -99,6 +99,7 @@
 						</div>
 						<div id="profile" class="tab-pane active">
 							<form class="sui-form">
+								<span class="message">{{errorMessage}}</span>
 								<div class="input-prepend"><span class="add-on loginname"></span>
 									<input id="inputName" name="username" type="text" v-model="pojo.username" ref="nameInput" @blur="checkName()" placeholder="请输入用户名" class="span2 input-xfat">
 
@@ -121,7 +122,7 @@
 									<span class="forget">忘记密码？</span>
 								</div>
 								<div class="logined">
-									<a class="sui-btn btn-block btn-xlarge btn-danger" href="home.html" target="_blank">登&nbsp;&nbsp;录</a>
+									<a class="sui-btn btn-block btn-xlarge btn-danger" @click="login()">登&nbsp;&nbsp;录</a>
 								</div>
 							</form>
 							<div class="otherlogin">
@@ -162,6 +163,7 @@
 	<script src="js/axios.js"></script>
 
 <script type="text/javascript">
+
 	new Vue({
 		el:"#app",
 		data(){
@@ -172,10 +174,27 @@
 				nameMessage:'',
 				pwMessage:'',
 				usLength:'',
-				pwLength:''
+				pwLength:'',
+				user:{},
+				loginName:'',
+				loginPassword:'',
+				errorMessage:''
 			}
 		},
 		methods:{
+
+			login(){
+				axios.post(`/user/login.do`,this.pojo).then( response=>{
+					this.user=response.data;
+					this.username = response.data.username;
+					if (this.username==null){
+						this.errorMessage="用户名不存在，或密码有误";
+					}else {
+						sessionStorage.setItem("userInfo",JSON.stringify(this.user));
+						window.location.href="index.html"
+					}
+				})
+			},
 			/* 注册
 			save(){
 
