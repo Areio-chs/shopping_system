@@ -88,7 +88,11 @@
 						<ul class="addr-detail">
 							<li class="addr-item">
 								<div class="choose-address" v-for="address in addressList">
-									<div :class="order.receiverAddress==address.address?'con name selected':'con name'" @click="selectAddress(address)" ><a href="javascript:;" >{{address.contact}}<span title="点击取消选择"></span></a></div>
+									<div :class="order.receiverAddress==address.address?'con name selected':'con name'" @click="selectAddress(address)" >
+										<a href="javascript:;" >
+										{{address.contact}}
+											<span title="点击取消选择"></span>
+										</a></div>
 									<div class="con address">
 										<span class="place">{{address.address}}</span>
 										<span class="phone">{{address.phone}}</span>
@@ -96,7 +100,6 @@
 									</div>	
 									<div class="clearfix"></div>									
 								</div>
-
 							</li>							
 						</ul>						
 						 <!--确认地址-->
@@ -110,8 +113,8 @@
 					</div>
 					<div class="step-cont">
 						<ul class="payType">
-							<li class="selected" @click="order.payType='1'">在线支付<span title="点击取消选择"></span></li>
-							<li @click="order.payType='0'">货到付款<span title="点击取消选择"></span></li>
+							<li class="selected" @click="order.paymentype='1'">在线支付<span title="点击取消选择"></span></li>
+							<li @click="order.paymentype='0'">货到付款<span title="点击取消选择"></span></li>
 						</ul>
 					</div>
 					<div class="hr"></div>
@@ -134,29 +137,26 @@
 									<span>商品清单：</span>
 									<ul class="yui3-g" v-for="cart in cartList" v-if="cart.checked==true">
 										<li class="yui3-u-1-6">
-											<span><img :src="cart.item.image" width="100px" height="100px"/></span>
+											<span><img :src="cart.img" width="100px" height="100px"/></span>
 										</li>
 										<li class="yui3-u-7-12">
-											<div class="desc">{{cart.item.name}}</div>
+											<div class="desc">{{cart.name}}</div>
 											<div class="seven">7天无理由退货</div>
 										</li>
 										<li class="yui3-u-1-12">
-											<div class="price">￥{{(cart.item.price/100).toFixed(2)}}</div>
+											<div class="price">￥{{cart.price}}</div>
 										</li>
 										<li class="yui3-u-1-12">
-											<div class="num">X{{cart.item.num}}</div>
+											<div class="num">X{{cart.num}}</div>
 										</li>
 										<li class="yui3-u-1-12">
 											<div class="exit">有货</div>
 										</li>
-										
-										
 									</ul>
-
 								</div>
 								<div class="buyMessage">
 									<span>买家留言：</span>
-									<textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont" v-model="order.buyerMessage"></textarea>
+									<textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont" v-model="order.message"></textarea>
 								</div>
 							</li>
 							<li></li>
@@ -165,35 +165,25 @@
 					</div>
 					<div class="hr"></div>
 				</div>
-
-				<div class="cardInfo">
-					<div class="step-tit">
-						<h5>使用优惠/抵用</h5>
-					</div>
-				</div>
 			</div>
 		</div>
 		<div class="order-summary">
 			<div class="static fr">
 				<div class="list">
 					<span><i class="number">{{totalNum}}</i>件商品，总商品金额</span>
-					<em class="allprice">¥{{(totalMoney/100).toFixed(2)}}</em>
-				</div>
-				<div class="list">
-					<span>返现：</span>
-					<em class="money">{{(preferential/100).toFixed(2)}}</em>
+					<em class="allprice">¥{{totalMoney}}</em>
 				</div>
 				<div class="list">
 					<span>运费：</span>
-					<em class="transport">0.00</em>
+					<em class="transport">¥{{freight}}</em>
 				</div>
 			</div>
 		</div>
 		<div class="clearfix trade">
-			<div class="fc-price">应付金额:　<span class="price">¥{{(payMoney/100).toFixed(2)}}</span></div>
+			<div class="fc-price">应付金额:<span class="price">¥{{payMoney}}</span></div>
 			<div class="fc-receiverInfo">
 				寄送至:
-				<span id="receive-address">{{order.receiverAddress}}</span>
+				<span id="receive-address" >{{order.receiverAddress}}</span>
 				收货人：<span id="receive-name">{{order.receiverContact}}</span>
 				<span id="receive-phone">{{order.receiverMobile}}</span>
 			</div>
@@ -377,40 +367,52 @@ $(function(){
                 cartList:[],
                 totalNum:0,
                 totalMoney:0,
+				freight:0.0,
 				payMoney:0,//应付金额
                 preferential:0,//优惠金额
 				addressList:[],//地址列表
-				order:{ receiverContact:"",receiverMobile:"",receiverAddress:"",payType:"1" }//订单
+				order:{
+
+                	receiverContact:"",
+					receiverMobile:"",
+					receiverAddress:"",
+					paymentype:"1"
+				},//订单
+				searchMap:{
+                	checked:1,
+					userId:"1"
+				}
             }
         },
         created(){
             this.findCartList();
             this.findAddressList(); //查询地址列表
+			this.searchMap.userId="1";
+			this.searchMap.checked=1;
         },
         methods:{
-            findCartList(){
-                axios.get(`/cart/findNewOrderItemList.do`).then( response=>{
-                    this.cartList= response.data;
-                    this.count();
-                });
-            },
+			findCartList(){
+				axios.post(`/cart/findList.do`,this.searchMap).then( response=>{
+					this.cartList= response.data;
+					this.count();
+				});
+			},
             count(){
                 this.totalNum=0;
                 this.totalMoney=0;
                 for(let i=0;i<this.cartList.length;i++){
                     if(this.cartList[i].checked){
-                        this.totalNum+=  this.cartList[i].item.num;
-                        this.totalMoney+= this.cartList[i].item.money;
+                        this.totalNum+=  this.cartList[i].num;
+						this.totalMoney+= (this.cartList[i].price*this.cartList[i].num);
+						this.payMoney =this.totalMoney+this.freight;
                     }
                 }
-
-                axios.get(`/cart/preferential.do`).then( response=>{
-                    this.preferential= response.data.preferential; //优惠金额
-                    this.payMoney =this.totalMoney- this.preferential; //优惠后金额
-                })
+				this.order.totalNum =  this.totalNum;
+				this.order.totalMoney=this.totalMoney;
+				this.order.payMoney =this.payMoney;
             },
 			findAddressList(){
-                axios.get(`/cart/findAddressList.do`).then(response=>{
+                axios.post(`/address/findList.do`,this.searchMap).then(response=>{
                     this.addressList= response.data;
                     //默认地址显示
 					for(let i=0;i<this.addressList.length;i++ ){
@@ -429,12 +431,12 @@ $(function(){
                 this.order.receiverMobile =address.phone; //手机号
 			},
 			saveOrder(){
-                axios.post(`/cart/saveOrder.do` ,this.order).then( response=>{
+                axios.post(`/cart/saveOrder.do` ,this.order,this.searchMap).then( response=>{
                     if(response.data.ordersn!=null){
-                        if(this.order.payType=='1'){
-                            location.href=`pay.html?ordersn=${response.data.ordersn}&money=${response.data.money}`; //跳转到支付页面
+                        if(this.order.paymentype=='1'){
+                            location.href=`pay.html?oid=${response.data.oid}&ordersn=${response.data.ordersn}&money=${response.data.money}`; //跳转到支付页面
 						}else{
-                            location.href=`order-success.html?ordersn=${response.data.ordersn}&money=${response.data.money}`; //跳转到支付页面
+                            location.href=`order-success.html?oid=${response.data.oid}&ordersn=${response.data.ordersn}&money=${response.data.money}`; //跳转到支付页面
 						}
 					}else{
                         location.href=`order-fail.html`;

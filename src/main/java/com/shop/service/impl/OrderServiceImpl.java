@@ -3,13 +3,15 @@ package com.shop.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.shop.dao.OrderMapper;
-import com.shop.pojo.PageResult;
-import com.shop.pojo.Order;
-import com.shop.service.OrderService;
+import com.shop.pojo.*;
+import com.shop.service.*;
+import com.shop.utils.RandomIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +20,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private OrderDetailService orderDetailService;
+
+    @Autowired
+    private GoodsService goodsService;
+
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 返回全部记录
@@ -76,8 +90,45 @@ public class OrderServiceImpl implements OrderService {
      * 新增
      * @param order
      */
-    public void add(Order order) {
+    public Map<String,Object> add(Order order, List<Cart> cartList) {
+
+        order.setUserName(userService.findById(order.getUserId()).getName());
+        order.setTrackingName("天天快递");
+        order.setTrackingNum(RandomIdUtils.getGuid());
+        order.setOrderNum(RandomIdUtils.getGuid());
+        order.setStatus("1");
+        order.setCreated(new Date());//订单创建时间
+        String storeId="";
+        //1.获取选中的购物车
+        for (Cart cart:cartList) {
+            if(!goodsService.deductionStock(cart.getGoodsId(),cart.getNum())){
+                throw  new RuntimeException("库存不足！");
+            };
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setId(RandomIdUtils.getId());
+            orderDetail.setGoodsId(cart.getGoodsId());
+            Goods goods = goodsService.findById(cart.getGoodsId());
+            storeId = goods.getStoreId();
+            orderDetail.setOrderId(order.getId());
+            orderDetail.setGoodsName(goods.getName());
+            orderDetail.setImage(goods.getImg());
+            orderDetail.setGoodsQuantity(cart.getNum());
+            orderDetail.setGoodsPrice(goods.getPrice());
+            orderDetail.setTotalMoney(goods.getPrice()*cart.getNum());
+            orderDetail.setFreight(Double.valueOf(0));
+            orderDetail.setPayMoney(orderDetail.getTotalMoney()+orderDetail.getFreight());
+            orderDetailService.add(orderDetail);
+            cartService.delete(cart.getId());
+        }
+        order.setPayMoney(order.getTotalMoney());
+        order.setStoreId(storeId);
+        System.out.println(order.toString());
         orderMapper.insert(order);
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("oid",order.getId());
+        map.put("ordersn",order.getOrderNum());
+        map.put("money",order.getPayMoney());
+        return map;
     }
 
     /**
@@ -107,11 +158,11 @@ public class OrderServiceImpl implements OrderService {
         if(searchMap!=null){
             // id
             if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
-                criteria.andLike("id","%"+searchMap.get("id")+"%");
+                criteria.andEqualTo("id",searchMap.get("id"));
             }
             // 关联用户
             if(searchMap.get("userId")!=null && !"".equals(searchMap.get("userId"))){
-                criteria.andLike("userId","%"+searchMap.get("userId")+"%");
+                criteria.andEqualTo("userId",searchMap.get("userId"));
             }
             // 用户昵称
             if(searchMap.get("userName")!=null && !"".equals(searchMap.get("userName"))){
@@ -138,8 +189,8 @@ public class OrderServiceImpl implements OrderService {
                 criteria.andLike("message","%"+searchMap.get("message")+"%");
             }
             // 订单号
-            if(searchMap.get("orderId")!=null && !"".equals(searchMap.get("orderId"))){
-                criteria.andLike("orderId","%"+searchMap.get("orderId")+"%");
+            if(searchMap.get("orderNum")!=null && !"".equals(searchMap.get("orderNum"))){
+                criteria.andEqualTo("orderNum",searchMap.get("orderNum"));
             }
             // 收货人
             if(searchMap.get("receiverContact")!=null && !"".equals(searchMap.get("receiverContact"))){
@@ -159,7 +210,7 @@ public class OrderServiceImpl implements OrderService {
             }
             // 关联商家
             if(searchMap.get("storeId")!=null && !"".equals(searchMap.get("storeId"))){
-                criteria.andLike("storeId","%"+searchMap.get("storeId")+"%");
+                criteria.andEqualTo("storeId",searchMap.get("storeId"));
             }
 
             // 数量合计

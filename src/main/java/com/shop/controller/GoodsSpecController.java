@@ -28,6 +28,7 @@ public class GoodsSpecController {
 
     @PostMapping("/findList")
     public List<GoodsSpec> findList(@RequestBody Map<String,Object> searchMap){
+
         return goodsSpecService.findList(searchMap);
     }
 

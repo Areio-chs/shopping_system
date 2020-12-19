@@ -262,4 +262,37 @@ public class Order implements Serializable{
 	public void setPaymentypeName(String paymentypeName) {
 		this.paymentypeName = paymentypeName;
 	}
+
+	@Override
+	public String toString() {
+		return "Order{" +
+				"id='" + id + '\'' +
+				", userId='" + userId + '\'' +
+				", userName='" + userName + '\'' +
+				", status='" + status + '\'' +
+				", statusName='" + statusName + '\'' +
+				", freight=" + freight +
+				", trackingName='" + trackingName + '\'' +
+				", trackingNum='" + trackingNum + '\'' +
+				", totalNum=" + totalNum +
+				", totalMoney=" + totalMoney +
+				", preMoney=" + preMoney +
+				", payMoney=" + payMoney +
+				", paymentype='" + paymentype + '\'' +
+				", paymentypeName='" + paymentypeName + '\'' +
+				", created=" + created +
+				", updated=" + updated +
+				", paymenttime=" + paymenttime +
+				", sendtime=" + sendtime +
+				", endtime=" + endtime +
+				", closetime=" + closetime +
+				", message='" + message + '\'' +
+				", orderNum='" + orderNum + '\'' +
+				", receiverContact='" + receiverContact + '\'' +
+				", receiverMobile='" + receiverMobile + '\'' +
+				", receiverAddress='" + receiverAddress + '\'' +
+				", buyerRate='" + buyerRate + '\'' +
+				", storeId='" + storeId + '\'' +
+				'}';
+	}
 }

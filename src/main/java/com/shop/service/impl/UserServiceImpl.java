@@ -143,11 +143,11 @@ public class UserServiceImpl implements UserService {
         if(searchMap!=null){
             // id
             if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
-                criteria.andLike("id","%"+searchMap.get("id")+"%");
+                criteria.andEqualTo("id",searchMap.get("id"));
             }
             // 用户名
             if(searchMap.get("username")!=null && !"".equals(searchMap.get("username"))){
-                criteria.andLike("username","%"+searchMap.get("username")+"%");
+                criteria.andEqualTo("username",searchMap.get("username"));
             }
             // 密码，加密存储
             if(searchMap.get("password")!=null && !"".equals(searchMap.get("password"))){

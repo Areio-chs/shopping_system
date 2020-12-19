@@ -34,4 +34,6 @@ public interface GoodsService {
 
 
     public void delete(String id);
+
+    public boolean deductionStock(String id,Integer num);
 }

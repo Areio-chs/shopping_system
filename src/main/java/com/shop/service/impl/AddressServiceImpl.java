@@ -106,8 +106,8 @@ public class AddressServiceImpl implements AddressService {
         Example.Criteria criteria = example.createCriteria();
         if(searchMap!=null){
             // 用户名
-            if(searchMap.get("username")!=null && !"".equals(searchMap.get("username"))){
-                criteria.andLike("username","%"+searchMap.get("username")+"%");
+            if(searchMap.get("userId")!=null && !"".equals(searchMap.get("userId"))){
+                criteria.andLike("userId","%"+searchMap.get("userId")+"%");
             }
             // 省
             if(searchMap.get("provinceId")!=null && !"".equals(searchMap.get("provinceId"))){

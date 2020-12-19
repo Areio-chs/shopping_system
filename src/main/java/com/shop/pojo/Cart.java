@@ -1,6 +1,7 @@
 package com.shop.pojo;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 /**
  * cart实体类
@@ -13,8 +14,12 @@ public class Cart implements Serializable{
 	@Id
 	private String id;//id
 
+	//处理不在数据库的字段
+	@Transient
+	private String name;
 
-	
+	@Transient
+	private String img;
 
 	private String userId;//用户id
 
@@ -24,6 +29,46 @@ public class Cart implements Serializable{
 
 	private Double price;//单个商品乘以数量的价格
 
+	private Integer checked;
+
+	public Integer getChecked() {
+		return checked;
+	}
+
+	@Override
+	public String toString() {
+		return "Cart{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", img='" + img + '\'' +
+				", userId='" + userId + '\'' +
+				", goodsId='" + goodsId + '\'' +
+				", num=" + num +
+				", price=" + price +
+				", checked=" + checked +
+				'}';
+	}
+
+	public void setChecked(Integer checked) {
+		this.checked = checked;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
 	
 	public String getId() {
 		return id;
