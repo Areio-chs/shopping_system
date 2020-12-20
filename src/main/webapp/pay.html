@@ -84,7 +84,7 @@
 					<h4 class="tit-txt"><span class="success-icon"></span><span  class="success-info">订单提交成功</span></h4>
 					<div class="paymark">
 						<span class="fl">请您在提交订单<em class="orange time">4小时</em>之内完成支付，超时订单会自动取消。订单号：<em>{{ordersn}}</em></span>
-						<span class="fr"><em class="sui-lead">应付金额：</em><em  class="orange money">￥{{(money/100).toFixed(2)}}</em></span>
+						<span class="fr"><em class="sui-lead">应付金额：</em><em  class="orange money">￥{{money}}</em></span>
 					</div>
 				</div>
 				
@@ -142,7 +142,7 @@
 					</div>
 
 					<div class="submit sui-text-center">
-						<a class="sui-btn btn-danger btn-xlarge" href="paysuccess.html" target="_blank">立即支付</a>
+						<a class="sui-btn btn-danger btn-xlarge"  target="_blank" @click="pay()">立即支付</a>
 					</div>
 					<div class="otherpay">
 						<div class="step-tit">
@@ -293,23 +293,31 @@
 </div>
 <!--页面底部END-->
 <script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
 <script src="/js/util.js"></script>
 <script>
 	new Vue({
 		el:'#app',
 		data(){
 		    return {
+		    	oid:'',
 		        ordersn:'',
 		        money:0
 			}
 		},
 		created(){
+			this.oid=  getQueryString('oid');
 		    this.ordersn=  getQueryString('ordersn');
 		    this.money=  getQueryString('money');
 		},
 		methods:{
 		    wxPay(){
 		        location.href='weixinpay.html?orderId='+this.ordersn;
+			},
+			pay(){
+				axios.get(`/order/updateTime.do?id=${this.oid}`).then( response=>{
+					location.href="paysuccess.html?money="+this.money;
+				});
 			}
 		}
 	})

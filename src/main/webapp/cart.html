@@ -81,7 +81,8 @@
 			<h4>全部商品<span></span></h4>
 			<div class="cart-main">
 				<div class="yui3-g cart-th">
-					<div class="yui3-u-1-4"><input class="chooseAll" type="checkbox" name="" id="" value="" /> 全部</div>
+					<div class="yui3-u-1-4">
+						<input class="chooseAll" type="checkbox" name="chooseAll" /> 全部</div>
 					<div class="yui3-u-1-4">商品</div>
 					<div class="yui3-u-1-8">单价（元）</div>
 					<div class="yui3-u-1-8">数量</div>
@@ -93,26 +94,27 @@
 						<div class="cart-list" v-for="cart in cartList">
 							<ul class="goods-list yui3-g">
 								<li class="yui3-u-1-24">
-									<input type="checkbox" name="chk_list" v-model="cart.checked" @click="updateChecked(cart.item.skuId,!cart.checked)"/>
+									<input type="checkbox" name="chk_list" v-model="cart.checked"
+										   @click="updateChecked(cart.id,!cart.checked)"/>
 								</li>
 								<li class="yui3-u-6-24">
 									<div class="good-item">
-										<div class="item-img"><img :src="cart.item.image" /></div>
-										<div class="item-msg">{{cart.item.name}}</div>
+										<div class="item-img"><img :src="cart.img"/></div>
+										<div class="item-msg">{{cart.name}}</div>
 									</div>
 								</li>
 								<li class="yui3-u-5-24">
 									<div class="item-txt"></div>
 								</li>
-								<li class="yui3-u-1-8"><span class="price">{{(cart.item.price/100).toFixed(2)}}</span></li>
+								<li class="yui3-u-1-8"><span class="price">{{cart.price}}</span></li>
 								<li class="yui3-u-1-8">
-									<a class="increment mins" @click="addItem(cart.item.skuId,-1)">-</a>
-									<input autocomplete="off" type="text" v-model="cart.item.num" minnum="1" class="itxt" />
-									<a  class="increment plus" @click="addItem(cart.item.skuId,1)"  >+</a>
+									<a class="increment mins" @click="addItem(cart.id,-1)">-</a>
+									<input autocomplete="off" type="text" v-model="cart.num" minnum="1" class="itxt" />
+									<a  class="increment plus" @click="addItem(cart.id,1)">+</a>
 								</li>
-								<li class="yui3-u-1-8"><span class="sum">{{(cart.item.money/100).toFixed(2)}}</span></li>
+								<li class="yui3-u-1-8"><span class="sum">{{(cart.price)*(cart.num)}}</span></li>
 								<li class="yui3-u-1-8">
-									<a @click="addItem(cart.item.skuId,-cart.item.num)" >删除</a><br />
+									<a @click="addItem(cart.id,-(cart.num))">删除</a><br/>
 									<a href="#none">移到收藏</a>
 								</li>
 							</ul>
@@ -123,7 +125,7 @@
 			</div>
 			<div class="cart-tool">
 				<div class="select-all">
-					<input class="chooseAll" type="checkbox"  name="" id="" value="" />
+					<input class="chooseAll" type="checkbox" name="chooseAll"/>
 					<span>全选</span>
 				</div>
 				<div class="option">
@@ -134,8 +136,7 @@
 				<div class="money-box">
 					<div class="chosed">已选择<span>{{totalNum}}</span>件商品</div>
 					<div class="sumprice">
-						<span><em>总价（不含运费） ：</em><i class="summoney">¥{{(totalMoney/100).toFixed(2)}}</i></span>
-						<span><em>已节省：</em><i>-¥{{(preferential/100).toFixed(2)}}</i></span>
+						<span><em>总价（不含运费） ：</em><i class="summoney">¥{{totalMoney}}</i></span>
 					</div>
 					<div class="sumbtn">
 						<a class="sum-btn" href="order.html" >结算</a>
@@ -410,9 +411,29 @@
 <!--页面底部END-->
 <script type="text/javascript" src="./js/plugins/jquery/jquery.min.js"></script>
 <script type="text/javascript">
-	$(".chooseAll").click(function(){
+	function checkAll(){   //全选
+		if($("input[name='chooseAll']").attr("checked")){   //如果点击全选框
+			$("input[name='chk_list']").attr("checked", true);   //所有框都选中
+		}else{
+			$("input[name='chk_list']").attr("checked", false);   //否则都不选
+		}
+	}
+	/*$(".chooseAll").click(function(){
 		$("input[name='chk_list']").prop("checked", $(this).prop("checked"));
-	})
+	})*/
+	/*$(".chooseAll").click(function() {
+		if (this.checked){
+			$("input[name='chk_list']:checkbox").each(function(){
+				if($(this).attr('disabled')!='disabled'){
+					$(this).prop("checked", true);
+				}
+			});
+		}else {
+			$("input[name='chk_list']:checkbox").each(function() {
+				$(this).prop("checked", false);
+			});
+		}
+	});*/
 </script>
 
 <script src="js/axios.js"></script>
@@ -425,26 +446,29 @@
 		        cartList:[],
 				totalNum:0,
 				totalMoney:0,
-				preferential:0//优惠金额
+				preferential:0,//优惠金额
+				searchMap:{}
 			}
 		},
 		created(){
 		  this.findCartList();
+		  this.searchMap.userId="1";
 		},
 		methods:{
 		    findCartList(){
-		        axios.get(`/cart/findCartList.do`).then( response=>{
+		        axios.post(`/cart/findList.do`,this.searchMap).then( response=>{
 		            this.cartList= response.data;
+
 		            this.count();
 				});
 			},
-			addItem(skuId,num){
-		        axios.get(`/cart/addItem.do?skuId=${skuId}&num=${num}`).then( response=>{
+			addItem(id,num){
+		        axios.get(`/cart/addItem.do?id=${id}&num=${num}`).then( response=>{
 		            this.findCartList();
 				});
 			},
-			updateChecked(skuId,checked){
-		        axios.get(`/cart/updateChecked.do?skuId=${skuId}&checked=${checked}`).then( response=>{
+			updateChecked(id,checked){
+		        axios.get(`/cart/updateChecked.do?id=${id}&checked=${checked}`).then( response=>{
 		            this.count();
 				})
 			},
@@ -453,19 +477,13 @@
 		        this.totalMoney=0;
 		        for(let i=0;i<this.cartList.length;i++){
 		            if(this.cartList[i].checked){
-		                this.totalNum+=  this.cartList[i].item.num;
-		                this.totalMoney+= this.cartList[i].item.money;
+		                this.totalNum+=  this.cartList[i].num;
+		                this.totalMoney+= (this.cartList[i].price*this.cartList[i].num);
 					}
 				}
-
-				axios.get(`/cart/preferential.do`).then( response=>{
-				    this.preferential= response.data.preferential; //优惠金额
-					this.totalMoney =this.totalMoney- this.preferential; //优惠后金额
-				})
-
 			},
 			deleteCheckedCart(){
-		        axios.get(`/cart/deleteCheckedCart.do`).then(response=>{
+		        axios.post(`/cart/deleteCheckedCart.do`,this.searchMap).then(response=>{
 		            this.findCartList();
 				} )
 			}

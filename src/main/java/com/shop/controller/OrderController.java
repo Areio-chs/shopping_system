@@ -42,10 +42,15 @@ public class OrderController {
         return orderService.findById(id);
     }
 
+    @GetMapping("/delivery")
+    public Result delivery(String orderId){
+        orderService.delivery(orderId);
+        return  new Result();
+    }
 
     @PostMapping("/add")
     public Result add(@RequestBody Order order){
-        orderService.add(order);
+        //orderService.add(order);
         return new Result();
     }
 
@@ -58,6 +63,16 @@ public class OrderController {
     @GetMapping("/delete")
     public Result delete(String id){
         orderService.delete(id);
+        return new Result();
+    }
+
+    @GetMapping("/updateTime")
+    public Result updateTime(String id){
+        Order order = orderService.findById(id);
+        order.setPaymenttime(new Date());
+        order.setUpdated(new Date());
+        order.setStatus("2");
+        orderService.update(order);
         return new Result();
     }
 

@@ -853,7 +853,7 @@
                         <li class="yui3-u-1-5" v-for="goods in tableData">
                             <div class="list-wrap">
                                 <div class="p-img">
-                                    <a href="goods.html" target="_blank"><img :src="goods.img"/></a>
+                                    <a :href="getGoodsHref(goods.id)" target="_blank"><img :src="goods.img"/></a>
                                 </div>
                                 <div class="price">
                                     <strong>
@@ -862,7 +862,7 @@
                                     </strong>
                                 </div>
                                 <div class="attr">
-                                    <a target="_blank" href="item.html">
+                                    <a target="_blank" :href="getGoodsHref(goods.id)">
                                         {{goods.name}}
                                     </a>
                                 </div>
@@ -1255,8 +1255,8 @@
     </div>
 </div>
 </body>
-<script src="/js/vue.js"></script>
-<script src="/js/axios.js"></script>
+<script type="text/javascript" src="/js/vue.js"></script>
+<script type="text/javascript" src="/js/axios.js"></script>
 <script type="text/javascript" src="./js/all.js"></script>
 
 <script>
@@ -1294,7 +1294,6 @@
         },
         methods: {
             fetchData() {
-                //alert(this.searchMap.name);
                 axios.post(`/goods/findPage.do?page=${this.currentPage}&size=${this.size}`, this.searchMap).then(response => {
                     this.tableData = response.data.rows;
                     this.total = response.data.total;
@@ -1312,6 +1311,9 @@
             pageClick: function () {
                 //根据点击页数请求数据
                 this.fetchData();
+            },
+            getGoodsHref:function(val){
+                return 'item.html?goodsId='+val;
             }
         },
         computed: {

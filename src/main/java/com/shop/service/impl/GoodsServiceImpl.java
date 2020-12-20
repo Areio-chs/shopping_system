@@ -104,7 +104,7 @@ public class GoodsServiceImpl implements GoodsService {
         GoodsSpec goodsSpec = new GoodsSpec();
         goodsSpec.setGoodId(id);
         List<GoodsSpec> specList = goodsSpecMapper.select(goodsSpec);
-        List<String> specId = new ArrayList<>();
+        List<String> specId = new ArrayList<String>();
         for (GoodsSpec goodsSpec1:specList){
             specId.add(goodsSpec1.getSpecId());
         }
@@ -170,6 +170,17 @@ public class GoodsServiceImpl implements GoodsService {
         goodsMapper.deleteByPrimaryKey(id);
     }
 
+    public boolean deductionStock(String id,Integer num) {
+        Goods goods = goodsMapper.selectByPrimaryKey(id);
+        if ((goods.getStock()-num)<0){
+            return false;
+        }else {
+            goods.setStock(goods.getStock()-num);
+            goodsMapper.updateByPrimaryKey(goods);
+            return true;
+        }
+    }
+
     /**
      * 构建查询条件
      * @param searchMap
@@ -179,12 +190,45 @@ public class GoodsServiceImpl implements GoodsService {
         Example example=new Example(Goods.class);
         Example.Criteria criteria = example.createCriteria();
         if(searchMap!=null){
+            // id
+            if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
+                criteria.andLike("id","%"+searchMap.get("id")+"%");
+            }
             // 名称
             if(searchMap.get("name")!=null && !"".equals(searchMap.get("name"))){
                 criteria.andLike("name","%"+searchMap.get("name")+"%");
             }
+            // 图片
+            if(searchMap.get("img")!=null && !"".equals(searchMap.get("img"))){
+                criteria.andLike("img","%"+searchMap.get("img")+"%");
+            }
+            // 简介
+            if(searchMap.get("introduction")!=null && !"".equals(searchMap.get("introduction"))){
+                criteria.andLike("introduction","%"+searchMap.get("introduction")+"%");
+            }
+            // 规格，由规格表拼接而成
+            if(searchMap.get("spec")!=null && !"".equals(searchMap.get("spec"))){
+                criteria.andLike("spec","%"+searchMap.get("spec")+"%");
+            }
+            // 状态
+            if(searchMap.get("status")!=null && !"".equals(searchMap.get("status"))){
+                criteria.andLike("status","%"+searchMap.get("status")+"%");
+            }
+            // 分类
+            if(searchMap.get("categoryId")!=null && !"".equals(searchMap.get("categoryId"))){
+                criteria.andLike("categoryId","%"+searchMap.get("categoryId")+"%");
+            }
+
+            // 库存
+            if(searchMap.get("stock")!=null ){
+                criteria.andEqualTo("stock",searchMap.get("stock"));
+            }
+            // 销量
+            if(searchMap.get("sales")!=null ){
+                criteria.andEqualTo("sales",searchMap.get("sales"));
+            }
+
         }
         return example;
     }
-
 }

@@ -2,6 +2,7 @@ package com.shop.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.shop.dao.GoodsSpecMapper;
 import com.shop.dao.SpecMapper;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Spec;
@@ -18,6 +19,8 @@ public class SpecServiceImpl implements SpecService {
 
     @Autowired
     private SpecMapper specMapper;
+    @Autowired
+    private GoodsSpecMapper goodsSpecMapper;
 
     /**
      * 返回全部记录
@@ -48,6 +51,8 @@ public class SpecServiceImpl implements SpecService {
         Example example = createExample(searchMap);
         return specMapper.selectByExample(example);
     }
+
+
 
     /**
      * 分页+条件查询

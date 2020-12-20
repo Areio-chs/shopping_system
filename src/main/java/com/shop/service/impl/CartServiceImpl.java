@@ -3,6 +3,9 @@ package com.shop.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.shop.dao.CartMapper;
+import com.shop.dao.GoodsMapper;
+import com.shop.pojo.Category;
+import com.shop.pojo.Goods;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Cart;
 import com.shop.service.CartService;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +22,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartMapper cartMapper;
+
+    @Autowired
+    private GoodsMapper goodsMapper;
 
     /**
      * 返回全部记录
@@ -46,7 +53,15 @@ public class CartServiceImpl implements CartService {
      */
     public List<Cart> findList(Map<String, Object> searchMap) {
         Example example = createExample(searchMap);
-        return cartMapper.selectByExample(example);
+        List<Cart> cartList = cartMapper.selectByExample(example);
+        for (Cart cart : cartList) {
+            if (!(cart.getGoodsId()==null)){
+                Goods goods = goodsMapper.selectByPrimaryKey(cart.getGoodsId());
+                cart.setName(goods.getName());
+                cart.setImg(goods.getImg());
+            }
+        }
+        return cartList;
     }
 
     /**
@@ -96,6 +111,26 @@ public class CartServiceImpl implements CartService {
         cartMapper.deleteByPrimaryKey(id);
     }
 
+    public void updateChecked(String id, boolean checked) {
+        Cart cart = cartMapper.selectByPrimaryKey(id);
+            if (checked){
+                cart.setChecked(1);
+            }else {
+                cart.setChecked(0);
+            }
+        cartMapper.updateByPrimaryKey(cart);
+    }
+
+    public void addItem(String id, Integer num) {
+        Cart cart = cartMapper.selectByPrimaryKey(id);
+        cart.setNum(cart.getNum()+num);
+        if (cart.getNum()<=0){
+            cartMapper.delete(cart);
+            return;
+        }
+        cartMapper.updateByPrimaryKey(cart);
+    }
+
     /**
      * 构建查询条件
      * @param searchMap
@@ -107,20 +142,25 @@ public class CartServiceImpl implements CartService {
         if(searchMap!=null){
             // id
             if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
-                criteria.andLike("id","%"+searchMap.get("id")+"%");
+                criteria.andEqualTo("id",searchMap.get("id"));
             }
             // 用户id
             if(searchMap.get("userId")!=null && !"".equals(searchMap.get("userId"))){
-                criteria.andLike("userId","%"+searchMap.get("userId")+"%");
+                criteria.andEqualTo("userId",searchMap.get("userId"));
             }
             // 商品id
             if(searchMap.get("goodsId")!=null && !"".equals(searchMap.get("goodsId"))){
-                criteria.andLike("goodsId","%"+searchMap.get("goodsId")+"%");
+                criteria.andEqualTo("goodsId",searchMap.get("goodsId"));
             }
 
             // 单个商品的数量
             if(searchMap.get("num")!=null ){
                 criteria.andEqualTo("num",searchMap.get("num"));
+            }
+
+            // 单个商品的
+            if(searchMap.get("checked")!=null ){
+                criteria.andEqualTo("checked",searchMap.get("checked"));
             }
 
         }

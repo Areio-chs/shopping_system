@@ -40,6 +40,7 @@ public class OrderDetail implements Serializable{
 	private Double payMoney;//实付金额
 
 	private String buyerRate;//是否评价
+
 	@Transient
 	private String commentContent;
 	

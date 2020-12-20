@@ -2,10 +2,11 @@ package com.shop.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.shop.dao.EvaluationMapper;
 import com.shop.dao.OrderDetailMapper;
-import com.shop.pojo.PageResult;
-import com.shop.pojo.OrderDetail;
+import com.shop.pojo.*;
 import com.shop.service.OrderDetailService;
+import com.shop.utils.commUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -18,6 +19,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    private EvaluationMapper evaluationMapper;
 
     /**
      * 返回全部记录
@@ -62,7 +65,44 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         Page<OrderDetail> orderDetails = (Page<OrderDetail>) orderDetailMapper.selectByExample(example);
         return new PageResult<OrderDetail>(orderDetails.getTotal(),orderDetails.getResult());
     }
-
+    //根据订单id查询该订单的详情
+    public List<OrderDetail> findByOrderId(String orderId){
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setOrderId(orderId);
+        List<OrderDetail> orderDetailList = orderDetailMapper.select(orderDetail);
+        for (OrderDetail orderDetail1:orderDetailList){
+            String isReturn = orderDetail1.getIsReturn();
+            if (isReturn=="1"||isReturn.equals("1")){
+                orderDetail1.setIsReturnName("未申请");
+            }
+            if (isReturn=="2"||isReturn.equals("2")){
+                orderDetail1.setIsReturnName("申请中");
+            }
+            if (isReturn=="3"||isReturn.equals("3")){
+                orderDetail1.setIsReturnName("退货成功");
+            }
+            //在评价表查询该商品的评价内容
+            Evaluation evaluation = new Evaluation();
+            evaluation.setGoodsId(orderDetail1.getGoodsId());
+            //一个订单详情最多只能有一个评价
+            List<Evaluation> evaluationList = evaluationMapper.select(evaluation);
+            if (commUtils.collectionEffective(evaluationList)){
+                orderDetail1.setCommentContent(evaluationList.get(0).getContent());
+            }else {
+                orderDetail1.setCommentContent("暂无评价内容");
+            }
+        }
+        return orderDetailList;
+    }
+    //确认退货
+    public void returned(String id){
+    //把订单详情的状态改成退货状态 3.表示已退货
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setId(id);
+        //把这个整个订单的更新状态修改，并插入订单日志
+        orderDetail.setIsReturn("3");
+        orderDetailMapper.updateByPrimaryKeySelective(orderDetail);
+    }
     /**
      * 根据Id查询
      * @param id

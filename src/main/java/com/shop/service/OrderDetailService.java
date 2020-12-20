@@ -23,8 +23,11 @@ public interface OrderDetailService {
 
     public PageResult<OrderDetail> findPage(Map<String, Object> searchMap, int page, int size);
 
+    public List<OrderDetail> findByOrderId(String orderId);
 
     public OrderDetail findById(String id);
+
+    public void returned(String id);
 
     public void add(OrderDetail orderDetail);
 

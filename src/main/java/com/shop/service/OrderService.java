@@ -1,6 +1,7 @@
 package com.shop.service;
 
 
+import com.shop.pojo.Cart;
 import com.shop.pojo.Order;
 import com.shop.pojo.PageResult;
 
@@ -23,10 +24,11 @@ public interface OrderService {
 
     public PageResult<Order> findPage(Map<String, Object> searchMap, int page, int size);
 
+    public void delivery(String orderId);
 
     public Order findById(String id);
 
-    public void add(Order order);
+    public Map<String,Object> add(Order order,List<Cart> cartList);
 
 
     public void update(Order order);

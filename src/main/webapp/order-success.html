@@ -83,7 +83,7 @@
 					<h4 class="tit-txt"><span class="success-icon"></span><span  class="success-info">订单提交成功</span></h4>
 					<div class="paymark">
 						<span class="fl">我们会在<em class="orange time">24小时</em>之内完成发货。订单号：<em>{{ordersn}}</em></span>
-						<span class="fr"><em class="sui-lead">应付金额：</em><em  class="orange money">￥{{(money/100).toFixed(2)}}</em></span>
+						<span class="fr"><em class="sui-lead">应付金额：</em><em  class="orange money">￥{{money}}</em></span>
 					</div>
 				</div>
 				
@@ -251,8 +251,6 @@
                     this.money=  getQueryString('money');
                 }
             })
-
-
 		</script>
 
 

@@ -34,4 +34,6 @@ public interface CartService {
 
     public void delete(String id);
 
+    public void updateChecked( String id, boolean checked);
+    public void addItem( String id, Integer num);
 }
