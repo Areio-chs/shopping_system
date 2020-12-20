@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <title>青柠平台管理登录界面</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="css/theme-chalk.css">
+    <link rel="stylesheet" href="css/login_style.css">
+    <link rel="stylesheet" href="css/all.css">
+    <style>
+        .message{
+            font-size: 13px;
+            color: red;
+        }
+    </style>
+</head>
+
+<body class="mainBg">
+    <div id="app">
+	<form class="loginForm clear">
+        <div class="loginMain">
+          <div class="loginlogo"></div>
+          <div class="loginCon">
+            
+              <span class="el-form-item">
+                <span class="userIcon"></span>
+                <span class="el-input">
+                  <input class="el-input__inner" v-model="pojo.username" ref="nameInput" @blur="checkName()" name="username" type="text" placeholder="管理员账号"/>
+                    <span class="message">{{nameMessage}}</span>
+                </span>
+              </span>
+              <span class="el-form-item">
+                <span class="pwdIcon"></span>
+                <span class="el-input">
+                  <input class="el-input__inner" v-model="pojo.password" ref="pwInput" @blur="checkPassword()" name="password" type="password"  placeholder="密码"/>
+                    <span class="message">{{pwMessage}}</span>
+                </span>
+                
+              </span>
+      
+          </div>
+   
+          <div class="logined">
+              <input type="button" @click="login()" class="sui-btn btn-block btn-xlarge btn-danger" value="登录">
+          </div>
+        </div>
+	</form>
+            
+    </div>
+</body>
+<!-- 引入组件库 -->
+<script src="js/vue.js"></script>
+<script src="js/elementui.js"></script>
+<script src="js/axios.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el:"#app",
+        data(){
+            return {
+                // 自定义的属性
+                pojo:{} ,//表单上绑定的实体，页面填写后自动绑定到vue的pojo里
+                password:'',//表单上的确认密码
+                nameMessage:'',
+                pwMessage:'',
+                usLength:'',
+                pwLength:'',
+                user:{},
+                loginName:'',
+                loginPassword:''
+            }
+        },
+        methods:{
+            login(){
+                if (this.checkName()&&this.checkPassword()) {
+                    axios.post(`/operator/login.do`, this.pojo).then(response => {
+                        this.user = response.data;
+                        this.username = response.data.username;
+                        if (this.username == null) {
+                            alert("用户名不存在，或密码有误");
+                        } else {
+                            sessionStorage.setItem("userInfo", JSON.stringify(this.user));
+                            window.location.href = "Operation.html"
+                        }
+                    })
+                }else{
+                    alert("请根据红字提示修改输入框的信息后重试！");
+                }
+            },
+            checkName(){
+                let userName = this.$refs.nameInput.value;
+                if (userName==""){
+                    this.nameMessage="用户名不能为空";
+                    return false;
+                }
+                var usLength = userName.length;
+                if(4>usLength||usLength>16){
+                    this.nameMessage="请输入正确的用户名长度(4~16位长度)"
+                    return false;
+                }
+                this.nameMessage="";
+                return true;
+            },
+            checkPassword(){
+                let password = this.$refs.pwInput.value;
+                if (password==""){
+                    this.pwMessage="登录密码不能为空";
+                    return false;
+                }
+                var pwLength = password.length;
+                if(4>pwLength||pwLength>16){
+                    this.pwMessage="请输入正确的密码长度(4~16位长度)"
+                    return false;
+                }
+                this.pwMessage="";
+                return true;
+            }
+        }
+    });
+
+    window.onload = windowHeight; //页面载入完毕执行函数
+    function windowHeight() {
+        var asieHeight=document.getElementById("app")
+        asieHeight.style.height=document.documentElement.clientHeight + 'px'
+    }
+
+</script>
+</html>

@@ -17,6 +17,12 @@ public class OperatorController {
     @Autowired
     private OperatorService operatorService;
 
+    @PostMapping("/login")
+    public Operator loginUser(@RequestBody Operator operator){
+        return operatorService.doLogin(operator);
+        //如果返回的用户是空的，那么就说明登录失败，返回的用户非空，说明登录成功
+    }
+
     @GetMapping("/findAll")
     public List<Operator> findAll(){
         return operatorService.findAll();

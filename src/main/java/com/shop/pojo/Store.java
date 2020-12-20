@@ -13,9 +13,6 @@ public class Store implements Serializable{
 	@Id
 	private String id;//id
 
-
-	
-
 	private String username;//username
 
 	private String password;//password

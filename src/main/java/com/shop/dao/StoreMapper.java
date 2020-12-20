@@ -1,6 +1,5 @@
 package com.shop.dao;
 
-
 import com.shop.pojo.Store;
 import tk.mybatis.mapper.common.Mapper;
 

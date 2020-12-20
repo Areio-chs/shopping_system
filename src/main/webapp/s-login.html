@@ -1,190 +1,240 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
-    <title>登录界面</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=1366, maximum-scale=1.0"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <link href="resources/css/jquery-ui-themes.css" type="text/css" rel="stylesheet"/>
-    <link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
-    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="files/登录界面/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet"/>
-    <script src="resources/scripts/jquery-1.7.1.min.js"></script>
-    <script src="resources/scripts/jquery-ui-1.8.10.custom.min.js"></script>
-    <script src="resources/scripts/prototypePre.js"></script>
-    <script src="data/document.js"></script>
-    <script src="resources/scripts/prototypePost.js"></script>
-    <script src="files/登录界面/data.js"></script>
-    <script type="text/javascript">
-      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
-      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
-      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
-    </script>
-  </head>
-  <body>
-    <div id="base" class="" id="app">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+  <title>青柠后台，欢迎登录</title>
+  <link rel="icon" href="./img/favicon.ico">
 
-      <!-- 背景 (Dynamic Panel) -->
-      <div id="u1234" class="ax_default" data-label="背景">
-        <div id="u1234_state0" class="panel_state" data-label="State1" style="">
-          <div id="u1234_state0_content" class="panel_state_content">
+  <link rel="stylesheet" type="text/css" href="./css/all.css" />
+  <link rel="stylesheet" type="text/css" href="./css/pages-login.css" />
+  <style>
+    .message{
+      font-size: 13px;
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+<!-- 头部栏位 -->
+<!--页面顶部-->
+<div id="nav-bottom">
+  <!--顶部-->
+  <div class="nav-top">
+    <div class="top">
+      <div class="py-container">
+        <div class="shortcut">
+          <ul class="fl">
+            <li class="f-item">青柠商家后台欢迎您！</li>
+            <li class="f-item">请<a href="s-login.html" target="_blank">登录</a>　<span><a href="s-register.html" target="_blank">免费注册</a></span></li>
+          </ul>
+          <div class="fr typelist">
+            <ul class="types">
+              <li class="f-item"><span>我的订单</span></li>
+              <!--<li class="f-item"><span><a href="cart.html" target="_blank">我的购物车</a></span></li>-->
+              <!--<li class="f-item"><span><a href="home.html" target="_blank">我的青柠</a></span></li>-->
+              <li class="f-item"><span>青柠会员</span></li>
+              <li class="f-item"><span>企业采购</span></li>
+              <li class="f-item"><span>关注青柠</span></li>
+              <li class="f-item"><span><a href="cooperation.html" target="_blank">合作招商</a></span></li>
+              <li class="f-item"><span><a href="login.html" target="_blank">买家登录</a></span></li>
+              <li class="f-item"><span>网站导航</span></li>
+            </ul>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- 登录面板 (Dynamic Panel) -->
-      <div id="u1235" class="ax_default" data-label="登录面板">
-        <div id="u1235_state0" class="panel_state" data-label="State1" style="">
-          <div id="u1235_state0_content" class="panel_state_content">
-
-            <!-- Unnamed (Rectangle) -->
-            <div id="u1236" class="ax_default _默认样式">
-              <div id="u1236_div" class=""></div>
-            </div>
-
-            <!-- Unnamed (Rectangle) -->
-            <div id="u1237" class="ax_default _默认样式">
-              <img id="u1237_img" class="img " src="images/登录界面/u1237.png"/>
-              <div id="u1237_text" class="text ">
-                <p><span>商家后台管理系统</span></p>
-              </div>
-            </div>
-
-            <!-- Unnamed (Rectangle) -->
-            <div id="u1238" class="ax_default _默认样式">
-              <img id="u1238_img" class="img " src="images/登录界面/u1238.png"/>
-            </div>
-
-            <!-- 登录按纽 (Rectangle) -->
-            <div id="u1239" class="ax_default _默认样式" data-label="登录按纽" selectiongroup="按纽组-9">
-              <div id="u1239_div" class=""></div>
-              <div id="u1239_text" class="text ">
-                <p><span>登录</span></p>
-              </div>
-            </div>
-
-            <!-- 输入框 (Group) -->
-            <div id="u1240" class="ax_default" data-label="输入框" data-left="25" data-top="230" data-width="300" data-height="50">
-
-              <!-- 边框 (Rectangle) -->
-              <div id="u1241" class="ax_default _默认样式" data-label="边框">
-                <img id="u1241_img" class="img " src="images/登录界面/边框_u1241.png"/>
-                <div id="u1241_text" class="text ">
-                  <p><span></span></p>
-                </div>
-              </div>
-
-              <!-- 密码 (Text Field) -->
-              <div id="u1242" class="ax_default _默认样式" data-label="密码">
-                <input id="u1242_input" type="password" value="" maxlength="20"/>
-              </div>
-
-              <!-- 清除 (Rectangle) -->
-              <div id="u1243" class="ax_default _默认样式 ax_default_hidden" data-label="清除" style="display:none; visibility: hidden">
-                <div id="u1243_div" class=""></div>
-                <div id="u1243_text" class="text ">
-                  <p><span></span></p>
-                </div>
-              </div>
-            </div>
-
-            <!-- 输入框 (Group) -->
-            <div id="u1244" class="ax_default" data-label="输入框" data-left="25" data-top="160" data-width="300" data-height="50">
-
-              <!-- 边框 (Rectangle) -->
-              <div id="u1245" class="ax_default _默认样式" data-label="边框">
-                <img id="u1245_img" class="img " src="images/登录界面/边框_u1241.png"/>
-              </div>
-
-              <!-- 用户名 (Text Field) -->
-              <div id="u1246" class="ax_default _默认样式" data-label="用户名">
-                <input id="u1246_input" type="text" value="" maxlength="20"/>
-              </div>
-
-              <!-- 清除 (Rectangle) -->
-              <div id="u1247" class="ax_default _默认样式 ax_default_hidden" data-label="清除" style="display:none; visibility: hidden">
-                <div id="u1247_div" class=""></div>
-                <div id="u1247_text" class="text ">
-                  <p><span></span></p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Unnamed (Shape) -->
-            <div id="u1248" class="ax_default _默认样式">
-              <img id="u1248_img" class="img " src="images/登录界面/u1248.png"/>
-            </div>
-
-            <!-- Unnamed (Shape) -->
-            <div id="u1249" class="ax_default _默认样式">
-              <img id="u1249_img" class="img " src="images/登录界面/u1249.png"/>
-            </div>
-
-            <!-- 警告提示 (Dynamic Panel) -->
-            <div id="u1250" class="ax_default ax_default_hidden" data-label="警告提示" style="display:none; visibility: hidden">
-              <div id="u1250_state0" class="panel_state" data-label="用户名或密码不正确" style="">
-                <div id="u1250_state0_content" class="panel_state_content">
-
-                  <!-- Unnamed (Rectangle) -->
-                  <div id="u1251" class="ax_default _默认样式">
-                    <div id="u1251_div" class=""></div>
-                    <div id="u1251_text" class="text ">
-                      <p style="font-size:12px;"><span style="font-family:'FontAwesome';font-weight:400;font-size:16px;"></span><span style="font-family:'微软雅黑 Regular', '微软雅黑';font-weight:400;"> 用户名或密码不正确</span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="u1250_state1" class="panel_state" data-label="请填写用户名称" style="visibility: hidden;">
-                <div id="u1250_state1_content" class="panel_state_content">
-
-                  <!-- Unnamed (Rectangle) -->
-                  <div id="u1252" class="ax_default _默认样式">
-                    <div id="u1252_div" class=""></div>
-                    <div id="u1252_text" class="text ">
-                      <p style="font-size:12px;"><span style="font-family:'FontAwesome';font-weight:400;font-size:16px;"></span><span style="font-family:'微软雅黑 Regular', '微软雅黑';font-weight:400;"> 请填写用户账号</span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="u1250_state2" class="panel_state" data-label="请填写登录密码" style="visibility: hidden;">
-                <div id="u1250_state2_content" class="panel_state_content">
-
-                  <!-- Unnamed (Rectangle) -->
-                  <div id="u1253" class="ax_default _默认样式">
-                    <div id="u1253_div" class=""></div>
-                    <div id="u1253_text" class="text ">
-                      <p style="font-size:12px;"><span style="font-family:'FontAwesome';font-weight:400;font-size:16px;"></span><span style="font-family:'微软雅黑 Regular', '微软雅黑';font-weight:400;"> 请填写登录密码</span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <!--头部-->
+    <div class="header">
+      <div class="py-container">
+        <div class="yui3-g Logo">
+          <div class="yui3-u Left logoArea">
+            <a class="logo-bd" title="青柠" href="index.html" target="_blank"></a>
           </div>
-        </div>
-      </div>
-
-      <!-- 底部版权 (Dynamic Panel) -->
-      <div id="u1254" class="ax_default" data-label="底部版权">
-        <div id="u1254_state0" class="panel_state" data-label="State1" style="">
-          <div id="u1254_state0_content" class="panel_state_content">
-
-            <!-- Unnamed (bottom) -->
-
-            <!-- Unnamed (Rectangle) -->
-            <div id="u1256" class="ax_default _默认样式">
-              <img id="u1256_img" class="img " src="images/登录界面/u1256.png"/>
-              <div id="u1256_text" class="text ">
-                <p><span>Copyright © 黑马程序员, All Rights Reserved.</span></p><p><span><br></span></p>
-              </div>
+          <div class="yui3-u Rit searchArea">
+            <div class="search">
+              <form action="" class="sui-form form-inline">
+                <!--searchAutoComplete-->
+                <div class="input-append">
+                  <input type="text" id="autocomplete" class="input-error input-xxlarge" />
+                  <button class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </body>
-  <script src="js/vue.js"></script>
-  <script src="js/axios.js"></script>
+  </div>
+</div>
 
+<div class="login-box">
+
+  <!--loginArea-->
+  <div id="app" class="loginArea">
+    <div class="py-container login">
+      <div class="loginform">
+        <ul class="sui-nav nav-tabs tab-wraped">
+          <li id="tabOtherLogin" onclick="switchOtherLogin()">
+            <a href="javascript:void(0)" data-toggle="tab" >
+              <h3>扫描登录</h3>
+            </a>
+          </li>
+          <li id="tabSuiForm" class="active" onclick="switchSuiForm()">
+            <a href="javascript:void(0)" data-toggle="tab" >
+              <h3>账户登录</h3>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content tab-wraped">
+          <div id="index" class="tab-pane ">
+            <p>二维码登录，暂为官网二维码</p>
+            <img src="./img/wx_cz.jpg" />
+          </div>
+          <div id="profile" class="tab-pane active">
+            <form class="sui-form">
+              <div class="input-prepend"><span class="add-on loginname"></span>
+                <input id="inputName" name="username" type="text" v-model="pojo.username" ref="nameInput" @blur="checkName()" placeholder="请输入用户名" class="span2 input-xfat">
+              </div>
+              <div>
+                <span class="message">{{nameMessage}}</span>
+              </div>
+              <div class="input-prepend"><span class="add-on loginpwd"></span>
+                <input id="inputPassword" name="password" type="password" v-model="pojo.password" ref="pwInput" @blur="checkPassword()" placeholder="请输入密码" class="span2 input-xfat">
+
+              </div>
+              <div>
+                <span class="message">{{pwMessage}}</span>
+              </div>
+              <div class="setting">
+                <label class="checkbox inline">
+                  <input name="m1" type="checkbox" value="2" checked="">
+                  自动登录
+                </label>
+                <span class="forget">忘记密码？</span>
+              </div>
+              <div class="logined">
+                <a class="sui-btn btn-block btn-xlarge btn-danger" @click="login()">登&nbsp;&nbsp;录</a>
+              </div>
+            </form>
+            <div class="otherlogin">
+              <div class="types">
+                <ul>
+                  <li><img src="./img/qq.png" width="35px" height="35px" /></li>
+                  <li><img src="./img/sina.png" /></li>
+                  <li><img src="./img/ali.png" /></li>
+                  <li><img src="./img/weixin.png" /></li>
+                </ul>
+              </div>
+              <span class="register"><a href="s-register.html" target="_blank">立即注册</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--foot-->
+  <div class="py-container copyright">
+    <ul>
+      <li>关于我们</li>
+      <li>联系我们</li>
+      <li>联系客服</li>
+      <li>商家入驻</li>
+      <li>营销中心</li>
+      <li>手机品优购</li>
+      <li>销售联盟</li>
+      <li>品优购社区</li>
+    </ul>
+    <div class="address">地址：广东省广州市海珠区仲恺路仲恺办公楼一层 邮编：100066 电话：400-666-4000 传真：010-82565600</div>
+    <div class="beian">粤ICP备08001421号粤公网安备110108006602
+    </div>
+  </div>
+</div>
+
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+
+<script type="text/javascript">
+
+  new Vue({
+    el:"#app",
+    data(){
+      return {
+        // 自定义的属性
+        pojo:{} ,//表单上绑定的实体，页面填写后自动绑定到vue的pojo里
+        password:'',//表单上的确认密码
+        nameMessage:'',
+        pwMessage:'',
+        usLength:'',
+        pwLength:'',
+        user:{},
+        loginName:'',
+        loginPassword:''
+      }
+    },
+    methods:{
+      login(){
+        if (this.checkName()&&this.checkPassword()) {
+          axios.post(`/store/login.do`, this.pojo).then(response => {
+            this.user = response.data;
+            this.username = response.data.username;
+            if (this.username == null) {
+              alert("用户名不存在，或密码有误");
+            } else {
+              sessionStorage.setItem("userInfo", JSON.stringify(this.user));
+              window.location.href = "s-index.html"
+            }
+          })
+        }else{
+          alert("请根据红字提示修改输入框的信息后重试！");
+        }
+      },
+      checkName(){
+        let userName = this.$refs.nameInput.value;
+        if (userName==""){
+          this.nameMessage="用户名不能为空";
+          return false;
+        }
+        var usLength = userName.length;
+        if(4>usLength||usLength>16){
+          this.nameMessage="请输入正确的用户名长度(4~16位长度)"
+          return false;
+        }
+        this.nameMessage="";
+        return true;
+      },
+      checkPassword(){
+        let password = this.$refs.pwInput.value;
+        if (password==""){
+          this.pwMessage="登录密码不能为空";
+          return false;
+        }
+        var pwLength = password.length;
+        if(4>pwLength||pwLength>16){
+          this.pwMessage="请输入正确的密码长度(4~16位长度)"
+          return false;
+        }
+        this.pwMessage="";
+        return true;
+      }
+    }
+  });
+
+  function switchSuiForm() {
+    document.getElementById('index').className = "tab-pane";
+    document.getElementById('profile').className = "tab-pane active";
+    document.getElementById('tabSuiForm').className = "active";
+    document.getElementById('tabOtherLogin').className = "";
+  }
+  function switchOtherLogin() {
+    document.getElementById('index').className = "tab-pane active";
+    document.getElementById('profile').className = "tab-pane";
+    document.getElementById('tabSuiForm').className = "";
+    document.getElementById('tabOtherLogin').className = "active";
+  }
+</script>
+</body>
 </html>

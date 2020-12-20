@@ -6,10 +6,13 @@ import com.shop.dao.StoreMapper;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Store;
 import com.shop.service.StoreService;
+import com.shop.utils.RandomIdUtils;
+import com.shop.utils.commUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +21,44 @@ public class StoreServiceImpl implements StoreService {
 
     @Autowired
     private StoreMapper storeMapper;
+
+    public Store doLogin(Store store) {
+        Store store1 = new Store();
+        store1.setUsername(store.getUsername());
+        store1.setPassword(store.getPassword());
+        List<Store> storeList = storeMapper.select(store1);
+        Store store2 = new Store();
+        if (commUtils.collectionEffective(storeList)){
+            //判断这个集合是否为空再取，
+            store2 = storeList.get(0);
+        }
+        return store2;
+    }
+
+    /**
+     * 新增
+     * @param store
+     */
+    public int add(Store store) {
+        int result = findStoreByName(store.getUsername());
+        if (result==1){
+            store.setId(RandomIdUtils.getUUID());
+            store.setCreated(new Date());
+            store.setStatus("1");
+            storeMapper.insert(store);}
+        return result;
+    }
+
+    public int findStoreByName(String username){
+        int result=1;
+        Store store = new Store();
+        store.setUsername(username);
+        List<Store> storeList = storeMapper.select(store);
+        if (commUtils.collectionEffective(storeList)){
+            result = 0;//代表该用户名已存在
+        }
+        return result;
+    }
 
     /**
      * 返回全部记录
@@ -70,14 +111,6 @@ public class StoreServiceImpl implements StoreService {
      */
     public Store findById(String id) {
         return storeMapper.selectByPrimaryKey(id);
-    }
-
-    /**
-     * 新增
-     * @param store
-     */
-    public void add(Store store) {
-        storeMapper.insert(store);
     }
 
     /**

@@ -34,14 +34,13 @@
 					<div class="fr typelist">
 						<ul class="types">
 							<li class="f-item"><span>我的订单</span></li>
-							
 							<li class="f-item"><span><a href="cart.html" target="_blank">我的购物车</a></span></li>
 							<li class="f-item"><span><a href="home.html" target="_blank">我的青柠</a></span></li>
 							<li class="f-item"><span>青柠会员</span></li>
 							<li class="f-item"><span>企业采购</span></li>						
 							<li class="f-item"><span>关注青柠</span></li>
 							<li class="f-item"><span><a href="cooperation.html" target="_blank">合作招商</a></span></li>
-							<li class="f-item"><span><a href="shoplogin.html" target="_blank">商家后台</a></span></li>				
+							<li class="f-item"><span><a href="s-login.html" target="_blank">商家后台</a></span></li>
 							<li class="f-item"><span>网站导航</span></li>
 						</ul>
 					</div>
@@ -99,10 +98,8 @@
 						</div>
 						<div id="profile" class="tab-pane active">
 							<form class="sui-form">
-								<span class="message">{{errorMessage}}</span>
 								<div class="input-prepend"><span class="add-on loginname"></span>
 									<input id="inputName" name="username" type="text" v-model="pojo.username" ref="nameInput" @blur="checkName()" placeholder="请输入用户名" class="span2 input-xfat">
-
 								</div>
 								<div>
 									<span class="message">{{nameMessage}}</span>
@@ -177,30 +174,28 @@
 				pwLength:'',
 				user:{},
 				loginName:'',
-				loginPassword:'',
-				errorMessage:''
+				loginPassword:''
 			}
 		},
 		methods:{
-
 			login(){
 				if (this.checkName()&&this.checkPassword()) {
 					axios.post(`/user/login.do`, this.pojo).then(response => {
 						this.user = response.data;
 						this.username = response.data.username;
 						if (this.username == null) {
-							this.errorMessage = "用户名不存在，或密码有误";
+							alert("用户名不存在，或密码有误");
 						} else {
 							sessionStorage.setItem("userInfo", JSON.stringify(this.user));
 							window.location.href = "index.html"
 						}
 					})
+				}else{
+					alert("请根据红字提示修改输入框的信息后重试！");
 				}
 			},
-
 			checkName(){
 				let userName = this.$refs.nameInput.value;
-				//alert(userName);
 				if (userName==""){
 					this.nameMessage="用户名不能为空";
 					return false;
@@ -229,7 +224,6 @@
 			}
 		}
 	});
-
 
 	function switchSuiForm() {
 		document.getElementById('index').className = "tab-pane";

@@ -41,7 +41,7 @@
 								<li class="f-item"><span>企业采购</span></li>
 								<li class="f-item"><span>关注青柠</span></li>
 								<li class="f-item"><span><a href="cooperation.html" target="_blank">合作招商</a></span></li>
-								<li class="f-item"><span><a href="shoplogin.html" target="_blank">商家后台</a></span></li>
+								<li class="f-item"><span><a href="s-login.html" target="_blank">商家后台</a></span></li>
 								<li class="f-item"><span>网站导航</span></li>
 							</ul>
 						</div>
@@ -83,12 +83,10 @@
 			<h3>注册新用户<span class="go">我有账号，去<a href="login.html" target="_blank">登录</a></span></h3>
 			<div class="info">
 				<form class="sui-form form-horizontal" >
-					<span class="message " style="text-align: center">{{errorMessage}}</span>
-					<!--					<div id="message" v-if="this.message!=null||this.message!=''"></div>-->
 					<div class="control-group">
-						<label for="userName" class="control-label">会员名：</label>
+						<label for="userName" class="control-label">用户名：</label>
 						<div class="controls">
-							<input type="text" id="userName" name="userName" placeholder="请输入你的会员名" class="input-xfat input-xlarge"  v-model="pojo.username" ref="nameInput" @blur="checkName()">
+							<input type="text" id="userName" name="userName" placeholder="请输入你的用户名" class="input-xfat input-xlarge"  v-model="pojo.username" ref="nameInput" @blur="checkName()">
 							<span class="message">{{nameMessage}}</span>
 						</div>
 					</div>
@@ -117,7 +115,7 @@
 					<div class="control-group">
 						<label for="checkAgree" class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 						<div class="controls">
-							<input name="m1" id="checkAgree" type="checkbox"  value="2" checked="checked"><span>同意协议并注册《品优购用户协议》</span>
+							<input name="m1" id="checkAgree" type="checkbox"  value="2" checked="checked"><span>同意协议并注册《青柠平台买家协议》</span>
 						</div>
 					</div>
 					<div class="control-group">
@@ -167,32 +165,31 @@
 				pwcMessage:'',
 				usLength:'',
 				pwLength:'',
-				pwcLength:'',
-				errorMessage:''
+				pwcLength:''
 			}
 		},
 		methods:{
 			// 注册
 			save(){
 				if (this.checkName()&&this.checkPhone()&&this.checkPassword()&&this.checkPassword2()){
-					// alert("校验成功")
 					axios.post(`/user/add.do`,this.pojo).then( response=>{
 						let result = response.data;
 						if (result==1){
-							window.location.href="login.html";
+							alert("该用户已经存在");
 						}else {
-							this.errorMessage="该用户已经存在";
+							alert("注册成功");
+							window.location.href="login.html";
 						}
 						//清空变量
 						this.pojo={};
 						this.password="";
 					})
+				}else{
+					alert("请根据红字提示修改输入框的信息后重试！")
 				}
 			},
 			checkPhone(){
-
 				let phone = this.$refs.phoneInput.value;
-				//alert(phone);
 				if (phone==""){
 					this.phoneMessage="手机不可为空";
 					return false;//不再继续往下执行
@@ -204,7 +201,6 @@
 				}
 				this.phoneMessage="";
 				return true;
-
 			},
 			checkName(){
 				this.errorMessage="";
@@ -258,9 +254,5 @@
 			}
 		}
 	});
-
 </script>
-
-
-
 </html>

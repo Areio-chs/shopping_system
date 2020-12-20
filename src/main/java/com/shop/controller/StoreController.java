@@ -4,6 +4,7 @@ package com.shop.controller;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.Store;
+import com.shop.pojo.User;
 import com.shop.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,12 @@ public class StoreController {
 
     @Autowired
     private StoreService storeService;
+
+    @PostMapping("/login")
+    public Store loginUser(@RequestBody Store store){
+        return storeService.doLogin(store);
+        //如果返回的用户是空的，那么就说明登录失败，返回的用户非空，说明登录成功
+    }
 
     @GetMapping("/findAll")
     public List<Store> findAll(){

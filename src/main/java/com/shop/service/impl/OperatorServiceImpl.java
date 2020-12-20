@@ -5,7 +5,9 @@ import com.github.pagehelper.PageHelper;
 import com.shop.dao.OperatorMapper;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Operator;
+import com.shop.pojo.Operator;
 import com.shop.service.OperatorService;
+import com.shop.utils.commUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -19,6 +21,19 @@ public class OperatorServiceImpl implements OperatorService {
     @Autowired
     private OperatorMapper operatorMapper;
 
+    public Operator doLogin(Operator operator) {
+        Operator operator1 = new Operator();
+        operator1.setUsername(operator.getUsername());
+        operator1.setPassword(operator.getPassword());
+        List<Operator> OperatorList = operatorMapper.select(operator1);
+        Operator Operator2 = new Operator();
+        if (commUtils.collectionEffective(OperatorList)){
+            //判断这个集合是否为空再取，
+            Operator2 = OperatorList.get(0);
+        }
+        return Operator2;
+    }
+    
     /**
      * 返回全部记录
      * @return

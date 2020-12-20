@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <title>个人注册</title>
+    <link rel="icon" href="./img/favicon.ico">
+
+
+    <link rel="stylesheet" type="text/css" href="./css/all.css" />
+    <link rel="stylesheet" type="text/css" href="./css/pages-register.css" />
+    <style>
+        .message{
+            font-size: 13px;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app">
+    <!--页面顶部-->
+    <div id="nav-bottom">
+        <!--顶部-->
+        <div class="nav-top">
+            <div class="top">
+                <div class="py-container">
+                    <div class="shortcut">
+                        <ul class="fl">
+                            <li class="f-item">青柠商家后台欢迎您！</li>
+                            <li class="f-item">请<a href="s-login.html" target="_blank">登录</a>　<span><a href="s-register.html" target="_blank">免费注册</a></span></li>
+                        </ul>
+                        <div class="fr typelist">
+                            <ul class="types">
+                                <li class="f-item"><span>我的订单</span></li>
+                                <!--<li class="f-item"><span><a href="cart.html" target="_blank">我的购物车</a></span></li>-->
+                                <!--<li class="f-item"><span><a href="home.html" target="_blank">我的青柠</a></span></li>-->
+                                <li class="f-item"><span>青柠会员</span></li>
+                                <li class="f-item"><span>企业采购</span></li>
+                                <li class="f-item"><span>关注青柠</span></li>
+                                <li class="f-item"><span><a href="cooperation.html" target="_blank">合作招商</a></span></li>
+                                <li class="f-item"><span><a href="login.html" target="_blank">买家登录</a></span></li>
+                                <li class="f-item"><span>网站导航</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="register py-container ">
+
+        <!--register-->
+        <div class="registerArea">
+            <h3>注册新用户<span class="go">我有账号，去<a href="s-login.html" target="_blank">登录</a></span></h3>
+            <div class="info">
+                <form class="sui-form form-horizontal" >
+                    <div class="control-group">
+                        <label for="userName" class="control-label">用户名：</label>
+                        <div class="controls">
+                            <input type="text" id="userName" name="userName" placeholder="请输入你的用户名" class="input-xfat input-xlarge"  v-model="pojo.username" ref="nameInput" @blur="checkName()">
+                            <span class="message">{{nameMessage}}</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="phoneNum" class="control-label">手机号：</label>
+                        <div class="controls">
+                            <input type="text" id="phoneNum" name="phoneNum" placeholder="请输入你的手机号" class="input-xfat input-xlarge"  v-model="pojo.phone"  ref="phoneInput" @blur="checkPhone()">
+                            <span class="message">{{phoneMessage}}</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="inputPassword" class="control-label">登录密码：</label>
+                        <div class="controls">
+                            <input type="password" id="inputPassword" name="pwName" placeholder="设置登录密码" class="input-xfat input-xlarge" v-model="pojo.password" ref="pwInput" @blur="checkPassword()" >
+                            <span class="message">{{pwMessage}}</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="inputRePassword" class="control-label">确认密码：</label>
+                        <div class="controls">
+                            <!--							                                                   这个不能是pojo.了，因为一个实体只能有一个属性-->
+                            <input type="password" id="inputRePassword" name="pwcName" placeholder="再次确认密码" class="input-xfat input-xlarge" v-model="password" ref="pwcInput" @blur="checkPassword2()">
+                            <span class="message">{{pwcMessage}}</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="checkAgree" class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <div class="controls">
+                            <input name="m1" id="checkAgree" type="checkbox"  value="2" checked="checked"><span>同意协议并注册《青柠平台商家协议》</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label"></label>
+                        <div class="controls btn-reg">
+                            <a class="sui-btn btn-block btn-xlarge btn-danger"  @click="save()">完成注册</a>
+                        </div>
+                    </div>
+                </form>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!--foot-->
+        <div class="py-container copyright">
+            <ul>
+                <li>关于我们</li>
+                <li>联系我们</li>
+                <li>联系客服</li>
+                <li>商家入驻</li>
+                <li>营销中心</li>
+                <li>手机品优购</li>
+                <li>销售联盟</li>
+                <li>品优购社区</li>
+            </ul>
+            <div class="address">地址：广东省广州市海珠区仲恺路仲恺办公楼一层 邮编：100066 电话：400-666-4000 传真：010-82565600</div>
+            <div class="beian">粤ICP备08001421号粤公网安备110108006602
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+
+<script>
+    new Vue({
+        el:"#app",
+        data(){
+            return {
+                // 自定义的属性
+                pojo:{} ,//表单上绑定的实体，页面填写后自动绑定到vue的pojo里
+                password:'',//表单上的确认密码
+                passwordC:'',
+                nameMessage:'',
+                phoneMessage:'',
+                pwMessage:'',
+                pwcMessage:'',
+                usLength:'',
+                pwLength:'',
+                pwcLength:''
+            }
+        },
+        methods:{
+            // 注册
+            save(){
+                if (this.checkName()&&this.checkPhone()&&this.checkPassword()&&this.checkPassword2()){
+                    axios.post(`/store/add.do`,this.pojo).then( response=>{
+                        let result = response.data;
+                        if (result==1){
+                            alert("该用户已经存在");
+                        }else {
+                            alert("注册成功");
+                            window.location.href="s-login.html";
+                        }
+                        //清空变量
+                        this.pojo={};
+                        this.password="";
+                    })
+                }else{
+                    alert("请根据红字提示修改输入框的信息后重试！")
+                }
+            },
+            checkPhone(){
+                let phone = this.$refs.phoneInput.value;
+                if (phone==""){
+                    this.phoneMessage="手机不可为空";
+                    return false;//不再继续往下执行
+                }
+                var regPhone = /(^[0-9]{3,4}\-[0-9]{3,8}$)|(^[0-9]{3,8}$)|(^[0−9]3,4[0-9]{3,8}$)|(^0{0,1}13[0-9]{9}$)/;//以1为开头,第二位可为3,4,5,6,7,8,9中的任意一位,最后以0-9的9个整数结尾
+                if (!regPhone.test(phone)){
+                    this.phoneMessage="请输入合法的手机号"
+                    return false;//不再继续往下执行
+                }
+                this.phoneMessage="";
+                return true;
+            },
+            checkName(){
+                let userName = this.$refs.nameInput.value;
+                if (userName==""){
+                    this.nameMessage="用户名不能为空";
+                    return false;
+                }
+                var usLength = userName.length;
+                if(4>usLength||usLength>16){
+                    this.nameMessage="请输入正确的用户名长度(4~16位长度)"
+                    return false;
+                }
+                this.nameMessage="";
+                return true;
+            },
+            checkPassword(){
+                let password = this.$refs.pwInput.value;
+                if (password==""){
+                    this.pwMessage="登录密码不能为空";
+                    return false;
+                }
+                var pwLength = password.length;
+                if(4>pwLength||pwLength>16){
+                    this.pwMessage="请输入正确的密码长度(4~16位长度)"
+                    return false;
+                }
+                this.pwMessage="";
+                return true;
+            },
+            checkPassword2(){
+                let password = this.$refs.pwInput.value;
+                let passwordC = this.$refs.pwcInput.value;
+
+                if (passwordC==""){
+                    this.pwcMessage="重复密码不能为空";
+                    return false;
+                }
+                if (password!=passwordC){
+                    this.pwcMessage="两次密码输入不一致"
+                    return false;
+                }
+                var pwcLength = passwordC.length;
+                if(4>pwcLength||pwcLength>16){
+                    this.pwcMessage="请输入正确的密码长度(4~16位长度)"
+                    return false;
+                }
+                this.pwcMessage="";
+                return true;
+            }
+        }
+    });
+</script>
+</html>

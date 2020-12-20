@@ -10,7 +10,7 @@ import java.util.*;
  * operator业务逻辑层
  */
 public interface OperatorService {
-
+    public Operator doLogin(Operator operator);
 
     public List<Operator> findAll();
 

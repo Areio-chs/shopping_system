@@ -34,7 +34,7 @@
   -ms-overflow-y:hidden;
   overflow-y:hidden;
   background-color:rgba(0, 153, 255, 0.988235294117647);
-  background-image:url('../../images/登录界面/u1234_state0.png');
+  background-image:url('../../images/login/u1234_state0.png');
   background-position:right top;
   background-repeat:no-repeat;
   background-attachment:scroll;
@@ -218,52 +218,52 @@
   font-size:18px;
   color:#FFFFFF;
 }
-#u1239_div.mouseOver {
-  border-width:0px;
-  position:absolute;
-  left:0px;
-  top:0px;
-  width:300px;
-  height:50px;
-  background:inherit;
-  background-color:rgba(0, 153, 255, 0.988235294117647);
-  border:none;
-  border-radius:3px;
-  -moz-box-shadow:none;
-  -webkit-box-shadow:none;
-  box-shadow:none;
-  font-family:'微软雅黑';
-  font-weight:400;
-  font-style:normal;
-  font-size:18px;
-  color:#FFFFFF;
-}
-#u1239.mouseOver {
-  opacity:0.8;
-}
-#u1239_div.mouseDown {
-  border-width:0px;
-  position:absolute;
-  left:0px;
-  top:0px;
-  width:300px;
-  height:50px;
-  background:inherit;
-  background-color:rgba(0, 153, 255, 0.988235294117647);
-  border:none;
-  border-radius:3px;
-  -moz-box-shadow:none;
-  -webkit-box-shadow:none;
-  box-shadow:none;
-  font-family:'微软雅黑';
-  font-weight:400;
-  font-style:normal;
-  font-size:18px;
-  color:#FFFFFF;
-}
-#u1239.mouseDown {
-  opacity:1;
-}
+/*#u1239_div.mouseOver {*/
+/*  border-width:0px;*/
+/*  position:absolute;*/
+/*  left:0px;*/
+/*  top:0px;*/
+/*  width:300px;*/
+/*  height:50px;*/
+/*  background:inherit;*/
+/*  background-color:rgba(0, 153, 255, 0.988235294117647);*/
+/*  border:none;*/
+/*  border-radius:3px;*/
+/*  -moz-box-shadow:none;*/
+/*  -webkit-box-shadow:none;*/
+/*  box-shadow:none;*/
+/*  font-family:'微软雅黑';*/
+/*  font-weight:400;*/
+/*  font-style:normal;*/
+/*  font-size:18px;*/
+/*  color:#FFFFFF;*/
+/*}*/
+/*#u1239.mouseOver {*/
+/*  opacity:0.8;*/
+/*}*/
+/*#u1239_div.mouseDown {*/
+/*  border-width:0px;*/
+/*  position:absolute;*/
+/*  left:0px;*/
+/*  top:0px;*/
+/*  width:300px;*/
+/*  height:50px;*/
+/*  background:inherit;*/
+/*  background-color:rgba(0, 153, 255, 0.988235294117647);*/
+/*  border:none;*/
+/*  border-radius:3px;*/
+/*  -moz-box-shadow:none;*/
+/*  -webkit-box-shadow:none;*/
+/*  box-shadow:none;*/
+/*  font-family:'微软雅黑';*/
+/*  font-weight:400;*/
+/*  font-style:normal;*/
+/*  font-size:18px;*/
+/*  color:#FFFFFF;*/
+/*}*/
+/*#u1239.mouseDown {*/
+/*  opacity:1;*/
+/*}*/
 #u1239_text {
   border-width:0px;
   position:absolute;
