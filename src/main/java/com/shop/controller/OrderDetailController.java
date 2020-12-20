@@ -21,7 +21,10 @@ public class OrderDetailController {
     public List<OrderDetail> findAll(){
         return orderDetailService.findAll();
     }
-
+    @GetMapping("/findByOrderId")
+    public List<OrderDetail> findByOrderId(String orderId){
+        return orderDetailService.findByOrderId(orderId);
+    }
     @GetMapping("/findPage")
     public PageResult<OrderDetail> findPage(int page, int size){
         return orderDetailService.findPage(page, size);
@@ -60,5 +63,9 @@ public class OrderDetailController {
         orderDetailService.delete(id);
         return new Result();
     }
-
+    @GetMapping("/returned")
+    public Result returned(String id){
+        orderDetailService.returned(id);
+        return new Result();
+    }
 }

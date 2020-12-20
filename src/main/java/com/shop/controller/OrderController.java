@@ -42,6 +42,11 @@ public class OrderController {
         return orderService.findById(id);
     }
 
+    @GetMapping("/delivery")
+    public Result delivery(String orderId){
+        orderService.delivery(orderId);
+        return  new Result();
+    }
 
     @PostMapping("/add")
     public Result add(@RequestBody Order order){

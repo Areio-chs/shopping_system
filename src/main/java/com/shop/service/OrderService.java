@@ -24,6 +24,7 @@ public interface OrderService {
 
     public PageResult<Order> findPage(Map<String, Object> searchMap, int page, int size);
 
+    public void delivery(String orderId);
 
     public Order findById(String id);
 

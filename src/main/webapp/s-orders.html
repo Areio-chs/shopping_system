@@ -52,16 +52,33 @@
         <!-- 搜索与添加区域 -->
         <el-form :inline="true" ref="form"  size="mini" label-width="70px">
             <el-form-item>
-                <el-input placeholder="请输入商品名称" v-model="searchMap.name" clearable>
-                    <el-button slot="append" icon="el-icon-search"  @click="getGoodsList()"></el-button>
+                <el-input placeholder="请输入订单号" v-model="searchMap.orderNum" clearable>
+                    <el-button slot="append" icon="el-icon-search"  @click="getOrderList()"></el-button>
                 </el-input>
             </el-form-item>
-
+            <el-form-item>
+                <el-button type="primary"  @click="showAll()">全部</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  @click="noPay()">待付款</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  @click="waitSend()">待发货</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  @click="waitReceive()">待收货</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  @click="waitEvaluate()">待评价</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary"  @click="finish()">已完成</el-button>
+            </el-form-item>
         </el-form>
 
         <el-table
                 ref="multipleTable"
-                :data="GeneralList"
+                :data="orderList"
                 tooltip-effect="dark"
                 style="width: 100%"
                 size="mini"
@@ -76,7 +93,7 @@
                     label="#">
             </el-table-column>
             <el-table-column
-                    prop="orderId"
+                    prop="orderNum"
                     label="订单编号"
                     width="120"
                     sortable
@@ -111,12 +128,14 @@
                     prop="trackingName"
                     label="快递公司"
                     width="120"
+                    show-overflow-tooltip
                    >
             </el-table-column>
             <el-table-column
                     prop="trackingNum"
                     label="快递单号"
                     width="120"
+                    show-overflow-tooltip
                     sortable>
             </el-table-column>
 
@@ -124,6 +143,7 @@
                     prop="totalNum"
                     label="数量合计"
                     width="120"
+                    sortable
             >
             </el-table-column>
             <el-table-column
@@ -146,7 +166,6 @@
                     prop="receiverContact"
                     label="收货人"
                     width="120"
-                    sortable
                     show-overflow-tooltip
             >
             </el-table-column>
@@ -170,7 +189,6 @@
                     prop="buyerRateName"
                     label="评价状态"
                     width="120"
-                    sortable
                     show-overflow-tooltip
             >
             </el-table-column>
@@ -178,7 +196,6 @@
                     prop="paymentypeName"
                     label="支付类型"
                     width="120"
-                    sortable
                     show-overflow-tooltip
             >
             </el-table-column>
@@ -233,11 +250,11 @@
             <el-table-column label="操作" width="180px">
                 <template slot-scope="scope">
 
-                    <!-- 编辑 -->
+
                     <el-tooltip effect="dark" content="发货" placement="top" :enterable="false">
-                        <el-button type="primary"  size="mini" @click="showEditDialog(scope.row.id);selectAllCategory();selectAllSpec();">发货</el-button>
+                        <el-button v-if="scope.row.status=='2'" type="primary"  size="mini" @click="delivery(scope.row.id)">发货</el-button>
                     </el-tooltip>
-                    <!-- 删除按钮 -->
+
                     <el-tooltip effect="dark" content="订单详情" placement="top" :enterable="false">
                         <el-button type="danger"  size="mini" @click="showOrderDetail(scope.row.id);">订单详情</el-button>
                     </el-tooltip>
@@ -246,8 +263,8 @@
         </el-table>
 
         <!-- 分页区域 -->
-        <el-pagination @size-change="getGoodsList"
-                       @current-change="getGoodsList"
+        <el-pagination @size-change="getOrderList"
+                       @current-change="getOrderList"
                        :current-page.sync="currentPage"
                        :page-sizes="[1, 4, 8, 10]"
                        :page-size="size"
@@ -261,7 +278,7 @@
         <el-dialog title="订单详情" :visible.sync="OrderDetaiDialogVisible" width="80%" @close="editDialogClosed">
             <el-table
                     ref="multipleTable"
-                    :data="OrderDetailList"
+                    :data="orderDetailList"
                     tooltip-effect="dark"
                     style="width: 100%"
                     size="mini"
@@ -329,12 +346,9 @@
                 </el-table-column>
                 <el-table-column label="操作" width="180px">
                     <template slot-scope="scope">
-
-                        <!-- 编辑 -->
                         <el-tooltip effect="dark" content="确认退货" placement="top" :enterable="false">
-                            <el-button type="primary"  size="mini" @click="showEditDialog(scope.row.id);selectAllCategory();selectAllSpec();">确认退货</el-button>
+                            <el-button v-if="scope.row.isReturn=='2'" type="primary"  size="mini" @click="returned(scope.row.id)">确认退货</el-button>
                         </el-tooltip>
-
                     </template>
                 </el-table-column>
             </el-table>
@@ -344,14 +358,14 @@
       					</span>
         </el-dialog>
 
-        <!-- 查看信息的对话框 -->
-        <el-dialog title="商品图片" :visible.sync="showDialogVisible" width="50%" @close="showDialogClosed">
-            <img :src="imageUrl">
-            <span slot="footer" class="dialog-footer">
+<!--        &lt;!&ndash; 查看信息的对话框 &ndash;&gt;-->
+<!--        <el-dialog title="商品图片" :visible.sync="showDialogVisible" width="50%" @close="showDialogClosed">-->
+<!--            <img :src="imageUrl">-->
+<!--            <span slot="footer" class="dialog-footer">-->
 
-        					<el-button @click="showDialogVisible = false">关闭</el-button>
-      					</span>
-        </el-dialog>
+<!--        					<el-button @click="showDialogVisible = false">关闭</el-button>-->
+<!--      					</span>-->
+<!--        </el-dialog>-->
     </el-card>
 
 </div>
@@ -387,8 +401,8 @@
                 specOptionValues:[],
                 editFormspecOptionValues:[],
                 goodsList: [],
-                GeneralList: [],
-                OrderDetailList: [],
+                orderList: [],
+                orderDetailList: [],
 
                 // 控制修改党总支对话框的显示与隐藏
                 editDialogVisible: false,
@@ -407,169 +421,68 @@
             }
         },
         created() {
-            this.getGeneralList();
-            this.getOrderDatailList();
-            // this.getGoodsList();
+            this.getOrderList();
+            // this.getOrderDatailList();
+
         },
         methods: {
-            getGeneralList() {
-                //向后台获取党总支列表
-                this.GeneralList = [{
-                    orderId: '1234648501202970800',
-                    userName: 'name1',
-                    statusName: '已付款',
-                    message:'我要发圆通快递',
-                    freight: '0',
-                    trackingName: '圆通快递',
-                    trackingNum: '557036121458674',
-                    created: '2020/10/10',
-                    updated: '2020/10/15',
-                    totalNum: '3',
-                    totalMoney: '15597',
-                    payMoney:'15597',
-                    receiverContact: '陈惠珊',
-                    buyerRateName:'未评价',
-                    receiverMobile: '13643049892',
-                    receiverAddress:'广东省汕头市潮阳区西胪镇',
-                    paymentypeName:'在线支付',
-                    paymenttime: '2020/10/10',
-                    sendtime: '2020/10/15',
-                    endtime:'2020/10/18',
-                    closetime:'2020/10/12',
-                }, {
-                    orderId: '1234648501202970800',
-                    userName: 'name1',
-                    statusName: '已付款',
-                    message:'我要发圆通快递',
-                    freight: '0',
-                    trackingName: '圆通快递',
-                    trackingNum: '557036121458674',
-                    created: '2020/10/10',
-                    updated: '2020/10/15',
-                    totalNum: '3',
-                    totalMoney: '15597',
-                    payMoney:'15597',
-                    receiverContact: '陈惠珊',
-                    receiverMobile: '13643049892',
-                    receiverAddress:'广东省汕头市潮阳区西胪镇',
-                    paymentypeName:'在线支付',
-                    paymenttime: '2020/10/10',
-                    sendtime: '2020/10/15',
-                    endtime:'2020/10/18',
-                    closetime:'2020/10/12',
-                }, {
-                    orderId: '1234648501202970800',
-                    userName: 'name1',
-                    statusName: '已付款',
-                    message:'我要发圆通快递',
-                    freight: '0',
-                    trackingName: '圆通快递',
-                    trackingNum: '557036121458674',
-                    created: '2020/10/10',
-                    updated: '2020/10/15',
-                    totalNum: '3',
-                    totalMoney: '15597',
-                    payMoney:'15597',
-                    receiverContact: '陈惠珊',
-                    receiverMobile: '13643049892',
-                    receiverAddress:'广东省汕头市潮阳区西胪镇',
-                    paymentypeName:'在线支付',
-                    paymenttime: '2020/10/10',
-                    sendtime: '2020/10/15',
-                    endtime:'2020/10/18',
-                    closetime:'2020/10/12',
-                }, {
-                    orderId: '1234648501202970800',
-                    userName: 'name1',
-                    statusName: '已付款',
-                    message:'我要发圆通快递',
-                    freight: '0',
-                    trackingName: '圆通快递',
-                    trackingNum: '557036121458674',
-                    created: '2020/10/10',
-                    updated: '2020/10/15',
-                    totalNum: '3',
-                    totalMoney: '15597',
-                    payMoney:'15597',
-                    receiverContact: '陈惠珊',
-                    receiverMobile: '13643049892',
-                    receiverAddress:'广东省汕头市潮阳区西胪镇',
-                    paymentypeName:'在线支付',
-                    paymenttime: '2020/10/10',
-                    sendtime: '2020/10/15',
-                    endtime:'2020/10/18',
-                    closetime:'2020/10/12',
-                }]
-            },
-            getOrderDatailList() {
-                //向后台获取党总支列表
-                this.OrderDetailList = [{
-                    goodsName: 'Apple/苹果iPhone 12 mini5G手机正品官方旗舰iPhone12新品官网苹果12 5',
-                    isReturnName: '未退货',
-                    goodsQuantity: '2',
-                    goodsPrice:'6049',
-                    freight: '0',
-                    totalMoney: '12098',
-                    payMoney: '12098',
-                    commentContent: '东西很不错'
-                }, {
-                    goodsName: 'Apple/苹果iPhone 12 mini5G手机正品官方旗舰iPhone12新品官网苹果12 5',
-                    isReturnName: '未退货',
-                    goodsQuantity: '2',
-                    goodsPrice:'6049',
-                    freight: '0',
-                    totalMoney: '12098',
-                    payMoney: '12098',
-                    commentContent: '东西很不错'
-                }]
-            },
-            showGoodsDialog(img){
-                this.imageUrl = img;
-                this.showDialogVisible = true
-            },
-
-            // 展示编辑党总支的对话框
-            selectSpec(id){
-                axios.get(`/goods/findSpec.do?id=${id}`).then(response=>{
-                    // alert(JSON.stringify(response))
-                    this.editFormspecOptionValues = response.data;
-                });
-            },
-            showOrderDetail(id) {
-                this.id2 = id;
-                this.OrderDetaiDialogVisible = true;
-                axios.get(`/goods/findById.do?id=${id}`).then(response=>{
-                    this.editForm = response.data;
-                    this.imageUrl=this.editForm.img;
-                })
-                this.selectSpec(this.id2);
-            },
-            showEditDialog(id) {
-                this.id2 = id;
-                this.editDialogVisible = true;
-                axios.get(`/goods/findById.do?id=${id}`).then(response=>{
-                    this.editForm = response.data;
-                    this.imageUrl=this.editForm.img;
-                })
-                this.selectSpec(this.id2);
-            },
-            selectAllCategory(){
-                axios.get('/category/findAll.do').then(response=>{
-                    this.options = response.data;
-                });
-            },
-            selectAllSpec(){
-                axios.get('/spec/findAll.do').then(response=>{
-                    this.specOptions = response.data;
-                });
-            },
-            getGoodsList() {
-                axios.post(`/goods/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
-                    this.goodsList = response.data.rows;
+            getOrderList() {
+                axios.post(`/order/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
+                    this.orderList = response.data.rows;
                     this.total = response.data.total;
                 })
-            }
-            ,
+            },
+            showAll(){
+                this.searchMap={};
+                this.getOrderList();
+            },
+            noPay(){
+                this.searchMap.status='1';
+                this.getOrderList();
+            },
+            waitSend(){
+                this.searchMap.status='2';
+                this.getOrderList();
+            },
+            waitReceive(){
+                this.searchMap.status='3';
+                this.getOrderList();
+            },
+            waitEvaluate(){
+                this.searchMap.status='4';
+                this.getOrderList();
+            },
+            finish(){
+                this.searchMap.status='5';
+                this.getOrderList();
+            },
+
+            showOrderDetail(id) {
+                this.OrderDetaiDialogVisible = true;
+                axios.get(`/orderDetail/findByOrderId.do?orderId=${id}`).then(response => {
+                    // alert(JSON.stringify(response));
+                    this.orderDetailList = response.data;
+                })
+            },
+            delivery(id){
+                //确认发货
+                axios.get(`/order/delivery.do?orderId=${id}`).then(response => {
+                    // 刷新数据列表
+                    this.getOrderList();
+                    // 提示修改成功
+                    this.$message.success('发货成功！')
+                })
+            },
+            returned(id){
+                //确认退货
+                axios.get(`/orderDetail/returned.do?id=${id}`).then(response => {
+                    // 刷新数据列表
+                    this.OrderDetaiDialogVisible = false;
+                    this.getOrderList();
+                    // 提示修改成功
+                    this.$message.success('退款成功！');
+                })
+            },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
@@ -593,7 +506,7 @@
                     // 关闭对话框
                     this.editDialogVisible = false
                     // 刷新数据列表
-                    this.getGoodsList()
+                    this.getOrderList()
                     // 提示修改成功
                     this.$message.success('更新商品信息成功！')
                 })
@@ -617,10 +530,10 @@
                 //此处向后台发请求进行删除
                 axios.get(`/goods/delete.do?id=${id}`).then(response=>{
                     this.addDialogVisible=false;
-                    this.getGoodsList();
+                    this.getOrderList();
                 })
                 this.$message.success('删除商品成功！')
-                this.getGoodsList()
+                this.getOrderList()
             },
             //单元格被点击
             cellClick(row, column, cell, event) {

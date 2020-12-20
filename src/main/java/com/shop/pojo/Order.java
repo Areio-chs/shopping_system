@@ -1,4 +1,6 @@
 package com.shop.pojo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -43,17 +45,17 @@ public class Order implements Serializable{
 
 	@Transient
 	private String paymentypeName;
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date created;//创建时间
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date updated;//更新时间
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date paymenttime;//付款时间
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date sendtime;//发货时间
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date endtime;//交易完成时间
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date closetime;//交易关闭时间
 
 	private String message;//买家留言
@@ -67,7 +69,8 @@ public class Order implements Serializable{
 	private String receiverAddress;//收货人地址
 
 	private String buyerRate;//是否评价
-
+	@Transient
+	private String buyerRateName;
 	private String storeId;//关联商家
 
 	
@@ -263,36 +266,11 @@ public class Order implements Serializable{
 		this.paymentypeName = paymentypeName;
 	}
 
-	@Override
-	public String toString() {
-		return "Order{" +
-				"id='" + id + '\'' +
-				", userId='" + userId + '\'' +
-				", userName='" + userName + '\'' +
-				", status='" + status + '\'' +
-				", statusName='" + statusName + '\'' +
-				", freight=" + freight +
-				", trackingName='" + trackingName + '\'' +
-				", trackingNum='" + trackingNum + '\'' +
-				", totalNum=" + totalNum +
-				", totalMoney=" + totalMoney +
-				", preMoney=" + preMoney +
-				", payMoney=" + payMoney +
-				", paymentype='" + paymentype + '\'' +
-				", paymentypeName='" + paymentypeName + '\'' +
-				", created=" + created +
-				", updated=" + updated +
-				", paymenttime=" + paymenttime +
-				", sendtime=" + sendtime +
-				", endtime=" + endtime +
-				", closetime=" + closetime +
-				", message='" + message + '\'' +
-				", orderNum='" + orderNum + '\'' +
-				", receiverContact='" + receiverContact + '\'' +
-				", receiverMobile='" + receiverMobile + '\'' +
-				", receiverAddress='" + receiverAddress + '\'' +
-				", buyerRate='" + buyerRate + '\'' +
-				", storeId='" + storeId + '\'' +
-				'}';
+	public String getBuyerRateName() {
+		return buyerRateName;
+	}
+
+	public void setBuyerRateName(String buyerRateName) {
+		this.buyerRateName = buyerRateName;
 	}
 }

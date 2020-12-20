@@ -73,10 +73,54 @@ public class OrderServiceImpl implements OrderService {
     public PageResult<Order> findPage(Map<String, Object> searchMap, int page, int size) {
         PageHelper.startPage(page,size);
         Example example = createExample(searchMap);
-        Page<Order> orders = (Page<Order>) orderMapper.selectByExample(example);
-        return new PageResult<Order>(orders.getTotal(),orders.getResult());
-    }
+        Page<Order> orderList = (Page<Order>) orderMapper.selectByExample(example);
+        for (Order order:orderList){
+            String status = order.getStatus();
+            if (!(status==null)){
+                if (status.equals("1")){
+                    order.setStatusName("待付款");
+                }
+                if (status.equals("2")){
+                    order.setStatusName("待发货");
+                }
+                if (status.equals("3")){
+                    order.setStatusName("待收货");
+                }
+                if (status.equals("4")){
+                    order.setStatusName("待评价");
+                }
+            }
+            String paymentype = order.getPaymentype();
+            if (!(paymentype==null)){
+                if (paymentype.equals("1")){
+                    order.setPaymentypeName("在线支付");
+                }
+                if (paymentype.equals("2")){
+                    order.setPaymentypeName("货到付款");
+                }
+            }
 
+            String buyerRate = order.getBuyerRate();
+            if (!(buyerRate==null)){
+                if (buyerRate.equals("1")){
+                    order.setBuyerRateName("未评价");
+                }
+                if (buyerRate.equals("2")){
+                    order.setPaymentypeName("已评价");
+                }
+            }
+        }
+
+        return new PageResult<Order>(orderList.getTotal(),orderList.getResult());
+    }
+    public void delivery(String orderId){
+        //把该订单的状态改成发货状态
+        Order order = new Order();
+        order.setId(orderId);
+        order.setUpdated(new Date());
+        order.setStatus("3");
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
     /**
      * 根据Id查询
      * @param id
@@ -94,6 +138,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setUserName(userService.findById(order.getUserId()).getName());
         order.setTrackingName("天天快递");
+        order.setFreight((double) 0);
         order.setTrackingNum(RandomIdUtils.getGuid());
         order.setOrderNum(RandomIdUtils.getGuid());
         order.setStatus("1");
@@ -110,6 +155,7 @@ public class OrderServiceImpl implements OrderService {
             Goods goods = goodsService.findById(cart.getGoodsId());
             storeId = goods.getStoreId();
             orderDetail.setOrderId(order.getId());
+            orderDetail.setIsReturn("1");
             orderDetail.setGoodsName(goods.getName());
             orderDetail.setImage(goods.getImg());
             orderDetail.setGoodsQuantity(cart.getNum());
