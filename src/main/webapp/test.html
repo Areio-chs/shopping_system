@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="css/elementui.css">
+    <style>
+
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+        .el-table{
+            font-size: 14px !important;
+            margin-bottom: 10px;
+        }
+        [v-cloak] {
+            display: none;
+        }
+
+    </style>
+</head>
+<style>
+
+</style>
+<body>
+<div id="app">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" >
+        <el-form-item style="margin-left: 70px">
+            <el-upload
+                    class="avatar-uploader"
+                    action="/upload/native.do"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                <img shape="square" v-if="imageUrl" :src="imageUrl" class="avatar">
+                <i v-else class="el-icon-s-custom avatar-uploader-icon"></i>
+            </el-upload>
+
+        </el-form-item>
+        <el-form-item label="店铺名" prop="username">
+            <el-input v-model="ruleForm.username"></el-input>
+        </el-form-item>
+        <el-form-item label="真实姓名" prop="name">
+            <el-input v-model="ruleForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="联系方式" prop="phone">
+            <el-input v-model="ruleForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="旧密码" prop="oldPass">
+            <el-input  type="password" v-model="ruleForm.oldPass"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPass">
+            <el-input  type="password" v-model="ruleForm.newPass"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="confirmPass">
+            <el-input  type="password" v-model="ruleForm.confirmPass"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm')" style="margin-left: 60px">保存</el-button>
+            <el-button @click="resetForm('ruleForm')">重置</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+</body>
+<!-- 引入组件库 -->
+<script src="js/vue.js"></script><!-- vue -->
+
+<script src="js/elementui.js"></script>
+
+<script src="js/axios.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                ruleForm: {
+                    username: '',
+                    name: '',
+                    phone: '',
+                    oldPass: '',
+                    newPass: '',
+                    confirmPass: '',
+                    imageUrl:'',
+                    loginUserId:'',
+                },rules: {
+                    username: [
+                        { required: true, message: '请输入店铺名', trigger: 'blur' },
+                        { min: 4,message: '长度大于4个字符', trigger: 'blur' }
+                    ],
+                    name: [
+                        { required: true, message: '请输入真实姓名', trigger: 'blur' },
+                        { min: 4,message: '长度大于4个字符', trigger: 'blur' }
+                    ],
+                    phone: [
+                        { required: true, message: '请输入联系方式', trigger: 'blur' },
+                        { min: 4,message: '长度大于4个字符', trigger: 'blur' }
+                    ],
+                    oldPass: [
+                        { required: true, message: '请输入旧密码', trigger: 'blur'  },
+                        { min: 4,message: '长度大于4个字符', trigger: 'blur' }
+                    ],
+                    newPass: [
+                        { required: true, message: '请输入新密码', trigger: 'blur'  },
+                        { min: 4,message: '长度大于4个字符', trigger: 'blur' }
+                    ],
+                    confirmPass: [
+                        { required: true, message: '请确认新密码', trigger: 'blur'  },
+                        { min: 4,message: '长度大于4个字符', trigger: 'blur' }
+                    ],
+
+                }
+            };
+        },
+        methods: {
+            getLoginUser(){
+                this.info =JSON.parse(window.sessionStorage.getItem("userInfo"));
+                if (this.info!=null){
+                    this.loginUserId = this.info.id;
+                }
+            },
+            findUserInfo(){
+                axios.get(`/store/findById.do?id=${loginUserId}`).then(response=>{
+                    this.imageUrl = response.data.headPic;
+                    this.ruleForm = response.data;
+                });
+            },
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = file.response;
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.ruleForm.headPic=this.imageUrl;
+                        axios.post(`/store/add.do`,this.ruleForm).then(response=>{
+                            this.$message.success('添加成功');
+                            this.addDialogVisible=false;
+                            this.getGoodsList();
+                        })
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
+        }
+    })
+</script>
+</html>

@@ -62,7 +62,6 @@ public class OrderServiceImpl implements OrderService {
         Example example = createExample(searchMap);
         return orderMapper.selectByExample(example);
     }
-
     /**
      * 分页+条件查询
      * @param searchMap
@@ -112,6 +111,70 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return new PageResult<Order>(orderList.getTotal(),orderList.getResult());
+    }
+
+    /**
+     * 分页+条件查询
+     * @param searchMap
+     * @param page
+     * @param size
+     * @return
+     */
+    public PageResult<Order> sfindPage(Map<String, Object> searchMap, int page, int size,String storeId) {
+        PageHelper.startPage(page,size);
+        Example example = createExample2(searchMap,storeId);
+        Page<Order> orderList = (Page<Order>) orderMapper.selectByExample(example);
+        for (Order order:orderList){
+            String status = order.getStatus();
+            if (!(status==null)){
+                if (status.equals("1")){
+                    order.setStatusName("待付款");
+                }
+                if (status.equals("2")){
+                    order.setStatusName("待发货");
+                }
+                if (status.equals("3")){
+                    order.setStatusName("待收货");
+                }
+                if (status.equals("4")){
+                    order.setStatusName("待评价");
+                }
+            }
+            String paymentype = order.getPaymentype();
+            if (!(paymentype==null)){
+                if (paymentype.equals("1")){
+                    order.setPaymentypeName("在线支付");
+                }
+                if (paymentype.equals("0")){
+                    order.setPaymentypeName("货到付款");
+                }
+            }
+
+            String buyerRate = order.getBuyerRate();
+            if (!(buyerRate==null)){
+                if (buyerRate.equals("1")){
+                    order.setBuyerRateName("未评价");
+                }
+                if (buyerRate.equals("2")){
+                    order.setPaymentypeName("已评价");
+                }
+            }
+        }
+
+        return new PageResult<Order>(orderList.getTotal(),orderList.getResult());
+    }
+
+    private Example createExample2(Map<String, Object> searchMap,String storeId){
+        Example example=new Example(Order.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("storeId",storeId);
+        if(searchMap!=null){
+            // 订单号
+            if(searchMap.get("orderNum")!=null && !"".equals(searchMap.get("orderNum"))){
+                criteria.andLike("orderNum","%"+searchMap.get("orderNum")+"%");
+            }
+        }
+        return example;
     }
     public void delivery(String orderId){
         //把该订单的状态改成发货状态
@@ -266,6 +329,7 @@ public class OrderServiceImpl implements OrderService {
 
         }
         return example;
+
     }
 
 }

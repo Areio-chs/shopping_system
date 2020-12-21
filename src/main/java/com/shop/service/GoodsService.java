@@ -26,7 +26,7 @@ public interface GoodsService {
 
     public Goods findById(String id);
 
-    public void add(Goods goods,String spec);
+    public void add(Goods goods,String spec,String storeId);
 
     List<String> findSpecList(String id);
 
@@ -36,4 +36,6 @@ public interface GoodsService {
     public void delete(String id);
 
     public boolean deductionStock(String id,Integer num);
+
+    PageResult<Goods> sfindPage(Map<String, Object> searchMap, int page, int size, String storeId);
 }

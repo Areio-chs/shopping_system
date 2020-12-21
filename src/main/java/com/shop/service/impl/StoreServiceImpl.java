@@ -118,6 +118,7 @@ public class StoreServiceImpl implements StoreService {
      * @param store
      */
     public void update(Store store) {
+        store.setUpdated(new Date());
         storeMapper.updateByPrimaryKeySelective(store);
     }
 

@@ -1,0 +1,382 @@
+/*公共样式*/
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+@font-face {
+    font-family: 'icomoon';
+    src:  url('../fonts/icomoon.eot?7kkyc2');
+    src:  url('../fonts/icomoon.eot?7kkyc2#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?7kkyc2') format('truetype'),
+    url('../fonts/icomoon.woff?7kkyc2') format('woff'),
+    url('../fonts/icomoon.svg?7kkyc2#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.fr .icomoon {
+	font-family: 'icomoon';
+	font-size: 16px;
+	line-height: 26px;
+}
+/*版心*/
+.w {
+	width: 1200px;
+	margin: 0 auto;
+}
+.style-red {
+	color: #c81623;
+}
+.spacer {
+	width: 1px;
+	height: 12px;
+	background-color: #666;
+	margin: 9px 12px 0;
+}
+/*顶部快捷导航*/
+.shortcut {
+	height: 31px;
+	background-color: #f1f1f1;
+	line-height: 31px;
+}
+.shortcut li {
+	float: left;
+}
+/*header区域*/
+.header {
+	margin-top: 20px;
+	position: relative;
+	height: 105px;
+}
+.logo {
+	position: absolute;
+	top: 2px;
+	left: 0;
+	width: 250px;
+	height: 80px;
+}
+.logo a {
+	display: block;
+	/*overflow: hidden;*/
+	width: 250px;
+	height: 80px;
+	background: url(../img/LOGO.png) no-repeat;
+	/*text-indent: -999px;*/
+	font-size: 0;
+}
+.title-pic{
+	text-align: center;
+	height: 50px;
+}
+.search {
+	position: absolute;
+	top: 25px;
+	left: 348px;
+}
+.text {
+	float: left;
+	width: 445px;
+	height: 36px;
+	border: 2px solid #1183F8;
+	padding-left: 10px;
+	color: #ccc;
+}
+.bn {
+	display: block;
+	float: left;
+	width: 82px;
+	height: 36px;
+	background-color: #1183F8;
+	border: 0;
+	font-size: 16px;
+	color: #fff;
+}
+.hotwrods {
+	position: absolute;
+	top: 65px;
+	left: 348px;
+}
+.hotwrods a {
+	margin: 0 10px;
+}
+.hotwrods a:hover{
+	text-decoration: none;
+	color: #c81623;;
+}
+.shopcar {
+	position: absolute;
+	top:25px;
+	right: 10px;
+	width: 230px;
+	height: 34px;
+    font-size: 16px;
+	line-height: 34px;
+	text-align: center;
+}
+.shopcar a{
+	margin-right: 4px;
+}
+.shopcar a:hover{
+	text-decoration: none;
+	color: #666;
+}
+.shopcar .adminDoor{
+	display: block;
+	color: #fff;
+	background-color: #00A680;
+	cursor: pointer;
+}
+/*nav start*/
+.nav {
+	padding-right: 0;
+	/*border-top: 2px solid #b1191a;*/
+}
+.nav_s{
+	margin-top: 0;
+	margin-bottom: 0;
+	height: 50px;
+	background-color: #1183F8;
+}
+.nav_xs{
+	background-color: #1183F8;
+}
+.nav_s ul li{
+	float: left;
+	margin-left: 70px;
+	font-size: 20px;
+	line-height: 50px;
+	text-align: center;
+}
+.nav .nav_s ul li a{
+	display: inline-block;
+	height: 50px;
+	color: #fff!important;
+	text-decoration: none;
+}
+.nav_s ul li a:hover{
+	color: #fff;
+	text-decoration: none;
+	border-bottom: #FF9900 3px solid;
+}
+.hidden_nav ul li{
+	font-size: 16px;
+	text-align: center;
+	border-bottom: 1px solid #E6E6E6;
+}
+
+.news{
+	margin-top: 20px;
+	word-wrap: break-word;
+	word-break: normal;
+}
+.news_left .n{
+	height: 54px;
+	border-bottom: #1183F8 1px solid;
+}
+.news_left .n span{
+	color: #2D93CA;
+	font-size: 22px;
+}
+.news_left .n p{
+	color: black;
+	font-size: 20px;
+}
+.Geng{
+	margin-top: 30px;
+	font-size: 14px;
+	color: black;
+	text-decoration: none;
+
+}
+.Geng:hover{
+	text-decoration: none;
+
+}
+.pic {
+	/*margin-top: 10px;*/
+	margin-right: 8px;
+}
+
+.pic img {
+	display: inline-block;
+	width: 150px;
+	height: 150px;
+}
+
+.news_left .Wen{
+	height: 155px;
+	border-bottom: #E6E6E6 1px solid;
+	/*margin-top: 10px;*/
+}
+.news_left .Wen .Zi{
+	display: block;
+	margin-top: 10px;
+}
+.Wen .Zi p{
+	font-size: 14px;
+	margin-top: 12px;
+}
+.Wen .Zi a:hover{
+	color: #55AA77;
+	text-decoration: none;
+}
+.order {
+	height: 60px;
+	line-height: 60px;
+	text-align: center;
+}
+.order .line {
+	display: inline-block;
+	width: 500px;
+	border-top: 1px solid #ccc ;
+}
+.order .txt {
+	margin: 3px;
+	color: black;
+	vertical-align: -4px;
+	font-size: 25px;
+}
+
+/*.widget{*/
+/*	width: 300px;*/
+/*	height: 300px;*/
+/*	margin-top: 20px;*/
+/*	border-radius: 20px;*/
+/*	background-color: #EEEEEE;*/
+/*}*/
+/*.widget .widget_tit{*/
+/*	padding-top: 10px;*/
+/*	padding-left: 8px;*/
+/*}*/
+/*.widget ul li a{*/
+/*	display: inline-block;*/
+/*	height: 20px;*/
+/*	color: black;*/
+/*	text-decoration: none;*/
+/*}*/
+/*.widget ul li{*/
+/*	float: left;*/
+/*	padding: 5px;*/
+/*	text-align: center;*/
+/*	line-height: 20px;*/
+/*	margin: 15px;*/
+/*	border: black 1px solid;*/
+/*	border-radius: 5px;*/
+/*}*/
+/*.widget ul li:hover{*/
+/*	background-color: #55AA77;*/
+/*}*/
+.hotSearch{
+	width: 100%;
+	margin-top: 50px;
+	font-size: 16px;
+	background-color: #EEEEEE;
+}
+.hotSearch .tab-content ul li{
+	font-size: 14px;
+}
+.tab-content ul li a{
+	text-decoration: none;
+}
+.tab-content ul li a:hover{
+	color: black;
+	text-decoration: none;
+}
+.tab-content ul li span{
+	margin-left: 4px;
+}
+.d_postlist{
+	width: 100%;
+	height: 365px;
+	margin-top: 20px;
+	overflow: hidden;
+	border-radius: 20px;
+	background-color: #EEEEEE;
+}
+.tit{
+	padding-left: 8px;
+	margin: 8px auto;
+}
+.d_postlist ul li{
+	height: 100px;
+	margin-left: 5px;
+}
+.d_postlist .Recommend{
+	display: block;
+	height: 100px;
+}
+.d_postlist .Recommend .text1{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.d_postlist .Recommend .text1:hover{
+	text-overflow:inherit;
+	overflow:visible;
+	white-space: normal;
+	cursor: pointer;
+}
+.d_postlist .Recommend .timeAndviews{
+	margin-top: 25px;
+}
+.d_postlist ul li img{
+	display: inline-block;
+	width: 90px;
+	height: 90px;
+	margin-right: 10px;
+}
+.d_postlist ul li a{
+	color: black;
+}
+.d_postlist ul li p{
+	font-size: 16px;
+	text-overflow: ellipsis;
+}
+.d_postlist ul a:hover{
+	color: black;
+	text-decoration: none;
+}
+.d_postlist ul li:hover{
+	background-color: rgba(255,255,255,0.7);
+}
+
+.aside {
+	position: fixed;
+	cursor: pointer;
+	background-color: rgba(255,255,255,0.3);
+	right: 30px;
+	bottom: 250px;
+	display: none;
+}
+.aside img{
+	width: 30px;
+	margin-bottom: 5px;
+}
+.aside .back{
+	width: 30px;
+	height: 30px;
+	font-size: 18px;
+	text-align: center;
+	line-height: 30px;
+}
+.aside .back:hover{
+	background-color: rgba(0,0,0,0.1)
+}
+	/*footer样式*/
+.footer {
+	height: 120px;
+	margin-top: 50px;
+	padding-top: 20px;
+	background-color: #4D4D4D;
+	text-align: center;
+}
+.links {
+	color: #fff;
+}
+.copyright {
+	margin-top: 20px;
+	color: #fff;
+	font-size: 18px;
+}
+

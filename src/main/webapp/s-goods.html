@@ -363,17 +363,25 @@
                 // 添加商品的表单数据
                 addForm: {},
                 images:'https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/4612/28/6223/298257/5ba22d66Ef665222f/d97ed0b25cbe8c6e.jpg!q70.jpg.webp',
-                imageUrl:''
+                imageUrl:'',
                 //图片地址与实体没有关系，他是单独上传
+                loginUserId:''
 
             }
         },
         created() {
             // this.selectSpec("1");
+            this.getLoginUser();
             this.getGoodsList();
             // this.selectAllSpec();
         },
         methods: {
+            getLoginUser(){
+                this.info =JSON.parse(window.sessionStorage.getItem("userInfo"));
+                if (this.info!=null){
+                    this.loginUserId = this.info.id;
+                }
+            },
             handleAvatarSuccess(res, file) {
                 this.imageUrl = file.response;
             },
@@ -396,7 +404,7 @@
             saveGoods(){
                 this.addForm.img=this.imageUrl;
                 let spec = this.specOptionValues.toString();
-                axios.post(`/goods/add.do?spec=${spec}`,this.addForm).then(response=>{
+                axios.post(`/goods/add.do?spec=${spec}&storeId=${this.loginUserId}`,this.addForm).then(response=>{
                     this.$message.success('添加成功');
                     this.addDialogVisible=false;
                     this.getGoodsList();
@@ -441,7 +449,7 @@
                 });
             },
             getGoodsList() {
-                axios.post(`/goods/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
+                axios.post(`/goods/sfindPage.do?page=${this.currentPage}&size=${this.size}&storeId=${this.loginUserId}`,this.searchMap).then(response => {
                     this.goodsList = response.data.rows;
                     this.total = response.data.total;
                 })

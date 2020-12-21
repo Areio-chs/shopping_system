@@ -1,0 +1,230 @@
+#wrap{
+    width: 1100px;
+    /*height: 550px;*/
+    display: block;
+    margin:40px auto;
+    /*border: 1px red solid;*/
+}
+.head{
+    position: relative;
+    background: #F7F7F7;
+}
+.head .person{
+    display: inline-block;
+    position: absolute;
+    width: 250px;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    margin-bottom: 10px;
+    border-bottom: 1px #DDDDDD solid;
+    top: 0;
+    left: 0;
+}
+.head .person img{
+    width: 50px;
+    height: 50px;
+}
+.head .person div{
+    display: inline-block;
+    width: 100px;
+    font-size: 16px;
+    overflow: hidden;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+}
+.head .person div:hover{
+    text-overflow:inherit;
+    overflow:visible;
+    cursor: pointer;
+}
+.head .headMenu{
+    width: 250px;
+    float: left;
+    margin-top: 120px;
+}
+.head .headMenu li{
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+    cursor: pointer;
+}
+.head .headMenu li a{
+    display: inline-block;
+    width: 247px;
+    height: 80px;
+    font-size:20px;
+    text-decoration: none;
+}
+.head .headMenu li img{
+     width: 50px;
+}
+.head .headMenu li span{
+    margin-right: 2px;
+}
+.head .headMenu li a:hover{
+    color: #666;
+    background: #C4C4C4;
+}
+.tab_container{
+    float: right;
+    margin: 2px;
+
+    width: 800px;
+    /*height:530px;*/
+    /*line-height: 150px;*/
+}
+#wrap .head .headMenu .active a{
+    background: #C4C4C4;
+}
+.headline{
+    display: block;
+    height: 50px;
+    margin-left: 450px;
+    font-size: 16px;
+    text-align: left;
+    line-height: 50px;
+    color: #1E9FFF;
+}
+hr{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 450px;
+    margin-right: 400px;
+}
+hr.style-two {/*透明渐变水平线*/
+    width:80%;
+    margin:0 auto;
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+.box1 {
+    width: 750px;
+    padding-left: 500px;
+    padding-top: 50px;
+
+}
+.box1 li {
+    margin-bottom: 15px;
+}
+
+.box1 label {
+    display: inline-block;
+    width: 100px;
+    height: 36px;
+    line-height: 36px;
+    text-align: right;
+}
+.box1 .img{
+    width: 50px;
+    height: 50px;
+    margin-left: 80px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.box1 .sex{
+    display: inline-block;
+    width: 100px;
+    height: 36px;
+    line-height: 36px;
+    text-align: right;
+}
+/*.box1 .as{*/
+/*    margin-left: 20px;*/
+/*}*/
+.box1 div{
+    display: inline-block;
+    width: 238px;
+    height: 34px;
+    text-align: left;
+    margin-left: 10px;
+}
+.inp {
+    width: 238px;
+    height: 34px;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+    padding-left: 3px;
+}
+.box1 .b{
+    width: 250px;
+    height: 34px;
+    margin-left: 95px;
+    font-size: 16px;
+    color: #fff;
+    background: #1E9FFF;
+    border: 1px solid #ccc;
+}
+#tab3 table a:hover{
+    text-decoration: none;
+    color: #666;
+    cursor: pointer;
+}
+table thead, tbody tr {
+    display:table;
+    width:100%;
+    font-size: 16px;
+    table-layout:fixed;
+    text-align: left;
+}
+.writeArticle .cover{
+    position: relative;
+    width: 780px;
+    height: 200px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 5px 0 0 #ddd;
+}
+.writeArticle .cover .coverImg{
+    margin: 20px;
+    padding: 10px;
+    border: 1px dashed #ccc;
+}
+.cover .coverImg img{
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    margin-bottom: 2px;
+}
+.cover .abstract{
+    margin: 15px;
+    padding: 5px;
+    border: 1px solid transparent;
+}
+.cover .abstract textarea{
+    font-size: 14px;
+    border: 1px dashed #ccc;
+    resize: none;
+}
+.cover .abstract .detail_num{
+    position: absolute;
+    top: 150px;
+    right: 30px;
+}
+.cover .abstract textarea:focus{
+    outline: none;
+}
+.writeArticle .cover .uploadButton{
+    width: 150px;
+    height: 34px;
+    font-size: 16px;
+    color: #fff;
+    background: #1E9FFF;
+    border: 1px solid #ccc;
+}
+.writeArticle .temp{
+    display: block;
+    width: 800px;
+    margin-top: 10px;
+    /*border: 1px solid #1E9FFF;*/
+}
+.writeArticle .writeButton{
+    width: 250px;
+    height: 34px;
+    margin: 10px;
+    font-size: 16px;
+    color: #fff;
+    background: #1E9FFF;
+    border: 1px solid #ccc;
+}

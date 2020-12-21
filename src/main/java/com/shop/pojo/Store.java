@@ -33,7 +33,7 @@ public class Store implements Serializable{
 
 	private java.util.Date lastLoginTime;//最后登录时间
 
-	private String operatorsUsername;//外键，关联运营商
+	private String operatorsId;//外键，关联运营商
 
 	
 	public String getId() {
@@ -113,13 +113,11 @@ public class Store implements Serializable{
 		this.lastLoginTime = lastLoginTime;
 	}
 
-	public String getOperatorsUsername() {
-		return operatorsUsername;
-	}
-	public void setOperatorsUsername(String operatorsUsername) {
-		this.operatorsUsername = operatorsUsername;
+	public String getOperatorsId() {
+		return operatorsId;
 	}
 
-
-	
+	public void setOperatorsId(String operatorsId) {
+		this.operatorsId = operatorsId;
+	}
 }

@@ -50,6 +50,7 @@ public class StoreController {
     }
 
 
+
     @PostMapping("/add")
     public Result add(@RequestBody Store store){
         storeService.add(store);

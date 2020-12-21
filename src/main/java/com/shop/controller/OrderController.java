@@ -36,7 +36,10 @@ public class OrderController {
     public PageResult<Order> findPage(@RequestBody Map<String,Object> searchMap,int page, int size){
         return  orderService.findPage(searchMap,page,size);
     }
-
+    @PostMapping("/sfindPage")
+    public PageResult<Order> sfindPage(@RequestBody Map<String,Object> searchMap,int page, int size,String storeId){
+        return  orderService.sfindPage(searchMap,page,size,storeId);
+    }
     @GetMapping("/findById")
     public Order findById(String id){
         return orderService.findById(id);

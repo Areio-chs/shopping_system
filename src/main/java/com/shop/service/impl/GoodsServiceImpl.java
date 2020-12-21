@@ -91,6 +91,48 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     /**
+     * 分页+条件查询
+     * @param searchMap
+     * @param page
+     * @param size
+     * @return
+     */
+    public PageResult<Goods> sfindPage(Map<String, Object> searchMap, int page, int size,String storeId) {
+        PageHelper.startPage(page,size);
+        Example example = createExample2(searchMap,storeId);
+//        example.createCriteria().andEqualTo("storeId",storeId);
+        List<Goods> goodsList = goodsMapper.selectByExample(example);
+        for (Goods goods : goodsList) {
+            if (!(goods.getCategoryId()==null)){
+                Category category = categoryMapper.selectByPrimaryKey(goods.getCategoryId());
+                goods.setCategoryName(category.getName());
+            }
+            String status = goods.getStatus();
+            if (!(status==null)){
+                if (status.equals("1")){
+                    goods.setStatusName("上架");
+                }else {
+                    goods.setStatusName("下架");
+                }
+            }
+        }
+        Page<Goods> goods = (Page<Goods>) goodsList;
+        return new PageResult<Goods>(goods.getTotal(),goods.getResult());
+    }
+    private Example createExample2(Map<String, Object> searchMap,String storeId){
+        Example example=new Example(Goods.class);
+        Example.Criteria criteria = example.createCriteria();
+        // id
+        criteria.andEqualTo("storeId",storeId);
+        if(searchMap!=null){
+            // 名称
+            if(searchMap.get("name")!=null && !"".equals(searchMap.get("name"))){
+                criteria.andLike("name","%"+searchMap.get("name")+"%");
+            }
+        }
+        return example;
+    }
+    /**
      * 根据Id查询
      * @param id
      * @return
@@ -115,10 +157,10 @@ public class GoodsServiceImpl implements GoodsService {
      * 新增
      * @param goods
      */
-    public void add(Goods goods,String spec) {
+    public void add(Goods goods,String spec,String storeId) {
         String[] atrArray = spec.split(",");
         //暂时设置都是商家1在新增商品
-        goods.setStoreId("1");
+        goods.setStoreId(storeId);
         goods.setId(RandomIdUtils.getUUID());
 //        goods.setId("15");
         goods.setCreated(new Date());
@@ -216,7 +258,7 @@ public class GoodsServiceImpl implements GoodsService {
             }
             // 分类
             if(searchMap.get("categoryId")!=null && !"".equals(searchMap.get("categoryId"))){
-                criteria.andLike("categoryId","%"+searchMap.get("categoryId")+"%");
+                criteria.andEqualTo("categoryId",searchMap.get("categoryId"));
             }
 
             // 库存

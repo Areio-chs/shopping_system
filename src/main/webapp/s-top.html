@@ -30,9 +30,11 @@
     <div class="nav_left" style="float: left ;padding-left: 30px;font-size: 20px">
         青柠商家后台管理系统
     </div>
-    <div class="nav_right" style="float: right;padding-right: 30px">
-       <img src="img/1.jpg">
-        <span style="color: #FF8500">退出</span>
+    <div class="nav_right" style="float: right;padding-right: 85px">
+        <span>青柠商家后台管理系统欢迎您！</span>&nbsp;
+        <span class="f-item" style="color: blue">{{loginUserName}}</span>&nbsp;
+        <span  style="color: blue">|</span>&nbsp;
+        <a style="color: blue;text-decoration: none"  @click="logout()" href="s-login.html" target="_top">退出</a>
     </div>
 </div>
 
@@ -45,7 +47,25 @@
         el:"#app",
         data() {
             return {
+                info:{},
+                loginUserName:'',
+
             }
+        },
+        created() {
+            this.login();
+        },
+        methods: {
+            login() {
+                // alert("加载");
+                this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
+                if (this.info != null) {
+                    this.loginUserName = this.info.username;
+                }
+            },
+            logout() {
+                sessionStorage.removeItem("userInfo");
+            },
         }
     })
 </script>

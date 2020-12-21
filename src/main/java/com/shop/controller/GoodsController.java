@@ -37,7 +37,11 @@ public class GoodsController {
         System.out.println(searchMap.get("name"));
         return goodsService.findPage(searchMap,page,size);
     }
-
+    @PostMapping("/sfindPage")
+    public PageResult<Goods> sfindPage(@RequestBody Map<String,Object> searchMap,int page, int size,String storeId){
+        System.out.println(searchMap.get("name"));
+        return goodsService.sfindPage(searchMap,page,size,storeId);
+    }
     @GetMapping("/findById")
     public Goods findById(String id){
         return goodsService.findById(id);
@@ -50,9 +54,9 @@ public class GoodsController {
 
 
     @PostMapping("/add")
-    public Result add(@RequestBody Goods goods,String spec){
+    public Result add(@RequestBody Goods goods,String spec,String storeId){
 
-        goodsService.add(goods, spec);
+        goodsService.add(goods, spec,storeId);
         return new Result();
     }
 

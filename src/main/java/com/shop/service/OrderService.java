@@ -36,4 +36,5 @@ public interface OrderService {
 
     public void delete(String id);
 
+    PageResult<Order> sfindPage(Map<String, Object> searchMap, int page, int size, String storeId);
 }
