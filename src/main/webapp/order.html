@@ -364,6 +364,7 @@ $(function(){
         el:'#app',
         data(){
             return {
+            	info:{},
                 cartList:[],
                 totalNum:0,
                 totalMoney:0,
@@ -387,7 +388,10 @@ $(function(){
         created(){
             this.findCartList();
             this.findAddressList(); //查询地址列表
-			this.searchMap.userId="1";
+			this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
+			if (this.info != null) {
+				this.searchMap.userId = this.info.id;
+			}
 			this.searchMap.checked=1;
         },
         methods:{

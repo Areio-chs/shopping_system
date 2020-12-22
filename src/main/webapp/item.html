@@ -2906,6 +2906,8 @@
                 goodsId: 1,
                 goods: [],
                 num:1,
+                userId:"",
+                info:{}
             }
         },
         methods: {
@@ -2923,12 +2925,22 @@
                 }
             },
             toCartList(){
+                if(this.info==null){
+                    if(confirm("请先登录!")){
+                        location.href="login.html";
+                    }
+                }else {
+                    location.href=`http://localhost:8080/cart/buy.do?goodsId=${this.goodsId}&userId=${this.userId}&num=${this.num}&price=${this.goods.price}`;
+                }
                 //添加商品到购物车
-                location.href=`http://localhost:8080/cart/buy.do?goodsId=${this.goodsId}&userId=1&num=${this.num}&price=${this.goods.price}`;
             }
         },
 		created: function (){
 			this.goodsId = GetQueryValue('goodsId');
+            this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
+            if (this.info != null) {
+                this.userId = this.info.id;
+            }
 			this.fetchData();
 		}
     })

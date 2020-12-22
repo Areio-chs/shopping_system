@@ -3,6 +3,7 @@ package com.shop.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.shop.dao.EvaluationMapper;
+import com.shop.dao.GoodsMapper;
 import com.shop.dao.OrderDetailMapper;
 import com.shop.pojo.*;
 import com.shop.service.OrderDetailService;
@@ -21,6 +22,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private OrderDetailMapper orderDetailMapper;
     @Autowired
     private EvaluationMapper evaluationMapper;
+    @Autowired
+    private GoodsMapper goodsMapper;
 
     /**
      * 返回全部记录
@@ -48,8 +51,17 @@ public class OrderDetailServiceImpl implements OrderDetailService {
      * @return
      */
     public List<OrderDetail> findList(Map<String, Object> searchMap) {
+
+
         Example example = createExample(searchMap);
-        return orderDetailMapper.selectByExample(example);
+        List<OrderDetail> orderDetailList = orderDetailMapper.selectByExample(example);
+        for (OrderDetail orderDetail : orderDetailList) {
+            if (!(orderDetail.getGoodsId()==null)){
+                Goods goods = goodsMapper.selectByPrimaryKey(orderDetail.getGoodsId());
+                orderDetail.setSpec(goods.getSpec());
+            }
+        }
+        return orderDetailList;
     }
 
     /**
@@ -147,15 +159,15 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         if(searchMap!=null){
             // id
             if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
-                criteria.andLike("id","%"+searchMap.get("id")+"%");
+                criteria.andEqualTo("id",searchMap.get("id"));
             }
             // 订单id
             if(searchMap.get("orderId")!=null && !"".equals(searchMap.get("orderId"))){
-                criteria.andLike("orderId","%"+searchMap.get("orderId")+"%");
+                criteria.andEqualTo("orderId",searchMap.get("orderId"));
             }
             // 商品号
             if(searchMap.get("goodsId")!=null && !"".equals(searchMap.get("goodsId"))){
-                criteria.andLike("goodsId","%"+searchMap.get("goodsId")+"%");
+                criteria.andEqualTo("goodsId",searchMap.get("goodsId"));
             }
             // 商品名
             if(searchMap.get("goodsName")!=null && !"".equals(searchMap.get("goodsName"))){

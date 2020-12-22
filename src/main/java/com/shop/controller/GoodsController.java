@@ -34,7 +34,6 @@ public class GoodsController {
 
     @PostMapping("/findPage")
     public PageResult<Goods> findPage(@RequestBody Map<String,Object> searchMap,int page, int size){
-        System.out.println(searchMap.get("name"));
         return goodsService.findPage(searchMap,page,size);
     }
     @PostMapping("/sfindPage")

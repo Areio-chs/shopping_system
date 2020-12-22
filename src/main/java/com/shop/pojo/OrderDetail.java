@@ -23,11 +23,16 @@ public class OrderDetail implements Serializable{
 
 	private String goodsName;//商品名
 
+	@Transient
+	private String spec;
+
 	private String isReturn;//是否退货
 	@Transient
 	private String isReturnName;
 
 	private String image;//图片地址
+
+
 
 	private Integer goodsQuantity;//数量
 
@@ -142,5 +147,13 @@ public class OrderDetail implements Serializable{
 
 	public void setCommentContent(String commentContent) {
 		this.commentContent = commentContent;
+	}
+
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
 	}
 }
