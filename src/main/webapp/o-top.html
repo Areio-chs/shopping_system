@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--引入样式表-->
+    <link rel="stylesheet" href="css/elementui.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .nav {
+            height: 50px;/* 高度是 50*/
+            line-height: 50px;
+            border-top: 3px solid #545c64;  /*上边框是 3像素*/
+            border-bottom: 1px solid #EDEEF0; /*下边框是 1像素*/
+            background-color: #FCFCFC; /*背景颜色*/
+        }
+        img{
+            height: 38px;
+            width: 38px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+<div class="nav" id="app">
+
+    <div class="nav_left" style="float: left ;padding-left: 30px;font-size: 20px">
+        青柠商家后台管理系统
+    </div>
+    <div class="nav_right" style="float: right;padding-right: 85px">
+        <span>青柠商家后台管理系统欢迎您！</span>&nbsp;
+        <span class="f-item" style="color: blue">{{loginUserName}}</span>&nbsp;
+        <span  style="color: blue">|</span>&nbsp;
+        <a style="color: blue;text-decoration: none"  @click="logout()" href="o-login.html" target="_top">退出</a>
+    </div>
+</div>
+
+</body>
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+<script src="js/elementui.js"></script>
+<script>
+    new Vue({
+        el:"#app",
+        data() {
+            return {
+                info:{},
+                loginUserName:'',
+
+            }
+        },
+        created() {
+            this.login();
+        },
+        methods: {
+            login() {
+                // alert("加载");
+                this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
+                if (this.info != null) {
+                    this.loginUserName = this.info.username;
+                }
+            },
+            logout() {
+                sessionStorage.removeItem("userInfo");
+            },
+        }
+    })
+</script>
+
+
+</html>

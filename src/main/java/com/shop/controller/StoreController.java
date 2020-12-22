@@ -43,7 +43,21 @@ public class StoreController {
     public PageResult<Store> findPage(@RequestBody Map<String,Object> searchMap,int page, int size){
         return  storeService.findPage(searchMap,page,size);
     }
+    @PostMapping("/ofindPage")
+    public PageResult<Store> ofindPage(@RequestBody Map<String,Object> searchMap,int page, int size){
+        return  storeService.ofindPage(searchMap,page,size);
+    }
 
+    @GetMapping("/forbidden")
+    public Result forbidden(String storeId){
+        storeService.forbidden(storeId);
+        return  new Result();
+    }
+    @GetMapping("/open")
+    public Result open(String storeId){
+        storeService.open(storeId);
+        return  new Result();
+    }
     @GetMapping("/findById")
     public Store findById(String id){
         return storeService.findById(id);
@@ -52,15 +66,24 @@ public class StoreController {
 
 
     @PostMapping("/add")
-    public Result add(@RequestBody Store store){
-        storeService.add(store);
-        return new Result();
+    public int add(@RequestBody Store store){
+        int result = storeService.add(store);
+        return result;
     }
-
+    @PostMapping("/status")
+    public int status(@RequestBody Store store){
+        return storeService.status(store);
+        //如果返回的用户是空的，那么就说明登录失败，返回的用户非空，说明登录成功
+    }
     @PostMapping("/update")
     public Result update(@RequestBody Store store){
         storeService.update(store);
         return new Result();
+    }
+    @PostMapping("/updatePassword")
+    public int updatePass(@RequestBody Store store,String id,String newPass){
+        int result = storeService.updatePass(store,id,newPass);
+        return result;
     }
 
     @GetMapping("/delete")

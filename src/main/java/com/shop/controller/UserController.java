@@ -40,6 +40,21 @@ public class UserController {
         return  userService.findPage(searchMap,page,size);
     }
 
+    @PostMapping("/ofindPage")
+    public PageResult<User> ofindPage(@RequestBody Map<String,Object> searchMap,int page, int size){
+        return  userService.ofindPage(searchMap,page,size);
+    }
+
+    @GetMapping("/forbidden")
+    public Result forbidden(String userId){
+        userService.forbidden(userId);
+        return  new Result();
+    }
+    @GetMapping("/open")
+    public Result open(String userId){
+        userService.open(userId);
+        return  new Result();
+    }
     @GetMapping("/findById")
     public User findById(String id){
         return userService.findById(id);
@@ -50,7 +65,11 @@ public class UserController {
        return userService.doLogin(user);
        //如果返回的用户是空的，那么就说明登录失败，返回的用户非空，说明登录成功
     }
-
+    @PostMapping("/status")
+    public int status(@RequestBody User user){
+        return userService.status(user);
+        //如果返回的用户是空的，那么就说明登录失败，返回的用户非空，说明登录成功
+    }
     @PostMapping("/update")
     public Result update(@RequestBody User user){
         userService.update(user);

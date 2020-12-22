@@ -1,6 +1,9 @@
 package com.shop.pojo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 /**
  * user实体类
@@ -20,9 +23,9 @@ public class User implements Serializable{
 	private String phone;//注册手机号
 
 	private String email;//注册邮箱
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date created;//创建时间
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date updated;//修改时间
 
 	private String nickName;//昵称
@@ -31,15 +34,35 @@ public class User implements Serializable{
 
 	private String status;//使用状态（1正常 0非正常）
 
+	@Transient
+	private String statusName;
+
 	private String headPic;//头像地址
 
 	private String sex;//性别，1男，0女
-
+	@Transient
+	private String sexName;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date birthday;//出生年月日
-
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date lastLoginTime;//最后登录时间
 
-	
+	public String getSexName() {
+		return sexName;
+	}
+
+	public void setSexName(String sexName) {
+		this.sexName = sexName;
+	}
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
 	public String getId() {
 		return id;
 	}

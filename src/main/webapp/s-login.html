@@ -175,15 +175,24 @@
     methods:{
       login(){
         if (this.checkName()&&this.checkPassword()) {
-          axios.post(`/store/login.do`, this.pojo).then(response => {
-            this.user = response.data;
-            this.username = response.data.username;
-            if (this.username == null) {
-              alert("用户名不存在，或密码有误");
-            } else {
-              sessionStorage.setItem("userInfo", JSON.stringify(this.user));
-              window.location.href = "s-frame.html"
+          /*新判断这个人是禁用状态还是*/
+          axios.post(`/store/status.do`, this.pojo).then(response => {
+            let result = response.data;
+            if (result==0){
+              alert("当前账号已被禁用！");
+            }else {
+              axios.post(`/store/login.do`, this.pojo).then(response => {
+                this.user = response.data;
+                this.username = response.data.username;
+                if (this.username == null) {
+                  alert("用户名不存在，或密码有误");
+                } else {
+                  sessionStorage.setItem("userInfo", JSON.stringify(this.user));
+                  window.location.href = "s-frame.html"
+                }
+              })
             }
+
           })
         }else{
           alert("请根据红字提示修改输入框的信息后重试！");
