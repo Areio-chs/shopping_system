@@ -22,6 +22,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
 
     @Autowired
+    private StoreService storeService;
+
+    @Autowired
     private OrderDetailService orderDetailService;
 
     @Autowired
@@ -74,6 +77,10 @@ public class OrderServiceImpl implements OrderService {
         Example example = createExample(searchMap);
         Page<Order> orderList = (Page<Order>) orderMapper.selectByExample(example);
         for (Order order:orderList){
+            if(!(order.getStoreId()==null)){
+                Store store = storeService.findById(order.getStoreId());
+                order.setStoreName(store.getName());
+            }
             String status = order.getStatus();
             if (!(status==null)){
                 if (status.equals("1")){
@@ -204,6 +211,7 @@ public class OrderServiceImpl implements OrderService {
         order.setFreight((double) 0);
         order.setTrackingNum(RandomIdUtils.getGuid());
         order.setOrderNum(RandomIdUtils.getGuid());
+        order.setFreight(Double.valueOf(0));
         order.setStatus("1");
         order.setCreated(new Date());//订单创建时间
         String storeId="";

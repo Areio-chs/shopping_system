@@ -72,8 +72,17 @@ public class Order implements Serializable{
 	@Transient
 	private String buyerRateName;
 	private String storeId;//关联商家
+	@Transient
+	private String storeName;
 
-	
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+
 	public String getId() {
 		return id;
 	}
