@@ -31,8 +31,93 @@ public class StoreServiceImpl implements StoreService {
         if (commUtils.collectionEffective(storeList)){
             //判断这个集合是否为空再取，
             store2 = storeList.get(0);
+            //更新登录状态
+            store2.setLastLoginTime(new Date());
+            storeMapper.updateByPrimaryKeySelective(store2);
         }
         return store2;
+    }
+
+    @Override
+    public PageResult<Store> ofindPage(Map<String, Object> searchMap, int page, int size) {
+        PageHelper.startPage(page,size);
+        Example example = createExample2(searchMap);
+        Page<Store> stores = (Page<Store>) storeMapper.selectByExample(example);
+        for (Store store:stores){
+            String status = store.getStatus();
+            if (!(status==null)) {
+                if (status.equals("1")) {
+                    store.setStatusName("正常");
+                } else {
+                    store.setStatusName("禁用");
+                }
+            }
+        }
+        return new PageResult<Store>(stores.getTotal(),stores.getResult());
+    }
+    private Example createExample2(Map<String, Object> searchMap){
+        Example example=new Example(Store.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(searchMap!=null){
+            // 用户名
+            if(searchMap.get("username")!=null && !"".equals(searchMap.get("username"))){
+                criteria.andLike("username","%"+searchMap.get("username")+"%");
+            }
+        }
+        return example;
+    }
+    @Override
+    public void forbidden(String storeId) {
+        Store store = new Store();
+        store.setId(storeId);
+        store.setStatus("0");
+        storeMapper.updateByPrimaryKeySelective(store);
+    }
+
+    @Override
+    public void open(String storeId) {
+        Store store = new Store();
+        store.setId(storeId);
+        store.setStatus("1");
+        storeMapper.updateByPrimaryKeySelective(store);
+    }
+
+    @Override
+    public int updatePass(Store store,String id,String newPass) {
+        int result =1;
+        //判断旧的密码对不对
+        //1.查询当前登录的人旧密码
+        Store store1 = new Store();
+        store1.setId(id);
+        Store store2 = storeMapper.selectByPrimaryKey(store1);
+        if (!store2.getPassword().equals(store.getPassword())){//旧密码不对
+            result = 0;
+        }else {//旧密码对了，允许修改
+            store.setId(id);
+            store.setPassword(newPass);
+            storeMapper.updateByPrimaryKeySelective(store);
+            result = 1 ;
+        }
+        return  result;
+    }
+
+    @Override
+    public int status(Store store) {
+        int result=0;
+        Store store1 = new Store();
+        store1.setUsername(store.getUsername());
+        List<Store> storeList = storeMapper.select(store1);
+        Store store2 = new Store();
+        if (commUtils.collectionEffective(storeList)){
+            //判断这个集合是否为空再取，
+            store2 = storeList.get(0);
+            String status = store2.getStatus();
+            if (status.equals("1")){
+                result = 1;
+            }
+
+        }
+        return result;
     }
 
     /**

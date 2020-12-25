@@ -1,6 +1,9 @@
 package com.shop.pojo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 /**
  * store实体类
@@ -27,15 +30,28 @@ public class Store implements Serializable{
 
 	private String status;//状态
 
+	@Transient
+	private String statusName;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date created;//创建时间
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date updated;//修改时间
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private java.util.Date lastLoginTime;//最后登录时间
 
 	private String operatorsId;//外键，关联运营商
 
-	
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
 	public String getId() {
 		return id;
 	}

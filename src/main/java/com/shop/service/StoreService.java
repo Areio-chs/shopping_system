@@ -24,4 +24,14 @@ public interface StoreService {
     public void delete(String id);
 
     public Store doLogin(Store store);
+
+    PageResult<Store> ofindPage(Map<String, Object> searchMap, int page, int size);
+
+    void forbidden(String storeId);
+
+    void open(String storeId);
+
+    int updatePass(Store store,String id,String newPass);
+
+    int status(Store store);
 }

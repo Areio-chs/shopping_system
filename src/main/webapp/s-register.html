@@ -146,7 +146,7 @@
                 if (this.checkName()&&this.checkPhone()&&this.checkPassword()&&this.checkPassword2()){
                     axios.post(`/store/add.do`,this.pojo).then( response=>{
                         let result = response.data;
-                        if (result==1){
+                        if (result==0){
                             alert("该用户已经存在");
                         }else {
                             alert("注册成功");

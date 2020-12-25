@@ -25,4 +25,12 @@ public interface UserService {
     public void delete(String id);
 
     public User doLogin(User user);
+
+    PageResult<User> ofindPage(Map<String, Object> searchMap, int page, int size);
+
+    void forbidden(String userId);
+
+    void open(String userId);
+
+    int status(User user);
 }

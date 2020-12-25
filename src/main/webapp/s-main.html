@@ -77,14 +77,8 @@
         <el-form-item label="联系方式" prop="phone">
             <el-input v-model="ruleForm.phone"></el-input>
         </el-form-item>
-        <el-form-item label="旧密码" prop="oldPass">
-            <el-input  ref="oldPassInput" type="password" v-model="ruleForm.oldPass"></el-input>
-        </el-form-item>
-        <el-form-item label="新密码" prop="newPass">
-            <el-input ref="newPassInput"  type="password" v-model="ruleForm.newPass"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="confirmPass">
-            <el-input  ref="confirmPassInput" type="password" v-model="ruleForm.confirmPass"></el-input>
+        <el-form-item label="店铺地址" prop="address" >
+            <el-input v-model="ruleForm.address"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submitForm('ruleForm')" style="margin-left: 60px">保存</el-button>
@@ -104,38 +98,21 @@
         el: '#app',
         data() {
             return {
-                ruleForm: {
-                    username: '',
-                    name: '',
-                    phone: '',
-                    oldPass: '',
-                    newPass: '',
-                    confirmPass: '',
+                    ruleForm: { },
                     imageUrl:'',
                     loginUserId:'',
-                },rules: {
+
+                    rules: {
                     username: [
                         { required: true, message: '请输入店铺名', trigger: 'blur' },
                         { min: 4,message: '长度大于4个字符', trigger: 'blur' }
                     ],
                     name: [
-                        { required: true, message: '请输入真实姓名', trigger: 'blur' },
+                        { required: false, message: '请输入真实姓名', trigger: 'blur' },
                         { min: 2,message: '长度大于4个字符', trigger: 'blur' }
                     ],
                     phone: [
-                        { required: true, message: '请输入联系方式', trigger: 'blur' },
-                        { min: 4,message: '长度大于4个字符', trigger: 'blur' }
-                    ],
-                    oldPass: [
-                        { required: true, message: '请输入旧密码', trigger: 'blur'  },
-                        { min: 4,message: '长度大于4个字符', trigger: 'blur' }
-                    ],
-                    newPass: [
-                        { required: true, message: '请输入新密码', trigger: 'blur'  },
-                        { min: 4,message: '长度大于4个字符', trigger: 'blur' }
-                    ],
-                    confirmPass: [
-                        { required: true, message: '请确认新密码', trigger: 'blur'  },
+                        { required: false, message: '请输入联系方式', trigger: 'blur' },
                         { min: 4,message: '长度大于4个字符', trigger: 'blur' }
                     ],
 
@@ -147,15 +124,15 @@
             this.findUserInfo();
         },
         methods: {
-            getLoginUser(){
-                this.info =JSON.parse(window.sessionStorage.getItem("userInfo"));
-                if (this.info!=null){
+
+            getLoginUser() {
+                this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
+                if (this.info != null) {
                     this.loginUserId = this.info.id;
                 }
             },
-            findUserInfo(){
-                axios.get(`/store/findById.do?id=${this.loginUserId}`).then(response=>{
-                    alert(JSON.stringify(response));
+            findUserInfo() {
+                axios.get(`/store/findById.do?id=${this.loginUserId}`).then(response => {
                     this.imageUrl = response.data.headPic;
                     this.ruleForm = response.data;
                 });
@@ -175,23 +152,23 @@
                 }
                 return isJPG && isLt2M;
             },
-            checkResonable(){
+            checkResonable() {
 
             },
             submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.ruleForm.headPic=this.imageUrl;
-                        axios.post(`/store/update.do`,this.ruleForm).then(response=>{
-                            this.$message.success('修改成功');
-                            this.findUserInfo();
-                        })
-                        // alert('submit!');
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            this.ruleForm.headPic = this.imageUrl;
+                            axios.post(`/store/update.do`, this.ruleForm).then(response => {
+                                this.$message.success('修改成功');
+                                this.findUserInfo();
+                            })
+                            // alert('submit!');
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();

@@ -128,10 +128,85 @@ public class UserServiceImpl implements UserService {
         if (commUtils.collectionEffective(userList)){
             //判断这个集合是否为空再取，
             user2 = userList.get(0);
+            user2.setLastLoginTime(new Date());
+            userMapper.updateByPrimaryKeySelective(user2);
         }
         return user2;
     }
 
+    @Override
+    public PageResult<User> ofindPage(Map<String, Object> searchMap, int page, int size) {
+        PageHelper.startPage(page,size);
+        Example example = createExample2(searchMap);
+        Page<User> users = (Page<User>) userMapper.selectByExample(example);
+        for (User user:users){
+            String status = user.getStatus();
+            String sex = user.getSex();
+            if (!(status==null)) {
+                if (status.equals("1")) {
+                    user.setStatusName("正常");
+                } else {
+                    user.setStatusName("禁用");
+                }
+            }
+            if (!(sex==null)){
+                if (sex.equals("0")){
+                    user.setSexName("女");
+                }
+                if (sex.equals("1")){
+                    user.setSexName("男");
+                }
+            }
+        }
+        return new PageResult<User>(users.getTotal(),users.getResult());
+    }
+
+    @Override
+    public void forbidden(String userId) {
+        User user = new User();
+        user.setId(userId);
+        user.setStatus("0");
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public void open(String userId) {
+        User user = new User();
+        user.setId(userId);
+        user.setStatus("1");
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public int status(User user) {
+        int result=0;
+        User user1 = new User();
+        user1.setUsername(user.getUsername());
+        List<User> userList = userMapper.select(user1);
+        User user2 = new User();
+        if (commUtils.collectionEffective(userList)){
+            //判断这个集合是否为空再取，
+            user2 = userList.get(0);
+            String status = user2.getStatus();
+            if (status.equals("1")){
+                result = 1;
+            }
+
+        }
+        return result;
+    }
+
+    private Example createExample2(Map<String, Object> searchMap){
+        Example example=new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(searchMap!=null){
+            // 用户名
+            if(searchMap.get("username")!=null && !"".equals(searchMap.get("username"))){
+                criteria.andLike("username","%"+searchMap.get("username")+"%");
+            }
+        }
+        return example;
+    }
     /**
      * 构建查询条件
      * @param searchMap

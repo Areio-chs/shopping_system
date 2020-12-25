@@ -174,7 +174,7 @@
 				if (this.checkName()&&this.checkPhone()&&this.checkPassword()&&this.checkPassword2()){
 					axios.post(`/user/add.do`,this.pojo).then( response=>{
 						let result = response.data;
-						if (result==1){
+						if (result==0){
 							alert("该用户已经存在");
 						}else {
 							alert("注册成功");
@@ -184,8 +184,6 @@
 						this.pojo={};
 						this.password="";
 					})
-				}else{
-					alert("请根据红字提示修改输入框的信息后重试！")
 				}
 			},
 			checkPhone(){
