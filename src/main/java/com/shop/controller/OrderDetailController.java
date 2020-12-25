@@ -42,6 +42,7 @@ public class OrderDetailController {
 
     @GetMapping("/findById")
     public OrderDetail findById(String id){
+        System.out.println(id);
         return orderDetailService.findById(id);
     }
 

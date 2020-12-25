@@ -221,7 +221,7 @@ public class OrderServiceImpl implements OrderService {
                 throw  new RuntimeException("库存不足！");
             };
             OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setId(RandomIdUtils.getId());
+            orderDetail.setId(RandomIdUtils.getUUID());
             orderDetail.setGoodsId(cart.getGoodsId());
             Goods goods = goodsService.findById(cart.getGoodsId());
             storeId = goods.getStoreId();

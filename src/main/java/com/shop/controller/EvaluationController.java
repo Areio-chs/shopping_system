@@ -5,6 +5,7 @@ import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.Evaluation;
 import com.shop.service.EvaluationService;
+import com.shop.utils.RandomIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,8 @@ public class EvaluationController {
 
     @PostMapping("/add")
     public Result add(@RequestBody Evaluation evaluation){
+        evaluation.setId(RandomIdUtils.getUUID());
+        evaluation.setTime(new Date());
         evaluationService.add(evaluation);
         return new Result();
     }

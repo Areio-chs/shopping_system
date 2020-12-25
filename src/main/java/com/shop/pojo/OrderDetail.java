@@ -1,8 +1,12 @@
 package com.shop.pojo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.Date;
+
 /**
  * orderDetail实体类
  * @author Administrator
@@ -25,6 +29,12 @@ public class OrderDetail implements Serializable{
 
 	@Transient
 	private String spec;
+	@Transient
+	private String orderNum;
+
+	@Transient
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	private Date created;//创建时间
 
 	private String isReturn;//是否退货
 	@Transient
@@ -48,7 +58,24 @@ public class OrderDetail implements Serializable{
 
 	@Transient
 	private String commentContent;
-	
+
+
+	public String getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
 	public String getId() {
 		return id;
 	}

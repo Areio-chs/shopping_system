@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.shop.dao.EvaluationMapper;
 import com.shop.dao.GoodsMapper;
 import com.shop.dao.OrderDetailMapper;
+import com.shop.dao.OrderMapper;
 import com.shop.pojo.*;
 import com.shop.service.OrderDetailService;
 import com.shop.utils.commUtils;
@@ -24,6 +25,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private EvaluationMapper evaluationMapper;
     @Autowired
     private GoodsMapper goodsMapper;
+    @Autowired
+    private OrderMapper orderMapper;
 
     /**
      * 返回全部记录
@@ -121,7 +124,14 @@ public class OrderDetailServiceImpl implements OrderDetailService {
      * @return
      */
     public OrderDetail findById(String id) {
-        return orderDetailMapper.selectByPrimaryKey(id);
+
+        OrderDetail orderDetail = orderDetailMapper.selectByPrimaryKey(id);
+        if (!(orderDetail.getGoodsId()==null)){
+            orderDetail.setSpec(goodsMapper.selectByPrimaryKey(orderDetail.getGoodsId()).getSpec());
+            orderDetail.setOrderNum(orderMapper.selectByPrimaryKey(orderDetail.getOrderId()).getOrderNum());
+            orderDetail.setCreated(orderMapper.selectByPrimaryKey(orderDetail.getOrderId()).getCreated());
+        }
+        return orderDetail;
     }
 
     /**
