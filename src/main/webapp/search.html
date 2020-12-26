@@ -22,17 +22,25 @@
                 <div class="py-container">
                     <div class="shortcut">
                         <ul class="fl">
-                            <li class="f-item">青橙欢迎您！</li>
-                            <li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a
-                                    href="register.html"
-                                    target="_blank">免费注册</a></span>
+                            <li class="f-item">青柠欢迎您！</li>
+                            <li class="f-item" v-if="this.info==''||this.info==null">请
+                                <a href="login.html" >登录</a>
+                                <span>
+									<a href="register.html" >免费注册</a>
+								</span>
+                            </li>
+                            <li class="f-item" style="color: blue" v-else>
+                                {{loginUserName}}
+                                <span>
+									<a style="color: blue"  @click="logout()">退出登录</a>
+								</span>
                             </li>
                         </ul>
                         <div class="fr typelist">
                             <ul class="types">
-                                <li class="f-item"><span>我的订单</span></li>
+                                <li class="f-item"><span><a @click="order()" target="_blank">我的订单</a></span></li>
 
-                                <li class="f-item"><span><a href="cart.html" target="_blank">我的购物车</a></span></li>
+                                <li class="f-item"><span><a @click="cart()" target="_blank">我的购物车</a></span></li>
                                 <li class="f-item"><span><a href="home.html" target="_blank">我的青橙</a></span></li>
                                 <li class="f-item"><span>青橙会员</span></li>
                                 <li class="f-item"><span>企业采购</span></li>
@@ -73,7 +81,6 @@
             </div>
         </div>
     </div>
-
     <!-- 商品分类导航 -->
     <div class="typeNav">
         <div class="py-container">
@@ -1277,15 +1284,29 @@
                 all: 10, //总页数
                 size: 10,//页面大小
                 searchMap: {},
-                pojo: {}
+                pojo: {},
+                loginUserName: '',
+                info: {}
             }
         },
         created() {
+            this.login();
             this.searchMap.name=GetQueryValue('name');
             this.searchMap.categoryId=GetQueryValue('categoryId');
             this.fetchData();
         },
         methods: {
+            login() {
+                // alert("加载");
+                this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
+                if (this.info != null) {
+                    this.loginUserName = this.info.name;
+                }
+            },
+            logout(){
+                sessionStorage.removeItem("userInfo");
+                window.location.href="index.html"
+            },
             fetchData() {
                 axios.post(`/goods/findPage.do?page=${this.currentPage}&size=${this.size}`, this.searchMap).then(response => {
                     this.tableData = response.data.rows;
@@ -1307,6 +1328,24 @@
             },
             getGoodsHref:function(val){
                 return 'item.html?goodsId='+val;
+            },
+            cart() {
+                if (this.info == null) {
+                    if (confirm("请先登录!")) {
+                        location.href = "login.html";
+                    }
+                } else {
+                    location.href = "cart.html";
+                }
+            },
+            order() {
+                if (this.info == null) {
+                    if (confirm("请先登录!")) {
+                        location.href = "login.html";
+                    }
+                } else {
+                    location.href = "center-index.html";
+                }
             }
         },
         computed: {

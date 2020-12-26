@@ -79,4 +79,13 @@ public class OrderController {
         return new Result();
     }
 
+    @GetMapping("/updateStatus")
+    public Result updateStatus(String id){
+        Order order = orderService.findById(id);
+        order.setUpdated(new Date());
+        order.setStatus("4");
+        orderService.update(order);
+        return new Result();
+    }
+
 }

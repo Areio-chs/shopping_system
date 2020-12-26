@@ -23,7 +23,18 @@
 				<div class="shortcut">
 					<ul class="fl">
 						<li class="f-item">青柠欢迎您！</li>
-						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
+						<li class="f-item" v-if="this.info==''||this.info==null">请
+							<a href="login.html" >登录</a>
+							<span>
+									<a href="register.html" >免费注册</a>
+								</span>
+						</li>
+						<li class="f-item" style="color: blue" v-else>
+							{{loginUserName}}
+							<span>
+									<a style="color: blue"  @click="logout()">退出登录</a>
+								</span>
+						</li>
 					</ul>
 					<div class="fr typelist">
 						<ul class="types">
@@ -36,7 +47,7 @@
 							<li class="f-item"><span>关注青柠</span></li>
 							<li class="f-item"><span><a href="cooperation.html" target="_blank">合作招商</a></span></li>
 							<li class="f-item"><span><a href="s-login.html" target="_blank">商家后台</a></span></li>				
-							<li class="f-item"><span>网站导航</li>
+							<li class="f-item"><span>网站导航</span></li>
 						</ul>
 					</div>
 					
@@ -56,8 +67,12 @@
 							<form action="" class="sui-form form-inline">
 								<!--searchAutoComplete-->
 								<div class="input-append">
-									<input type="text" id="autocomplete"   class="input-error input-xxlarge" />
-									<button class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
+									<div class="input-append">
+										<input type="text" id="autocomplete" class="input-error input-xxlarge"
+											   v-model="searchName"/>
+										<button class="sui-btn btn-xlarge btn-danger" type="button"
+												@click="submitForm()">搜索</button>
+									</div>
 								</div>
 							</form>
 						</div>
@@ -218,10 +233,47 @@
 	</div>
 </div>
 <!--页面底部END-->
-		
-		
-	
 
 </body>
-
+	<script src="/js/vue.js"></script>
+	<script src="/js/axios.js"></script>
+	<script src="/js/util.js"></script>
+	<script>
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+					searchName:"",
+					ordersn: '',
+					money: 0,
+					loginUserName: '',
+					info: {}
+				}
+			},
+			created() {
+				this.ordersn = getQueryString('ordersn');
+				this.money = getQueryString('money');
+			},
+			methods: {
+				login() {
+					// alert("加载");
+					this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
+					if (this.info != null) {
+						this.loginUserName = this.info.name;
+					}
+				},
+				logout() {
+					sessionStorage.removeItem("userInfo");
+					window.location.href = "index.html"
+				},
+				submitForm() {
+					if (this.searchName == "") {
+						window.location.href = "search.html";
+					} else {
+						window.location.href = "search.html?name=" + this.searchName;
+					}
+				}
+			}
+		})
+	</script>
 </html>

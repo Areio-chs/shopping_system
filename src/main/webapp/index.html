@@ -24,25 +24,25 @@
                         <ul class="fl">
                             <li class="f-item">青柠欢迎您！</li>
                             <li class="f-item" v-if="this.info==''||this.info==null">请
-                                <a href="login.html" >登录</a>
+                                <a href="login.html">登录</a>
                                 <span>
-									<a href="register.html" >免费注册</a>
+									<a href="register.html">免费注册</a>
 								</span>
                             </li>
                             <li class="f-item" style="color: blue" v-else>
                                 {{loginUserName}}
                                 <span>
-									<a style="color: blue"  @click="logout()">退出登录</a>
+									<a style="color: blue" @click="logout()">退出登录</a>
 								</span>
                             </li>
                         </ul>
                         <div class="fr typelist">
                             <ul class="types">
                                 <li class="f-item"><span>
-                                    <a href="center-index.html" target="_blank">我的订单</a></span></li>
+                                    <a @click="order()" target="_blank">我的订单</a></span></li>
                                 <li class="f-item">
 									<span>
-										<a href="cart.html" target="_blank">我的购物车</a>
+										<a @click="cart()" target="_blank">我的购物车</a>
 									</span>
                                 </li>
                                 <li class="f-item">
@@ -1368,8 +1368,8 @@
             return {
                 categoryList: [],
                 searchMap: {},
-                loginUserName:'',
-                info:{}
+                loginUserName: '',
+                info: {}
             }
         },
         created() {
@@ -1381,12 +1381,12 @@
                 // alert("加载");
                 this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
                 if (this.info != null) {
-                    this.loginUserName = this.info.username;
+                    this.loginUserName = this.info.name;
                 }
             },
-            logout(){
+            logout() {
                 sessionStorage.removeItem("userInfo");
-                window.location.href="index.html"
+                window.location.href = "index.html"
             },
             fetchData() {
                 axios.get(`/category/findAll.do`).then(response => {
@@ -1394,14 +1394,32 @@
                 });
             },
             submitForm() {
-                if (this.searchMap.name==""){
+                if (this.searchMap.name == "") {
                     window.location.href = "search.html";
-                }else{
+                } else {
                     window.location.href = "search.html?name=" + this.searchMap.name;
                 }
             },
-			submitCate(categoryId) {
+            submitCate(categoryId) {
                 window.location.href = "search.html?categoryId=" + categoryId;
+            },
+            cart() {
+                if (this.info == null) {
+                    if (confirm("请先登录!")) {
+                        location.href = "login.html";
+                    }
+                } else {
+                    location.href = "cart.html";
+                }
+            },
+            order() {
+                if (this.info == null) {
+                    if (confirm("请先登录!")) {
+                        location.href = "login.html";
+                    }
+                } else {
+                    location.href = "center-index.html";
+                }
             }
         }
     })

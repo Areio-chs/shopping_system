@@ -24,13 +24,22 @@
                     <div class="shortcut">
                         <ul class="fl">
                             <li class="f-item">青柠欢迎您！</li>
-                            <li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a
-                                    href="register.html" target="_blank">免费注册</a></span></li>
+                            <li class="f-item" v-if="this.info==''||this.info==null">请
+                                <a href="login.html" >登录</a>
+                                <span>
+									<a href="register.html" >免费注册</a>
+								</span>
+                            </li>
+                            <li class="f-item" style="color: blue" v-else>
+                                {{loginUserName}}
+                                <span>
+									<a style="color: blue"  @click="logout()">退出登录</a>
+								</span>
+                            </li>
                         </ul>
                         <div class="fr typelist">
                             <ul class="types">
                                 <li class="f-item"><span>我的订单</span></li>
-
                                 <li class="f-item"><span><a href="cart.html" target="_blank">我的购物车</a></span></li>
                                 <li class="f-item"><span><a href="home.html" target="_blank">我的青柠</a></span></li>
                                 <li class="f-item"><span>青柠会员</span></li>
@@ -58,8 +67,10 @@
                                 <form action="" class="sui-form form-inline">
                                     <!--searchAutoComplete-->
                                     <div class="input-append">
-                                        <input type="text" id="autocomplete" class="input-error input-xxlarge"/>
-                                        <button class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
+                                        <input type="text" id="autocomplete" class="input-error input-xxlarge"
+                                        v-model="searchInfo.name"/>
+                                        <button class="sui-btn btn-xlarge btn-danger" type="button"
+                                        @click="submitForm()">搜索</button>
                                     </div>
                                 </form>
                             </div>
@@ -169,7 +180,7 @@
                                                 </td>
                                                 <td width="10%" class="center">
                                                     <ul class="unstyled">
-                                                        <li><a href="#" class="sui-btn btn-info">立即付款</a></li>
+                                                        <li><a @click="pay(order.id,order.orderNum,order.payMoney)" class="sui-btn btn-info">立即付款</a></li>
                                                         <li><a href="#">取消订单</a></li>
                                                     </ul>
                                                 </td>
@@ -274,7 +285,7 @@
                                                 <td width="10%" class="center">
                                                     <ul class="unstyled">
                                                         <li>还剩8天10小时</li>
-                                                        <li><a href="#" class="sui-btn btn-info">确认收货</a></li>
+                                                        <li><a @click="update(order.id)" class="sui-btn btn-info">确认收货</a></li>
                                                     </ul>
                                                 </td>
                                             </tr>
@@ -323,6 +334,54 @@
                                                 <td width="10%" class="center">
                                                     <ul class="unstyled">
                                                         <li><a :href="'mycomment.html?orderDetailId='+orderDetail.id+''" class="sui-btn btn-info">评价</a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--order4-->
+                                    <div v-if="order.status==='5'">
+                                        <div class="choose-title">
+                                            <label data-toggle="checkbox" class="checkbox-pretty ">
+                                                <input type="checkbox" checked="checked"><span>{{order.created}}　订单编号：{{order.orderNum}}  店铺：{{order.storeName}} <a>和我联系</a></span>
+                                            </label>
+                                        </div>
+                                        <table class="sui-table table-bordered order-datatable">
+                                            <tbody v-for="orderDetail in orderDetailList">
+                                            <tr v-if="order.id===orderDetail.orderId">
+                                                <td width="35%">
+                                                    <div class="typographic"><img :src="orderDetail.image" style="width: 82px;height: 82px"/>
+                                                        <a href="#" class="block-text">{{orderDetail.goodsName}}</a>
+                                                        <span class="guige">{{orderDetail.spec}}</span>
+                                                    </div>
+                                                </td>
+                                                <td width="5%" class="center">
+                                                    <ul class="unstyled">
+                                                        <li>¥{{orderDetail.goodsPrice}}</li>
+                                                    </ul>
+                                                </td>
+                                                <td width="5%" class="center">{{orderDetail.goodsQuantity}}</td>
+                                                <td width="8%" class="center">
+                                                    <ul class="unstyled">
+                                                        <li><a>申请售后</a></li>
+                                                    </ul>
+                                                </td>
+                                                <td width="10%" class="center">
+                                                    <ul class="unstyled">
+                                                        <li>¥{{orderDetail.totalMoney}}</li>
+                                                        <li>（含运费：￥{{orderDetail.freight}}）</li>
+                                                    </ul>
+                                                </td>
+                                                <td width="10%" class="center">
+                                                    <ul class="unstyled">
+                                                        <li>交易成功</li>
+                                                        <li><a href="orderDetail.html" class="btn">订单详情 </a></li>
+                                                    </ul>
+                                                </td>
+                                                <td width="10%" class="center">
+                                                    <ul class="unstyled">
+                                                        <li><a href="#" class="sui-btn btn-info">查看评价</a></li>
                                                     </ul>
                                                 </td>
                                             </tr>
@@ -592,6 +651,7 @@
                 all: 10, //总页数
                 size:3,//页面大小
                 searchMap: {},
+                searchInfo:{},
                 loginUserName: '',
                 info: {}
             }
@@ -627,11 +687,58 @@
                 });
             },
             submitForm() {
-                if (this.searchMap.name == "") {
+                if (this.searchInfo.name == "") {
                     window.location.href = "search.html";
                 } else {
-                    window.location.href = "search.html?name=" + this.searchMap.name;
+                    window.location.href = "search.html?name=" + this.searchInfo.name;
                 }
+            },
+            //分页
+            btnClick: function (data) {//页码点击事件
+                if (data != this.currentPage) {
+                    this.currentPage = data
+                }
+                //根据点击页数请求数据
+                this.fetchData();
+            },
+            pageClick: function () {
+                //根据点击页数请求数据
+                this.fetchData();
+            },
+            pay(id,orderNum,payMoney){
+                location.href=`pay.html?oid=${id}&ordersn=${orderNum}&money=${payMoney}`; //跳转到支付页面
+            },
+            update(id){
+                axios.get(`/order/updateStatus.do?id=${id}`).then(response => {
+                    this.fetchData();
+                });
+            }
+        },
+        computed: {
+            //分页
+            indexs: function () {
+                var left = 1;
+                var right = this.all;
+                var ar = [];
+                if (this.all >= 5) {
+                    if (this.currentPage > 3 && this.currentPage < this.all - 2) {
+                        left = this.currentPage - 2
+                        right = this.currentPage + 2
+                    } else {
+                        if (this.currentPage <= 3) {
+                            left = 1
+                            right = 5
+                        } else {
+                            right = this.all
+                            left = this.all - 4
+                        }
+                    }
+                }
+                while (left <= right) {
+                    ar.push(left)
+                    left++
+                }
+                return ar
             }
         }
     })

@@ -22,8 +22,18 @@
 				<div class="shortcut">
 					<ul class="fl">
 						<li class="f-item">青柠欢迎您！</li>
-						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>					</ul>
-					<ul class="fr">
+						<li class="f-item" v-if="this.info==''||this.info==null">请
+							<a href="login.html" >登录</a>
+							<span>
+									<a href="register.html" >免费注册</a>
+								</span>
+						</li>
+						<li class="f-item" style="color: blue" v-else>
+							{{loginUserName}}
+							<span>
+									<a style="color: blue"  @click="logout()">退出登录</a>
+								</span>
+						</li><ul class="fr">
 						<li class="f-item">我的订单</li>
 						<li class="f-item space"></li>
 						<li class="f-item">我的青柠</li>
@@ -224,13 +234,27 @@
 		data(){
 		    return {
 		        orderId:'',
-		        money:""
+		        money:"",
+				loginUserName: '',
+				info: {}
 			}
 		},
 		created(){
+			this.login();
 		    this.createNative();
 		},
 		methods:{
+			login() {
+				// alert("加载");
+				this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
+				if (this.info != null) {
+					this.loginUserName = this.info.name;
+				}
+			},
+			logout(){
+				sessionStorage.removeItem("userInfo");
+				window.location.href="index.html"
+			},
 		    createNative(){
 		        let orderId = getQueryString("orderId");
 		        axios.get(`/wxpay/createNative.do?orderId=${orderId}`).then( response=>{

@@ -24,8 +24,18 @@
                     <div class="shortcut">
                         <ul class="fl">
                             <li class="f-item">青柠欢迎您！</li>
-                            <li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a
-                                    href="register.html" target="_blank">免费注册</a></span></li>
+                            <li class="f-item" v-if="this.info==''||this.info==null">请
+                                <a href="login.html" >登录</a>
+                                <span>
+									<a href="register.html" >免费注册</a>
+								</span>
+                            </li>
+                            <li class="f-item" style="color: blue" v-else>
+                                {{loginUserName}}
+                                <span>
+									<a style="color: blue"  @click="logout()">退出登录</a>
+								</span>
+                            </li>
                         </ul>
                         <div class="fr typelist">
                             <ul class="types">
@@ -58,8 +68,10 @@
                                 <form action="" class="sui-form form-inline">
                                     <!--searchAutoComplete-->
                                     <div class="input-append">
-                                        <input type="text" id="autocomplete" class="input-error input-xxlarge"/>
-                                        <button class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
+                                        <input type="text" id="autocomplete" class="input-error input-xxlarge"
+                                               v-model="searchInfo.name"/>
+                                        <button class="sui-btn btn-xlarge btn-danger" type="button"
+                                                @click="submitForm()">搜索</button>
                                     </div>
                                 </form>
                             </div>
@@ -170,7 +182,7 @@
 											<td width="10%" class="center">
 												<ul class="unstyled">
 													<li>还剩8天10小时</li>
-													<li><a href="#" class="sui-btn btn-info">确认收货</a></li>
+													<li><a @click="update(order.id)" class="sui-btn btn-info">确认收货</a></li>
 												</ul>
 											</td>
                                         </tr>
@@ -481,6 +493,50 @@
                 } else {
                     window.location.href = "search.html?name=" + this.searchMap.name;
                 }
+            },
+            //分页
+            btnClick: function (data) {//页码点击事件
+                if (data != this.currentPage) {
+                    this.currentPage = data
+                }
+                //根据点击页数请求数据
+                this.fetchData();
+            },
+            pageClick: function () {
+                //根据点击页数请求数据
+                this.fetchData();
+            },
+            update(id){
+                axios.get(`/order/updateStatus.do?id=${id}`).then(response => {
+                    this.fetchData();
+                });
+            }
+        },
+        computed: {
+            //分页
+            indexs: function () {
+                var left = 1;
+                var right = this.all;
+                var ar = [];
+                if (this.all >= 5) {
+                    if (this.currentPage > 3 && this.currentPage < this.all - 2) {
+                        left = this.currentPage - 2
+                        right = this.currentPage + 2
+                    } else {
+                        if (this.currentPage <= 3) {
+                            left = 1
+                            right = 5
+                        } else {
+                            right = this.all
+                            left = this.all - 4
+                        }
+                    }
+                }
+                while (left <= right) {
+                    ar.push(left)
+                    left++
+                }
+                return ar
             }
         }
     })
