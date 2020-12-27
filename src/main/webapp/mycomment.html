@@ -381,7 +381,8 @@
             },
             submitEvaluation() {
                 axios.post(`/evaluation/add.do`, this.evaluation).then(response => {
-                    alert("ok");
+                    alert("评价成功！");
+                    window.location.href = "center-index.html";
                 });
             }
         }

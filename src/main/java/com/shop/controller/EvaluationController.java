@@ -1,10 +1,10 @@
 package com.shop.controller;
 
 
-import com.shop.pojo.PageResult;
-import com.shop.pojo.Result;
-import com.shop.pojo.Evaluation;
+import com.shop.pojo.*;
 import com.shop.service.EvaluationService;
+import com.shop.service.OrderDetailService;
+import com.shop.service.OrderService;
 import com.shop.utils.RandomIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +17,10 @@ public class EvaluationController {
 
     @Autowired
     private EvaluationService evaluationService;
+    @Autowired
+    private OrderDetailService orderDetailService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/findAll")
     public List<Evaluation> findAll(){
@@ -49,6 +53,9 @@ public class EvaluationController {
         evaluation.setId(RandomIdUtils.getUUID());
         evaluation.setTime(new Date());
         evaluationService.add(evaluation);
+        Order order = orderService.findById(orderDetailService.findById(evaluation.getOrderDetailId()).getOrderId());
+        order.setStatus("5");
+        order.setUpdated(new Date());
         return new Result();
     }
 
