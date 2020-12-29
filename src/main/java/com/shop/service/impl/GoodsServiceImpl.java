@@ -138,7 +138,6 @@ public class GoodsServiceImpl implements GoodsService {
      * @return
      */
     public Goods findById(String id) {
-
         return goodsMapper.selectByPrimaryKey(id);
     }
     //根据商品id查询其对应的规格id，再查出名字
@@ -234,7 +233,7 @@ public class GoodsServiceImpl implements GoodsService {
         if(searchMap!=null){
             // id
             if(searchMap.get("id")!=null && !"".equals(searchMap.get("id"))){
-                criteria.andLike("id","%"+searchMap.get("id")+"%");
+                criteria.andEqualTo("id",searchMap.get("id"));
             }
             // 名称
             if(searchMap.get("name")!=null && !"".equals(searchMap.get("name"))){

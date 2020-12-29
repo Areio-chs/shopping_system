@@ -61,7 +61,9 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         List<OrderDetail> orderDetailList = orderDetailMapper.selectByExample(example);
         for (OrderDetail orderDetail : orderDetailList) {
             if (!(orderDetail.getGoodsId()==null)){
+                System.out.println(orderDetail.getGoodsId());
                 Goods goods = goodsService.findById(orderDetail.getGoodsId());
+                System.out.println(goods.toString());
                 //Goods goods = goodsMapper.selectByPrimaryKey();
                 if(goods.getSpec()!=null&&goods.getSpec().length()!=0) {
                 orderDetail.setSpec(goods.getSpec());
