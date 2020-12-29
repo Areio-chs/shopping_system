@@ -146,6 +146,9 @@ public class OrderServiceImpl implements OrderService {
                 if (status.equals("4")){
                     order.setStatusName("待评价");
                 }
+                if (status.equals("5")){
+                    order.setStatusName("已完成");
+                }
             }
             String paymentype = order.getPaymentype();
             if (!(paymentype==null)){
@@ -180,6 +183,10 @@ public class OrderServiceImpl implements OrderService {
             if(searchMap.get("orderNum")!=null && !"".equals(searchMap.get("orderNum"))){
                 criteria.andLike("orderNum","%"+searchMap.get("orderNum")+"%");
             }
+            // 状态
+            if(searchMap.get("status")!=null && !"".equals(searchMap.get("status"))){
+                criteria.andLike("status","%"+searchMap.get("status")+"%");
+            }
         }
         return example;
     }
@@ -188,6 +195,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setId(orderId);
         order.setUpdated(new Date());
+        order.setSendtime(new Date());
         order.setStatus("3");
         orderMapper.updateByPrimaryKeySelective(order);
     }

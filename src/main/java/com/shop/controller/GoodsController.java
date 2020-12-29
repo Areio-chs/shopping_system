@@ -46,6 +46,12 @@ public class GoodsController {
         return goodsService.findById(id);
     }
 
+    @GetMapping("/total")
+    public int total(String storeId){
+        return goodsService.total(storeId);
+    }
+
+
     @GetMapping("/findSpec")
     public List<String> findSpec(String id){
         return goodsService.findSpecList(id);

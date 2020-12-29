@@ -365,7 +365,8 @@
                 images:'https://m.360buyimg.com/mobilecms/s720x720_jfs/t1/4612/28/6223/298257/5ba22d66Ef665222f/d97ed0b25cbe8c6e.jpg!q70.jpg.webp',
                 imageUrl:'',
                 //图片地址与实体没有关系，他是单独上传
-                loginUserId:''
+                loginUserId:'',
+                goodNum:'',
 
             }
         },
@@ -373,9 +374,15 @@
             // this.selectSpec("1");
             this.getLoginUser();
             this.getGoodsList();
+            this.goodsNum();
             // this.selectAllSpec();
         },
         methods: {
+            goodsNum(){
+                axios.get(`/goods/total.do?storeId=${this.loginUserId}`).then(response=>{
+                    this.goodNum = response.data;
+                });
+            },
             getLoginUser(){
                 this.info =JSON.parse(window.sessionStorage.getItem("userInfo"));
                 if (this.info!=null){

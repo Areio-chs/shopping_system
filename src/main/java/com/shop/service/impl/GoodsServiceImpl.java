@@ -119,6 +119,16 @@ public class GoodsServiceImpl implements GoodsService {
         Page<Goods> goods = (Page<Goods>) goodsList;
         return new PageResult<Goods>(goods.getTotal(),goods.getResult());
     }
+
+    @Override
+    public int total(String storeId) {
+        //统计该用户的商品总数
+        Goods goods = new Goods();
+        goods.setStoreId(storeId);
+        int total = goodsMapper.selectCount(goods);
+        return total;
+    }
+
     private Example createExample2(Map<String, Object> searchMap,String storeId){
         Example example=new Example(Goods.class);
         Example.Criteria criteria = example.createCriteria();
@@ -163,6 +173,7 @@ public class GoodsServiceImpl implements GoodsService {
         goods.setId(RandomIdUtils.getUUID());
 //        goods.setId("15");
         goods.setCreated(new Date());
+        goods.setSpec("白色");
         goods.setSales(0);
         goods.setStatus("1");
         System.out.println(goods.toString());

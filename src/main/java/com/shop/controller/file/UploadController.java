@@ -39,7 +39,7 @@ public class UploadController {
         }
         System.out.println("path:---"+filePath);
         //返回文件名给前端
-        return "http://localhost:8080/images/"+file.getOriginalFilename();
+        return "http://34d538s283.qicp.vip/images/"+file.getOriginalFilename();
     }
 //
 //    @Autowired

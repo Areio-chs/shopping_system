@@ -38,4 +38,6 @@ public interface GoodsService {
     public boolean deductionStock(String id,Integer num);
 
     PageResult<Goods> sfindPage(Map<String, Object> searchMap, int page, int size, String storeId);
+
+    int total(String storeId);
 }
