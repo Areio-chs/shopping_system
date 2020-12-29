@@ -55,7 +55,9 @@ public class EvaluationController {
         evaluationService.add(evaluation);
         Order order = orderService.findById(orderDetailService.findById(evaluation.getOrderDetailId()).getOrderId());
         order.setStatus("5");
+        order.setBuyerRate("2");
         order.setUpdated(new Date());
+        orderService.update(order);
         return new Result();
     }
 

@@ -323,8 +323,19 @@
 </body>
 <script type="text/javascript" src="/js/vue.js"></script>
 <script type="text/javascript" src="/js/axios.js"></script>
-<script src="/js/util.js"></script>
+<script type="text/javascript" src="/js/util.js"></script>
 <script>
+    function GetQueryValue(queryName) {
+        let query = decodeURI(window.location.search.substring(1));
+        let vars = query.split("&");
+        for (let i = 0; i < vars.length; i++) {
+            let pair = vars[i].split("=");
+            if (pair[0] == queryName) {
+                return pair[1];
+            }
+        }
+        return null;
+    }
     new Vue({
         el: '#app',
         data() {
@@ -347,10 +358,11 @@
             }
         },
         created() {
-            this.id = getQueryString('orderDetailId');
+            alert("111");
+            this.id = GetQueryValue('orderDetailId');
+
             this.login();
             this.findDetail();
-            alert(id);
         },
         methods: {
             login() {
@@ -358,7 +370,6 @@
                 this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
                 if (this.info != null) {
                     this.loginUserName = this.info.username;
-                    this.searchMap.userId = this.info.id;
                 }
             },
             logout() {

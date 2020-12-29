@@ -183,4 +183,27 @@ public class OrderDetail implements Serializable{
 	public void setSpec(String spec) {
 		this.spec = spec;
 	}
+
+	@Override
+	public String toString() {
+		return "OrderDetail{" +
+				"id='" + id + '\'' +
+				", orderId='" + orderId + '\'' +
+				", goodsId='" + goodsId + '\'' +
+				", goodsName='" + goodsName + '\'' +
+				", spec='" + spec + '\'' +
+				", orderNum='" + orderNum + '\'' +
+				", created=" + created +
+				", isReturn='" + isReturn + '\'' +
+				", isReturnName='" + isReturnName + '\'' +
+				", image='" + image + '\'' +
+				", goodsQuantity=" + goodsQuantity +
+				", goodsPrice=" + goodsPrice +
+				", freight=" + freight +
+				", totalMoney=" + totalMoney +
+				", payMoney=" + payMoney +
+				", buyerRate='" + buyerRate + '\'' +
+				", commentContent='" + commentContent + '\'' +
+				'}';
+	}
 }

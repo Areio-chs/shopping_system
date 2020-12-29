@@ -69,7 +69,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                     if (goods.getSpec() != null && goods.getSpec().length() != 0) {
                         orderDetail.setSpec(goods.getSpec());
                     }
-                }else {
+                } else {
                     continue;
                 }
             }
@@ -139,12 +139,18 @@ public class OrderDetailServiceImpl implements OrderDetailService {
      * @return
      */
     public OrderDetail findById(String id) {
-
+        System.out.println(id);
         OrderDetail orderDetail = orderDetailMapper.selectByPrimaryKey(id);
-        if (!(orderDetail.getGoodsId() == null)) {
-            orderDetail.setSpec(goodsMapper.selectByPrimaryKey(orderDetail.getGoodsId()).getSpec());
-            orderDetail.setOrderNum(orderMapper.selectByPrimaryKey(orderDetail.getOrderId()).getOrderNum());
-            orderDetail.setCreated(orderMapper.selectByPrimaryKey(orderDetail.getOrderId()).getCreated());
+            if (orderDetail.getGoodsId() != null) {
+                Goods goods = goodsMapper.selectByPrimaryKey(orderDetail.getGoodsId());
+                if (goods != null) {
+                    orderDetail.setSpec(goods.getSpec());
+                }
+                Order order = orderMapper.selectByPrimaryKey(orderDetail.getOrderId());
+                if (order != null) {
+                    orderDetail.setOrderNum(order.getOrderNum());
+                    orderDetail.setCreated(order.getCreated());
+                }
         }
         return orderDetail;
     }
