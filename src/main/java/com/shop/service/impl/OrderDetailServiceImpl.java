@@ -54,14 +54,14 @@ public class OrderDetailServiceImpl implements OrderDetailService {
      * @return
      */
     public List<OrderDetail> findList(Map<String, Object> searchMap) {
-
-
         Example example = createExample(searchMap);
         List<OrderDetail> orderDetailList = orderDetailMapper.selectByExample(example);
         for (OrderDetail orderDetail : orderDetailList) {
             if (!(orderDetail.getGoodsId()==null)){
                 Goods goods = goodsMapper.selectByPrimaryKey(orderDetail.getGoodsId());
+                if(!(goods.getSpec()==null)) {
                 orderDetail.setSpec(goods.getSpec());
+                }
             }
         }
         return orderDetailList;
