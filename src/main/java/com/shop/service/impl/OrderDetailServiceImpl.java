@@ -59,7 +59,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         for (OrderDetail orderDetail : orderDetailList) {
             if (!(orderDetail.getGoodsId()==null)){
                 Goods goods = goodsMapper.selectByPrimaryKey(orderDetail.getGoodsId());
-                if(!(goods.getSpec()==null)) {
+                if(!(goods.getSpec().equals(""))) {
                 orderDetail.setSpec(goods.getSpec());
                 }
             }
