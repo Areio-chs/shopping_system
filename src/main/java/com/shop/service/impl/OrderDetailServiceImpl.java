@@ -7,6 +7,7 @@ import com.shop.dao.GoodsMapper;
 import com.shop.dao.OrderDetailMapper;
 import com.shop.dao.OrderMapper;
 import com.shop.pojo.*;
+import com.shop.service.GoodsService;
 import com.shop.service.OrderDetailService;
 import com.shop.utils.commUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private EvaluationMapper evaluationMapper;
     @Autowired
     private GoodsMapper goodsMapper;
+    @Autowired
+    private GoodsService goodsService;
     @Autowired
     private OrderMapper orderMapper;
 
@@ -58,7 +61,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         List<OrderDetail> orderDetailList = orderDetailMapper.selectByExample(example);
         for (OrderDetail orderDetail : orderDetailList) {
             if (!(orderDetail.getGoodsId()==null)){
-                Goods goods = goodsMapper.selectByPrimaryKey(orderDetail.getGoodsId());
+                Goods goods = goodsService.findById(orderDetail.getGoodsId());
+                //Goods goods = goodsMapper.selectByPrimaryKey();
                 if(goods.getSpec()!=null&&goods.getSpec().length()!=0) {
                 orderDetail.setSpec(goods.getSpec());
                 }
