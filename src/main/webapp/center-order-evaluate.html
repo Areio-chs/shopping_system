@@ -459,8 +459,7 @@
         },
         created() {
             this.login();
-            this.findOrderList();
-            this.findDetailList();
+            this.fetchData();
         },
         methods: {
             login() {
@@ -474,6 +473,10 @@
             logout() {
                 sessionStorage.removeItem("userInfo");
                 window.location.href = "index.html"
+            },
+            fetchData(){
+                this.findOrderList();
+                this.findDetailList();
             },
             findOrderList() {
                 axios.post(`/order/findPage.do?page=${this.currentPage}&size=${this.size}`, this.searchMap).then(response => {
