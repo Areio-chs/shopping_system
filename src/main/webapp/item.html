@@ -2927,7 +2927,7 @@
                 // alert("加载");
                 this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
                 if (this.info != null) {
-                    this.loginUserName = this.info.name;
+                    this.loginUserName = this.info.username;
                     this.userId = this.info.id;
                 }
             },
@@ -2961,7 +2961,7 @@
                         location.href = "login.html";
                     }
                 } else {
-                    location.href = `http://localhost:8080/cart/buy.do?goodsId=${this.goodsId}&userId=${this.userId}&num=${this.num}&price=${this.goods.price}`;
+                    location.href = `http://34d538s283.qicp.vip/cart/buy.do?goodsId=${this.goodsId}&userId=${this.userId}&num=${this.num}&price=${this.goods.price}`;
                 }
                 //添加商品到购物车
             },

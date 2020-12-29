@@ -411,7 +411,7 @@ $(function(){
 				// alert("加载");
 				this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
 				if (this.info != null) {
-					this.loginUserName = this.info.name;
+					this.loginUserName = this.info.username;
 					this.searchMap.userId = this.info.id;
 					this.searchMap.checked=1;
 				}
