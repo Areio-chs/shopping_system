@@ -183,7 +183,7 @@
 											</td>
 											<td width="10%" class="center">
 												<ul class="unstyled">
-													<li><a href="#" class="sui-btn btn-info">退货换货</a></li>
+													<li><a @click="close(orderDetail.id)" class="sui-btn btn-info">退货换货</a></li>
 													<li><a href="#" class="sui-btn btn-info">提醒发货</a></li>
 												</ul>
 											</td>
@@ -511,6 +511,13 @@
 			pageClick: function () {
 				//根据点击页数请求数据
 				this.fetchData();
+			},
+			close(id) {
+				if (confirm("是否退货退款!")) {
+					axios.get(`/orderDetail/close.do?id=${id}`).then(response => {
+						this.fetchData();
+					});
+				}
 			}
         },
 		computed: {

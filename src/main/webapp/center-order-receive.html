@@ -25,21 +25,22 @@
                         <ul class="fl">
                             <li class="f-item">青柠欢迎您！</li>
                             <li class="f-item" v-if="this.info==''||this.info==null">请
-                                <a href="login.html" >登录</a>
+                                <a href="login.html">登录</a>
                                 <span>
-									<a href="register.html" >免费注册</a>
+									<a href="register.html">免费注册</a>
 								</span>
                             </li>
                             <li class="f-item" style="color: blue" v-else>
                                 {{loginUserName}}
                                 <span>
-									<a style="color: blue"  @click="logout()">退出登录</a>
+									<a style="color: blue" @click="logout()">退出登录</a>
 								</span>
                             </li>
                         </ul>
                         <div class="fr typelist">
                             <ul class="types">
-                                <li class="f-item"><span><a href="center-index.html" target="_blank">我的订单</a></span></li>
+                                <li class="f-item"><span><a href="center-index.html" target="_blank">我的订单</a></span>
+                                </li>
 
                                 <li class="f-item"><span><a href="cart.html" target="_blank">我的购物车</a></span></li>
                                 <li class="f-item"><span><a href="home.html" target="_blank">我的青柠</a></span></li>
@@ -71,7 +72,8 @@
                                         <input type="text" id="autocomplete" class="input-error input-xxlarge"
                                                v-model="searchName"/>
                                         <button class="sui-btn btn-xlarge btn-danger" type="button"
-                                                @click="submitForm()">搜索</button>
+                                                @click="submitForm()">搜索
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -151,7 +153,8 @@
                                         <tbody v-for="orderDetail in orderDetailList">
                                         <tr v-if="order.id===orderDetail.orderId">
                                             <td width="35%">
-                                                <div class="typographic"><img :src="orderDetail.image" style="width: 82px;height: 82px"/>
+                                                <div class="typographic"><img :src="orderDetail.image"
+                                                                              style="width: 82px;height: 82px"/>
                                                     <a href="#" class="block-text">{{orderDetail.goodsName}}</a>
                                                     <span class="guige">{{orderDetail.spec}}</span>
                                                 </div>
@@ -173,18 +176,20 @@
                                                     <li>（含运费：￥{{orderDetail.freight}}）</li>
                                                 </ul>
                                             </td>
-											<td width="10%" class="center">
-												<ul class="unstyled">
-													<li>物流派件中</li>
-													<li><a href="orderDetail.html" class="btn">订单详情 </a></li>
-												</ul>
-											</td>
-											<td width="10%" class="center">
-												<ul class="unstyled">
-                                                    <li><a href="#" class="sui-btn btn-info">退货换货</a></li>
-													<li><a @click="update(order.id)" class="sui-btn btn-info">确认收货</a></li>
-												</ul>
-											</td>
+                                            <td width="10%" class="center">
+                                                <ul class="unstyled">
+                                                    <li>物流派件中</li>
+                                                    <li><a href="orderDetail.html" class="btn">订单详情 </a></li>
+                                                </ul>
+                                            </td>
+                                            <td width="10%" class="center">
+                                                <ul class="unstyled">
+                                                    <li><a @click="close(orderDetail.id)" class="sui-btn btn-info">退货换货</a>
+                                                    </li>
+                                                    <li><a @click="update(order.id)" class="sui-btn btn-info">确认收货</a>
+                                                    </li>
+                                                </ul>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -455,7 +460,7 @@
                 searchMap: {},
                 loginUserName: '',
                 info: {},
-                searchName:""
+                searchName: ""
             }
         },
         created() {
@@ -475,7 +480,7 @@
                 sessionStorage.removeItem("userInfo");
                 window.location.href = "index.html"
             },
-            fetchData(){
+            fetchData() {
                 this.findOrderList();
                 this.findDetailList();
             },
@@ -510,10 +515,17 @@
                 //根据点击页数请求数据
                 this.fetchData();
             },
-            update(id){
+            update(id) {
                 axios.get(`/order/updateStatus.do?id=${id}`).then(response => {
                     this.fetchData();
                 });
+            },
+            close(id) {
+                if (confirm("是否退货退款!")) {
+                    axios.get(`/orderDetail/close.do?id=${id}`).then(response => {
+                        this.fetchData();
+                    });
+                }
             }
         },
         computed: {

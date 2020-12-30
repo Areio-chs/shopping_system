@@ -57,6 +57,7 @@ public class EvaluationController {
         order.setStatus("5");
         order.setBuyerRate("2");
         order.setUpdated(new Date());
+        order.setEndtime(new Date());
         orderService.update(order);
         return new Result();
     }

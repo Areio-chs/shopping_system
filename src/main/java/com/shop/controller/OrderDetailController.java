@@ -1,6 +1,7 @@
 package com.shop.controller;
 
 
+import com.shop.pojo.Order;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.OrderDetail;
@@ -67,6 +68,14 @@ public class OrderDetailController {
     @GetMapping("/returned")
     public Result returned(String id){
         orderDetailService.returned(id);
+        return new Result();
+    }
+
+    @GetMapping("/close")
+    public Result close(String id){
+        OrderDetail orderDetail = orderDetailService.findById(id);
+        orderDetail.setIsReturn("2");
+        orderDetailService.update(orderDetail);
         return new Result();
     }
 }
