@@ -183,7 +183,7 @@
                                             <td width="10%" class="center">
                                                 <ul class="unstyled">
                                                     <li><a @click="pay(order.id,order.orderNum,order.payMoney)" class="sui-btn btn-info">立即付款</a></li>
-                                                    <li><a href="#">取消订单</a></li>
+                                                    <li><a @click="deleteOrder(order.id)">取消订单</a></li>
                                                 </ul>
                                             </td>
                                         </tr>
@@ -502,6 +502,11 @@
             },
             pay(id,orderNum,payMoney){
                 location.href=`pay.html?oid=${id}&ordersn=${orderNum}&money=${payMoney}`; //跳转到支付页面
+            },
+            deleteOrder(id){
+                axios.get(`/order/deleteOrder.do?id=${id}`).then(response => {
+                    this.fetchData();
+                });
             },
             //分页
             btnClick: function (data) {//页码点击事件

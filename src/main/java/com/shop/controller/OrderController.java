@@ -1,9 +1,11 @@
 package com.shop.controller;
 
 
+import com.shop.pojo.OrderDetail;
 import com.shop.pojo.PageResult;
 import com.shop.pojo.Result;
 import com.shop.pojo.Order;
+import com.shop.service.OrderDetailService;
 import com.shop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,10 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private OrderDetailService orderDetailService;
+
 
     @GetMapping("/findAll")
     public List<Order> findAll(){
@@ -85,6 +91,19 @@ public class OrderController {
         order.setUpdated(new Date());
         order.setStatus("4");
         orderService.update(order);
+        return new Result();
+    }
+
+    @GetMapping("/deleteOrder")
+    public Result deleteOrder(String id){
+        Order order = orderService.findById(id);
+        Map<String,Object> searchMap=new HashMap();
+        searchMap.put("orderId",id);
+        List<OrderDetail> list = orderDetailService.findList(searchMap);
+        for (OrderDetail o:list){
+            orderDetailService.delete(order.getId());
+        }
+        orderService.delete(id);
         return new Result();
     }
 

@@ -181,7 +181,7 @@
                                                 <td width="10%" class="center">
                                                     <ul class="unstyled">
                                                         <li><a @click="pay(order.id,order.orderNum,order.payMoney)" class="sui-btn btn-info">立即付款</a></li>
-                                                        <li><a href="#">取消订单</a></li>
+                                                        <li><a @click="deleteOrder(order.id)">取消订单</a></li>
                                                     </ul>
                                                 </td>
                                             </tr>
@@ -230,7 +230,7 @@
                                                 <td width="10%" class="center">
                                                     <ul class="unstyled">
                                                         <li><a @click="close(orderDetail.id)" class="sui-btn btn-info">退货换货</a></li>
-                                                        <li><a href="#" class="sui-btn btn-info">提醒发货</a></li>
+                                                        <li><a href="#" >提醒发货</a></li>
                                                     </ul>
                                                 </td>
                                             </tr>
@@ -278,8 +278,8 @@
                                                 </td>
                                                 <td width="10%" class="center">
                                                     <ul class="unstyled">
-                                                        <li><a @click="close(orderDetail.id)" class="sui-btn btn-info">退货换货</a></li>
                                                         <li><a @click="update(order.id)" class="sui-btn btn-info">确认收货</a></li>
+                                                        <li><a @click="close(orderDetail.id)">退货换货</a></li>
                                                     </ul>
                                                 </td>
                                             </tr>
@@ -707,6 +707,11 @@
             },
             update(id){
                 axios.get(`/order/updateStatus.do?id=${id}`).then(response => {
+                    this.fetchData();
+                });
+            },
+            deleteOrder(id){
+                axios.get(`/order/deleteOrder.do?id=${id}`).then(response => {
                     this.fetchData();
                 });
             },
