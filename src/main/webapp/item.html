@@ -1900,12 +1900,8 @@
                         <a href="#">手机、数码、通讯</a>
                     </li>
                     <li>
-                        <a href="#">手机</a>
+                        <a href="#" class="active">手机</a>
                     </li>
-                    <li>
-                        <a href="#">Apple苹果</a>
-                    </li>
-                    <li class="active">iphone 6S系类</li>
                 </ul>
             </div>
             <!--product-info-->
@@ -1926,31 +1922,31 @@
                             <div class="items">
                                 <ul>
                                     <li>
-                                        <img :src="goods.img" bimg="./img/_/b1.png" onmousemove="preview(this)"/>
+                                        <img :src="goods.img" :bimg="goods.img" onmousemove="preview(this)"/>
                                     </li>
                                     <li>
-                                        <img src="./img/_/s2.png" bimg="./img/_/b2.png" onmousemove="preview(this)"/>
+                                        <img :src="goods.img" :bimg="goods.img" onmousemove="preview(this)"/>
                                     </li>
                                     <li>
-                                        <img src="./img/_/s3.png" bimg="./img/_/b3.png" onmousemove="preview(this)"/>
+                                        <img :src="goods.img" :bimg="goods.img" onmousemove="preview(this)"/>
                                     </li>
                                     <li>
-                                        <img src="./img/_/s1.png" bimg="./img/_/b1.png" onmousemove="preview(this)"/>
+                                        <img :src="goods.img" :bimg="goods.img" onmousemove="preview(this)"/>
                                     </li>
                                     <li>
-                                        <img src="./img/_/s2.png" bimg="./img/_/b2.png" onmousemove="preview(this)"/>
+                                        <img :src="goods.img" :bimg="goods.img" onmousemove="preview(this)"/>
                                     </li>
                                     <li>
-                                        <img src="./img/_/s3.png" bimg="./img/_/b3.png" onmousemove="preview(this)"/>
+                                        <img :src="goods.img" :bimg="goods.img" onmousemove="preview(this)"/>
                                     </li>
                                     <li>
-                                        <img src="./img/_/s1.png" bimg="./img/_/b1.png" onmousemove="preview(this)"/>
+                                        <img :src="goods.img" :bimg="goods.img" onmousemove="preview(this)"/>
                                     </li>
                                     <li>
-                                        <img src="./img/_/s2.png" bimg="./img/_/b2.png" onmousemove="preview(this)"/>
+                                        <img :src="goods.img" :bimg="goods.img" onmousemove="preview(this)"/>
                                     </li>
                                     <li>
-                                        <img src="./img/_/s3.png" bimg="./img/_/b3.png" onmousemove="preview(this)"/>
+                                        <img :src="goods.img" :bimg="goods.img" onmousemove="preview(this)"/>
                                     </li>
                                 </ul>
                             </div>
@@ -2274,20 +2270,19 @@
                                 <li>前置摄像头：500万像素</li>
                                 <li>核 数：其他</li>
                                 <li>频 率：以官网信息为准</li>
-                                <li>品牌： Apple</li>
-                                <li>商品名称：APPLEiPhone 6s Plus</li>
+                                <li>商品名称：{{goods.name}}</li>
                                 <li>商品编号：1861098</li>
                                 <li>商品毛重：0.51kg</li>
                                 <li>商品产地：中国大陆</li>
-                                <li>热点：指纹识别，Apple Pay，金属机身，拍照神器</li>
-                                <li>系统：苹果（IOS）</li>
+                                <li>热点：指纹识别，金属机身，拍照神器</li>
+                                <li>系统：Android</li>
                                 <li>像素：1000-1600万</li>
                                 <li>机身内存：64GB</li>
                             </ul>
                             <div class="intro-detail">
-                                <img src="./img/_/intro01.png"/>
-                                <img src="./img/_/intro02.png"/>
-                                <img src="./img/_/intro03.png"/>
+                                <img :src="goods.img"/>
+                                <img :src="goods.img"/>
+                                <img :src="goods.img"/>
                             </div>
                         </div>
                         <div id="two" class="tab-pane">
@@ -2909,6 +2904,7 @@
         }
         return null;
     }
+
     new Vue({
         el: '#app',
         data() {
