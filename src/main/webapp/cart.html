@@ -486,7 +486,7 @@
                 this.info = JSON.parse(window.sessionStorage.getItem("userInfo"));
                 if (this.info != null) {
                     this.loginUserName = this.info.username;
-                    this.userId = this.info.id;
+                    this.searchMap.userId = this.info.id;
                 }
             },
             logout() {
@@ -503,7 +503,6 @@
             findCartList() {
                 axios.post(`/cart/findList.do`, this.searchMap).then(response => {
                     this.cartList = response.data;
-
                     this.count();
                 });
             },
