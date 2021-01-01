@@ -172,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
                     order.setBuyerRateName("未评价");
                 }
                 if (buyerRate.equals("2")) {
-                    order.setPaymentypeName("已评价");
+                    order.setBuyerRateName("已评价");
                 }
             }
         }

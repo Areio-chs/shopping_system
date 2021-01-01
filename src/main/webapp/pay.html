@@ -329,7 +329,7 @@
 			},
 			pay(){
 				axios.get(`/order/updateTime.do?id=${this.oid}`).then( response=>{
-					location.href="paysuccess.html?money="+this.money;
+					location.href="alipay.trade.page.pay.jsp";
 				});
 			},
 			login() {
